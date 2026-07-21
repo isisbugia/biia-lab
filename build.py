@@ -325,6 +325,13 @@ def build() -> None:
         f'<span aria-hidden="true">\U0001F465</span> {esc(integrantes_label)}</a>'
     ) if integrantes_label else ""
 
+    participe_url = site.get("participe_url", "")
+    participe_button = (
+        f'<a class="ws-btn" href="{esc(participe_url)}" target="_blank" rel="noopener">'
+        f'<span aria-hidden="true">✉</span> '
+        f'{esc(site.get("participe_label", "Quero participar"))}</a>'
+    ) if participe_url else ""
+
     nav = "".join(
         f'<a class="tab" href="#{tid}" data-tab="{tid}">{esc(label)}</a>'
         for tid, label in TABS
@@ -347,6 +354,7 @@ def build() -> None:
         caljs=CAL_JS,
         ws_button=ws_button,
         integrantes_button=integrantes_button,
+        participe_button=participe_button,
     )
     (ROOT / "index.html").write_text(out, encoding="utf-8")
     print("index.html gerado com", len(TABS), "abas.")
@@ -522,7 +530,7 @@ TEMPLATE = """<!doctype html>
     <p class="brand">{title}</p>
     <h1>{subtitle}</h1>
     <p class="tag">{descricao}</p>
-    <div class="hero-actions">{ws_button}{integrantes_button}</div>
+    <div class="hero-actions">{ws_button}{integrantes_button}{participe_button}</div>
     <div class="ribbon" aria-hidden="true">ATG·CATALASE···OBP···&#945;-AMILASE···MGNTVQYST·QHSTA·QHSTA·QHSTA·QHSTA·QHSTA·LHSRVEYST···PF00199···PF01395···PF00128</div>
   </div>
 </header>

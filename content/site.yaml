@@ -23,3 +23,8 @@ espaco_trabalho_label: "Espaço de trabalho"
 # Botão "Integrantes" no topo (abre a página integrantes.html).
 # Deixe o label vazio ("") para esconder o botão.
 integrantes_label: "Integrantes"
+
+# Botão "Quero participar" (formulário para quem quer integrar o lab).
+# Cole a URL do formulário (ex.: Google Forms). Vazio ("") esconde o botão.
+participe_url: ""
+participe_label: "Quero participar"
