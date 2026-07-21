@@ -32,6 +32,21 @@ arquivos de texto simples (YAML) em `content/`. Cada um controla uma aba.
 - Uma linha começada com `#` é **comentário** (o site ignora).
 - Datas no formato `AAAA-MM-DD` (ex.: `2026-07-27`).
 
+## E o texto DENTRO de um guia de estudo?
+
+Atenção: os arquivos `content/*.yaml` controlam **o site** (abas, cards, avisos).
+Eles **não** contêm o texto interno de cada guia.
+
+Cada guia (ex.: `guia-rastreabilidade-qc.html`) é um **documento completo e
+desenhado** (com diagramas, tabelas, destaques). O texto dele mora numa **fonte
+markdown separada**, no repositório do projeto
+(`BIIA-Csordidus/docs/guia_estudo_rastreabilidade_qc.md`) — markdown puro, fácil
+de editar. O `.html` do site é uma renderização dessa fonte.
+
+**Para mudar o texto de um guia:** edite o markdown do guia **ou** peça a alteração
+em português. A versão visual é regenerada e republicada — o `guias.yaml` só muda
+o **card** (número, título, resumo, link), não o miolo.
+
 ## Detalhe técnico (para quem for rodar)
 
 O gerador é `build.py` (precisa de `pyyaml`). Ele lê `content/*.yaml` e escreve
