@@ -1,10 +1,21 @@
 # ==========================================================================
 # VÍDEOAULAS E TUTORIAIS  —  cards da aba "Vídeoaulas e Tutoriais"
 # ==========================================================================
-# Cada item: titulo, descricao e (opcional) link (ex.: YouTube).
+# Cada item pode ter:
+#   titulo    -> título do vídeo/tutorial
+#   descricao -> uma frase de descrição
+#   youtube   -> (opcional) link do YouTube (vídeo OU playlist). Se preenchido,
+#                o player fica EMBUTIDO na página.
+#   link      -> (opcional) link para site/tutorial externo (vira botão "Abrir").
 # Vazia = aba mostra "em breve". Tire o "#" para adicionar.
 
 itens:
-  # - titulo: "Introdução ao pipeline BIIA"
-  #   descricao: "Visão geral em vídeo dos módulos M01–M13."
-  #   link: "https://youtube.com/..."
+  - titulo: "Grupo de estudos do BIIA — playlist"
+    descricao: >
+      Todos os encontros do grupo de estudos do laboratório, em sequência.
+    youtube: "https://www.youtube.com/watch?v=C2Wt5dHinKU&list=PLCaNxtNUCzgV6_H0Etz9yB7Ihb_TD1NRm"
+
+  # Exemplo de tutorial externo (sem vídeo embutido):
+  # - titulo: "Como rodar um BLAST no NCBI"
+  #   descricao: "Passo a passo em texto."
+  #   link: "https://..."

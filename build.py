@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import html
 from pathlib import Path
+from urllib.parse import parse_qs, urlparse
 
 import yaml
 
@@ -89,6 +90,59 @@ def panel_cards(data, key, empty_msg) -> str:
     return f'<div class="grid">{"".join(cards)}</div>'
 
 
+def yt_embed(url: str):
+    """URL do YouTube (vídeo ou playlist) -> URL de embed, ou None."""
+    try:
+        u = urlparse(str(url)); q = parse_qs(u.query)
+    except Exception:
+        return None
+    vid = (q.get("v") or [None])[0]
+    plist = (q.get("list") or [None])[0]
+    if u.netloc.endswith("youtu.be") and u.path.strip("/"):
+        vid = u.path.strip("/")
+    if "/embed/" in u.path:
+        return url
+    if plist and vid:
+        return f"https://www.youtube.com/embed/{vid}?list={plist}"
+    if plist:
+        return f"https://www.youtube.com/embed/videoseries?list={plist}"
+    if vid:
+        return f"https://www.youtube.com/embed/{vid}"
+    return None
+
+
+_YT_ALLOW = ("accelerometer; autoplay; clipboard-write; encrypted-media; "
+             "gyroscope; picture-in-picture; web-share")
+
+
+def panel_videoaulas(data) -> str:
+    itens = (data or {}).get("itens") or []
+    if not itens:
+        return empty("Vídeoaulas e tutoriais em breve.")
+    out = []
+    for it in itens:
+        title, desc = esc(it.get("titulo")), esc(it.get("descricao"))
+        emb = yt_embed(it.get("youtube")) if it.get("youtube") else None
+        if emb:
+            link = it.get("youtube") or it.get("link", "")
+            out.append(
+                '<div class="media">'
+                f'<div class="embed"><iframe src="{esc(emb)}" title="{title}" loading="lazy" '
+                f'allow="{_YT_ALLOW}" allowfullscreen '
+                'referrerpolicy="strict-origin-when-cross-origin"></iframe></div>'
+                f'<div class="media-cap"><h3>{title}</h3><p>{desc}</p>'
+                + (f'<a class="go"{_link_attrs(link)}>Abrir no YouTube</a>' if link else "")
+                + "</div></div>"
+            )
+        else:
+            link = it.get("link", "")
+            go = '<span class="go">Abrir</span>' if link else ""
+            tag = "a" if link else "div"
+            out.append(f'<{tag} class="card"{_link_attrs(link)}><h3>{title}</h3>'
+                       f'<p>{desc}</p>{go}</{tag}>')
+    return f'<div class="media-grid">{"".join(out)}</div>'
+
+
 def panel_avisos(data) -> str:
     itens = (data or {}).get("avisos") or []
     if not itens:
@@ -130,13 +184,19 @@ def build() -> None:
         "guias": panel_guias(load("guias")),
         "ferramentas": panel_cards(load("ferramentas"), "itens",
                                    "Ferramentas serão listadas aqui em breve."),
-        "videoaulas": panel_cards(load("videoaulas"), "itens",
-                                  "Vídeoaulas e tutoriais em breve."),
+        "videoaulas": panel_videoaulas(load("videoaulas")),
         "recursos": panel_cards(load("recursos"), "itens",
                                 "Recursos educativos em breve."),
         "avisos": panel_avisos(load("avisos")),
         "eventos": panel_eventos(load("eventos")),
     }
+
+    ws_url = site.get("espaco_trabalho_url", "")
+    ws_button = (
+        f'<a class="ws-btn" href="{esc(ws_url)}" target="_blank" rel="noopener">'
+        f'<span aria-hidden="true">\U0001F4C1</span> '
+        f'{esc(site.get("espaco_trabalho_label", "Espaço de trabalho"))}</a>'
+    ) if ws_url else ""
 
     nav = "".join(
         f'<a class="tab" href="#{tid}" data-tab="{tid}">{esc(label)}</a>'
@@ -158,6 +218,7 @@ def build() -> None:
         foot_r=esc(site.get("rodape_direita", "")),
         css=CSS,
         caljs=CAL_JS,
+        ws_button=ws_button,
     )
     (ROOT / "index.html").write_text(out, encoding="utf-8")
     print("index.html gerado com", len(TABS), "abas.")
@@ -259,6 +320,23 @@ border-radius:50%;background:var(--pine);}
 .cal-list .event.flash{animation:evflash 1.6s ease;}
 @keyframes evflash{0%,25%{background:var(--pine-soft);border-left-color:var(--pine-strong);}100%{background:var(--surface);}}
 @media (prefers-reduced-motion:reduce){.cal-list .event.flash{animation:none;}}
+.hero-actions:empty{display:none;}
+.hero-actions{margin:1.3rem 0 0;}
+.ws-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--pine);color:#fff;
+text-decoration:none;font-weight:600;font-size:.95rem;padding:.6rem 1.15rem;border-radius:999px;
+box-shadow:var(--shadow);transition:transform .15s,background .15s;}
+.ws-btn:hover{transform:translateY(-2px);background:var(--pine-strong);color:#fff;}
+@media (prefers-color-scheme:dark){.ws-btn,.ws-btn:hover{color:#08110d;}}
+:root[data-theme="light"] .ws-btn,:root[data-theme="light"] .ws-btn:hover{color:#fff;}
+:root[data-theme="dark"] .ws-btn,:root[data-theme="dark"] .ws-btn:hover{color:#08110d;}
+@media (prefers-reduced-motion:reduce){.ws-btn:hover{transform:none;}}
+.media-grid{display:flex;flex-direction:column;gap:1.6rem;}
+.media{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);}
+.embed{position:relative;width:100%;padding-bottom:56.25%;height:0;background:#000;}
+.embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+.media-cap{padding:1rem 1.3rem 1.3rem;}
+.media-cap h3{font-family:var(--title-face);font-weight:600;font-size:1.2rem;margin:0 0 .25rem;}
+.media-cap p{margin:0 0 .5rem;color:var(--muted);font-size:.95rem;}
 footer{margin-top:3rem;border-top:1px solid var(--line);background:var(--surface);}
 .foot-in{max-width:62rem;margin:0 auto;padding:1.6rem 1.5rem 2.4rem;color:var(--muted);font-size:.88rem;
 display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;justify-content:space-between;}
@@ -280,6 +358,7 @@ TEMPLATE = """<!doctype html>
     <p class="brand">{title}</p>
     <h1>{subtitle}</h1>
     <p class="tag">{descricao}</p>
+    <div class="hero-actions">{ws_button}</div>
     <div class="ribbon" aria-hidden="true">ATG·CATALASE···OBP···&#945;-AMILASE···MGNTVQYST·QHSTA·QHSTA·QHSTA·QHSTA·QHSTA·LHSRVEYST···PF00199···PF01395···PF00128</div>
   </div>
 </header>

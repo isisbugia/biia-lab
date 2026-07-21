@@ -13,3 +13,9 @@ descricao: >
   
 rodape_esquerda: "BIIA · Laboratório de Bioinformática e Inteligência Agrícola"
 rodape_direita: "IFSP · Campus Miracatu"
+
+# Botão "Espaço de trabalho" no topo (pasta compartilhada no Drive).
+# O link pode ser público: o acesso é controlado pelo Google (só e-mails permitidos).
+# Deixe a URL vazia ("") para esconder o botão.
+espaco_trabalho_url: "https://drive.google.com/drive/folders/118Wr5aH3Bar_KHV4NPf8Len3MB_Z6vdW"
+espaco_trabalho_label: "Espaço de trabalho"
