@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guia 03 — Protocolo de curadoria · BIIA</title>
+<meta name="color-scheme" content="light dark">
+<style>
+:root{--paper:#f5f7f3;--surface:#fff;--surface-2:#eef2ec;--ink:#1a231e;--muted:#586a60;
+--faint:#7d8c82;--line:#d8e0d6;--pine:#1f6f5c;--pine-strong:#164b3f;--pine-soft:#e4efe9;
+--ochre:#9a6614;--ochre-bg:#f6ecd8;--code-bg:#f0f3ee;
+--title-face:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+--body-face:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+--mono-face:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+--shadow:0 1px 2px rgba(20,40,30,.05),0 6px 22px -12px rgba(20,50,38,.18);}
+@media (prefers-color-scheme:dark){:root{--paper:#0f1512;--surface:#161d19;--surface-2:#1a231e;
+--ink:#e7ece7;--muted:#9ca99f;--faint:#7d8c82;--line:#2a352f;--pine:#5cc2a4;--pine-strong:#8bd6c1;
+--pine-soft:#16241f;--ochre:#d9a94a;--ochre-bg:#211a0f;--code-bg:#121915;
+--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}}
+:root[data-theme="light"]{--paper:#f5f7f3;--surface:#fff;--surface-2:#eef2ec;--ink:#1a231e;--muted:#586a60;--faint:#7d8c82;--line:#d8e0d6;--pine:#1f6f5c;--pine-strong:#164b3f;--pine-soft:#e4efe9;--ochre:#9a6614;--ochre-bg:#f6ecd8;--code-bg:#f0f3ee;}
+:root[data-theme="dark"]{--paper:#0f1512;--surface:#161d19;--surface-2:#1a231e;--ink:#e7ece7;--muted:#9ca99f;--faint:#7d8c82;--line:#2a352f;--pine:#5cc2a4;--pine-strong:#8bd6c1;--pine-soft:#16241f;--ochre:#d9a94a;--ochre-bg:#211a0f;--code-bg:#121915;}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body-face);
+font-size:1.0625rem;line-height:1.68;-webkit-font-smoothing:antialiased;}
+a{color:var(--pine);text-underline-offset:2px;}a:hover{color:var(--pine-strong);}
+:focus-visible{outline:2px solid var(--pine);outline-offset:2px;border-radius:3px;}
+.masthead{border-bottom:1px solid var(--line);background:
+radial-gradient(120% 100% at 88% -10%,var(--pine-soft),transparent 60%),var(--surface);}
+.masthead-in{max-width:46rem;margin:0 auto;padding:2.6rem 1.6rem 1.4rem;}
+.eyebrow{font-family:var(--mono-face);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;
+color:var(--pine);font-weight:600;margin:0 0 .8rem;}
+.eyebrow a{color:inherit;text-decoration:none;}
+h1.title{font-family:var(--title-face);font-weight:600;font-size:2.2rem;line-height:1.08;
+letter-spacing:-.01em;margin:0;text-wrap:balance;}
+article{max-width:46rem;margin:0 auto;padding:2rem 1.6rem 5rem;}
+article h1{font-family:var(--title-face);font-weight:600;font-size:1.85rem;margin:2.4rem 0 .8rem;letter-spacing:-.01em;}
+article h2{font-family:var(--title-face);font-weight:600;font-size:1.5rem;margin:2.2rem 0 .7rem;
+letter-spacing:-.005em;padding-bottom:.3rem;border-bottom:1px solid var(--line);}
+article h3{font-family:var(--title-face);font-weight:600;font-size:1.22rem;margin:1.7rem 0 .5rem;}
+article h4{font-family:var(--body-face);font-weight:650;font-size:1rem;margin:1.3rem 0 .4rem;
+text-transform:uppercase;letter-spacing:.04em;color:var(--muted);}
+article p{margin:.85rem 0;}
+article strong{font-weight:650;}
+article a{font-weight:500;}
+article ul,article ol{margin:.7rem 0;padding-left:1.3rem;}
+article li{margin:.4rem 0;}
+article li>ul,article li>ol{margin:.3rem 0;}
+article hr{border:none;border-top:1px solid var(--line);margin:2rem 0;}
+article img{max-width:100%;height:auto;}
+:not(pre)>code{background:var(--code-bg);border:1px solid var(--line);border-radius:5px;
+padding:.06em .38em;font-size:.86em;font-family:var(--mono-face);}
+pre{background:var(--code-bg);border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;
+overflow-x:auto;font-family:var(--mono-face);font-size:.85rem;line-height:1.6;margin:1.1rem 0;}
+pre code{white-space:pre;background:none;border:none;padding:0;font-size:1em;}
+blockquote{margin:1.3rem 0;padding:.8rem 1.15rem;border:1px solid var(--line);border-left:3px solid var(--pine);
+background:var(--surface);border-radius:0 12px 12px 0;color:var(--ink);box-shadow:var(--shadow);}
+blockquote p{margin:.3rem 0;}
+.tw,.table-wrap{overflow-x:auto;}
+table{border-collapse:collapse;width:100%;font-size:.92rem;margin:1.2rem 0;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:.55rem .8rem;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--surface-2);font-weight:650;font-size:.82rem;}
+tbody tr:hover{background:var(--surface-2);}
+footer{border-top:1px solid var(--line);background:var(--surface);}
+.foot-in{max-width:46rem;margin:0 auto;padding:1.6rem 1.6rem 2.4rem;color:var(--muted);font-size:.88rem;
+display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;justify-content:space-between;}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-in">
+    <p class="eyebrow"><a href="index.html">&#8592; Materiais BIIA</a> &nbsp;·&nbsp; Guia de estudo 03</p>
+    <h1 class="title">Protocolo de curadoria</h1>
+  </div>
+</header>
+<article><blockquote>
+<p>Projeto guarda-chuva: <em>Anotação funcional com curadoria manual de famílias
+proteicas da broca-da-bananeira (Cosmopolites sordidus)</em>.
+Este protocolo guia a <strong>fase de curadoria</strong> das candidatas geradas pelo
+pipeline. Acompanha a planilha <code>curation_pilot/planilha_curadoria_piloto.xlsx</code>.</p>
+</blockquote>
+<hr>
+<h2 id="1-o-que-e-e-o-que-nao-e-esta-etapa">1. O que é (e o que não é) esta etapa</h2>
+<p>O pipeline já fez o trabalho <strong>computacional</strong>: encontrou proteínas candidatas de
+cada família e reuniu evidências (domínios conservados, assinaturas InterPro,
+melhor alinhamento BLAST, nível de confiança A/B/C). A <strong>curadoria</strong> é o passo
+<strong>humano</strong>: você <strong>avalia</strong> essa evidência e decide, caso a caso, se a proteína
+é mesmo da família e qual a sua anotação funcional.</p>
+<ul>
+<li><strong>Não é</strong> rodar programas — a evidência já está pronta na planilha.</li>
+<li><strong>É</strong> julgamento biológico informado, registrado de forma rastreável.</li>
+</ul>
+<h2 id="2-a-planilha">2. A planilha</h2>
+<p>Arquivo (alunas): <code>curation_pilot/planilha_curadoria_EM_BRANCO.xlsx</code> (Excel/
+LibreOffice).
+- Aba <strong>Instruções</strong>: resumo rápido.
+- Aba <strong>Curadoria</strong>: uma linha por candidata. As colunas à esquerda (evidência)
+  já vêm preenchidas; as <strong>cinco últimas, destacadas em laranja, são suas</strong>.
+- A coluna <strong>nível_evidência</strong> está colorida: verde = A, amarelo = B.
+- Use o <strong>filtro</strong> (cabeçalho) para trabalhar por família.</p>
+<p><strong>Sequências (FASTA):</strong> as proteínas candidatas estão em <code>curation_pilot/fasta/</code>
+— um arquivo por família (<code>CATALASE.faa</code>, <code>AMILASES.faa</code>, <code>OBP.faa</code>) e um
+combinado (<code>todas_candidatas.faa</code>). O cabeçalho de cada sequência traz a
+<strong>rastreabilidade completa</strong> até o genoma depositado, além de família, nível e
+tamanho. Exemplo:</p>
+<pre><code>&gt;CSOR_04408 orig=g2919.t1 loc=ptg000301l:14913-17233(+) genbank=JARFXV010000299.1 familia=OBP prov=dominio nivel=B len=135
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>O que é</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CSOR_04408</code></td>
+<td><strong>ID do projeto</strong> — use este nas planilhas e no relatório de curadoria.</td>
+</tr>
+<tr>
+<td><code>orig=g2919.t1</code></td>
+<td>ID original do <strong>proteoma predito</strong> (Braker2). Liga à anotação.</td>
+</tr>
+<tr>
+<td><code>loc=ptg000301l:14913-17233(+)</code></td>
+<td><strong>Posição no genoma</strong>: contig, início-fim e fita.</td>
+</tr>
+<tr>
+<td><code>genbank=JARFXV010000299.1</code></td>
+<td>Contig no <strong>genoma depositado no GenBank</strong> (para citar/checar). Se aparecer <code>genbank=so_dryad</code>, o contig só existe na montagem do Dryad.</td>
+</tr>
+<tr>
+<td><code>familia / prov / nivel / len</code></td>
+<td>Família-alvo, proveniência (<code>dominio</code>/<code>similaridade</code>), nível A/B/C e tamanho (aa).</td>
+</tr>
+</tbody>
+</table>
+<p>Use-os para inspecionar a sequência, alinhar dentro da família (ex.: ver o padrão
+de cisteínas das OBPs) ou rodar sua própria conferência (BLAST/InterPro).</p>
+<blockquote>
+<p><strong>⚠️ Ao conferir no BLAST, não busque contra o <em>genoma</em> — busque contra o
+<em>proteoma</em>.</strong> Uma proteína predita é a junção dos éxons (o preditor removeu os
+íntrons). Se você BLASTar a proteína contra o <strong>DNA do genoma</strong>, o alinhamento
+quebra em pedaços (um por éxon) e <strong>não dá 100%</strong> — isso é normal, não é erro.
+Para confirmar que a sequência confere, faça <code>blastp</code> da candidata contra o
+<strong>proteoma</strong> (<code>data/raw/proteome.faa</code>): aí o acerto é 100%. (Ex. real: <code>CSOR_04408</code>
+tem 2 éxons separados por um íntron de ~1,9 kb — por isso some o 100% no genoma.)</p>
+</blockquote>
+<h2 id="3-entendendo-as-colunas-de-evidencia">3. Entendendo as colunas de evidência</h2>
+<table>
+<thead>
+<tr>
+<th>Coluna</th>
+<th>O que significa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>original_id</td>
+<td>ID no proteoma predito (ex.: <code>g2919.t1</code>) — rastreabilidade até a anotação.</td>
+</tr>
+<tr>
+<td>genomic_location</td>
+<td>Posição no genoma: <code>contig:início-fim(fita)</code>.</td>
+</tr>
+<tr>
+<td>genbank_accession</td>
+<td>Contig no genoma depositado no GenBank (<code>JARFXV…</code>) ou <code>so_dryad</code>.</td>
+</tr>
+<tr>
+<td>arquitetura_domínios</td>
+<td>Sequência de domínios Pfam encontrados (ex.: <code>PF00199:PF06628</code>). O <strong>diagnóstico</strong> da família tem que estar presente.</td>
+</tr>
+<tr>
+<td>domínios_InterPro</td>
+<td>Assinaturas InterPro (corroboram o domínio).</td>
+</tr>
+<tr>
+<td>nível_evidência</td>
+<td><strong>A</strong> = forte (domínio + concordância InterPro + bom hit); <strong>B</strong> = intermediário; <strong>C</strong> = fraco.</td>
+</tr>
+<tr>
+<td>melhor_hit_descrição</td>
+<td>Proteína mais parecida em banco de referência (ex.: <em>general odorant-binding protein 83a-like [Sitophilus oryzae]</em>).</td>
+</tr>
+<tr>
+<td>hit_identidade_% / cobertura_%</td>
+<td>Quão parecido e quão completo é o alinhamento. Maior = melhor.</td>
+</tr>
+<tr>
+<td>hit_coleoptera</td>
+<td><code>True</code> = o melhor hit é de um besouro (parente próximo) → reforça a confiança.</td>
+</tr>
+<tr>
+<td>flags</td>
+<td>Sinalizações automáticas — não reprovam sozinhas, são para olhar: <code>LENGTH_ATYPICAL</code> = tamanho fora da faixa esperada; <strong><code>LOW_COMPLEXITY</code></strong> = sequência de baixa complexidade (repetição em tandem, ex.: <code>QHSTAQHSTA...</code>), quase sempre <strong>falso positivo</strong> — provável <strong>rejeição</strong> (ver 4b).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-criterios-de-decisao">4. Critérios de decisão</h2>
+<p>Preencha <strong>DECISÃO</strong> com uma das três opções:</p>
+<h3 id="confirmada">✅ Confirmada</h3>
+<p>A proteína é, com segurança, da família. Em geral:
+- Domínio <strong>diagnóstico presente</strong> e arquitetura coerente com a família;
+- Tamanho dentro (ou próximo) da faixa esperada;
+- Bom hit em parente próximo (especialmente <code>hit_coleoptera = True</code> com
+  identidade alta) <strong>ou</strong> concordância InterPro clara.
+- Nível <strong>A</strong> costuma ser confirmação direta — mas <strong>sempre confira</strong> a
+  arquitetura e o tamanho (o nível é um guia, não um carimbo).</p>
+<h3 id="incerta">❓ Incerta</h3>
+<p>Evidência ambígua ou conflitante. É uma resposta <strong>válida e esperada</strong>:
+- Nível <strong>B</strong> com hit fraco (baixa identidade/cobertura);
+- Melhor hit apenas a proteína "uncharacterized";
+- Arquitetura ou tamanho estranhos, mas não claramente errados.
+- Descreva a dúvida na <strong>JUSTIFICATIVA</strong> para discutirmos na reunião.</p>
+<h3 id="rejeitada">❌ Rejeitada</h3>
+<p>Evidência indica que <strong>não</strong> é da família:
+- Arquitetura <strong>incompatível</strong> (ex.: domínio diagnóstico acompanhado de muitos
+  domínios de outra função dominando a proteína);
+- Tamanho <strong>muito</strong> fora da faixa sem explicação plausível;
+- Ausência de qualquer corroboração além de um match fraco e isolado.</p>
+<h2 id="4b-candidatas-descobertas-por-similaridade-proveniencia-similaridade">4b. Candidatas descobertas por similaridade (proveniência = "similaridade")</h2>
+<p>Além das candidatas por <strong>domínio</strong>, a planilha traz candidatas descobertas por
+<strong>forte semelhança a parentes de besouro, SEM o domínio diagnóstico</strong> (etapa de
+descoberta por similaridade). Elas <strong>não</strong> têm nível A/B/C nem InterPro (não
+passaram por essas etapas) — a decisão apoia-se em semelhança + arquitetura +
+tamanho + julgamento. Curar com <strong>critério extra</strong>:</p>
+<ul>
+<li><strong>Amilases:</strong> muitas têm <code>PF02806</code> (domínio de <em>apoio</em>) mas não <code>PF00128</code> (o
+  catalítico). Se tamanho (~400–550 aa) e identidade forem coerentes, são
+  provavelmente <strong>amilases reais</strong> cujo domínio catalítico ficou abaixo do limiar.
+  Distinga alfa-amilase digestiva de outras GH13 (maltase/glucosidase).</li>
+<li><strong>OBP vs CSP:</strong> proteínas com <code>PF03392</code> são <strong>CSP</strong> (família vizinha, <strong>não</strong>
+  OBP) — classifique corretamente. OBPs <strong>sem domínio</strong>, curtas e com alta
+  identidade a OBP de besouro, são candidatas legítimas (divergentes).</li>
+<li>Quanto <strong>menor</strong> a identidade ao besouro, <strong>mais cuidado</strong> — pode ser homologia
+  distante ou família aparentada.</li>
+<li><strong><code>LOW_COMPLEXITY</code> → rejeitar.</strong> Sequências de baixa complexidade (repetição em
+  tandem, ex.: <code>QHSTAQHSTA...</code>) grudam por acaso em proteínas sem relação (amilase,
+  extensina, fator de transcrição) e pegam a família pelo melhor hit à toa. Sinais:
+  identidade baixa (~30%), sem domínio catalítico, e o mesmo trecho repetido dezenas
+  de vezes. <strong>Não são amilases</strong> — marque <strong>Rejeitada</strong>. (Ex. do piloto: <code>CSOR_10506</code>
+  e <code>CSOR_16554</code>, idênticas, em dois contigs diferentes.)</li>
+</ul>
+<h2 id="4c-padrao-calibrado-definido-com-a-orientadora-2026-07-20">4c. Padrão calibrado (definido com a orientadora — 2026-07-20)</h2>
+<p>Regras a aplicar de forma <strong>consistente</strong> por todas as curadoras:</p>
+<ol>
+<li><strong>Nível A</strong> (domínio diagnóstico + concordância InterPro + bom hit) →
+   <strong>Confirmar</strong> como a família. Vale <strong>mesmo quando o melhor hit é
+   "uncharacterized protein"</strong> de besouro: o domínio + a alta identidade bastam
+   para atribuir a <strong>família</strong> (anotação = nome da família, ex.: "Odorant-binding
+   protein").</li>
+<li><strong>OBP em nível B</strong> (domínio PF01395 presente, mas homologia ao besouro de
+   37–49%) → <strong>Incerta</strong> (revisar caso a caso). Não confirmar automaticamente.</li>
+<li><strong>Alfa-amilases (GH13) que batem em "maltase"</strong> → <strong>Confirmar</strong> como família
+   (GH13/alfa-amilase) e <strong>anotar especificamente</strong> (ex.: "maltase-like"),
+   <strong>sinalizando para sub-classificação funcional</strong> posterior (alfa-amilase
+   digestiva vs maltase/glucosidase).</li>
+<li><strong>Descobertas por similaridade</strong> (proveniência "similaridade", sem domínio
+   diagnóstico) → escrutínio extra (seção 4b): <strong>Confirmar só com evidência
+   forte</strong> (domínio de apoio + tamanho coerente + identidade alta); caso
+   contrário, <strong>Incerta</strong>.</li>
+</ol>
+<p><strong>Consequência nas 41 candidatas por domínio:</strong> 33 <strong>Confirmar</strong> (5 catalase +
+5 alfa-amilase + 23 OBP nível A) e 8 <strong>Incerta</strong> (OBP nível B). As 15 descobertas
+seguem a regra 4 (caso a caso).</p>
+<h2 id="5-passo-a-passo-por-candidata">5. Passo a passo por candidata</h2>
+<ol>
+<li>Leia <strong>família</strong> e <strong>arquitetura_domínios</strong> — o domínio diagnóstico está lá e
+   coerente?</li>
+<li>Veja <strong>tamanho_aa</strong> e <strong>flags</strong> — dentro do esperado? Se <code>LENGTH_ATYPICAL</code>,
+   investigue o porquê.</li>
+<li>Olhe <strong>melhor_hit_descrição</strong>, <strong>identidade%/cobertura%</strong> e <strong>hit_coleoptera</strong> —
+   a que proteína conhecida se parece, e quão bem?</li>
+<li>Considere <strong>nível_evidência</strong> e <strong>domínios_InterPro</strong> como reforço.</li>
+<li>Registre <strong>DECISÃO</strong>, <strong>ANOTAÇÃO FUNCIONAL</strong> (o nome/função que você atribui) e
+   uma <strong>JUSTIFICATIVA</strong> de uma frase. Preencha <strong>CURADOR(A)</strong> e <strong>DATA</strong>.</li>
+</ol>
+<h2 id="6-o-que-esperamos-da-sua-analise">6. O que esperamos da sua análise</h2>
+<ul>
+<li><strong>Consistência:</strong> os mesmos critérios para todas as candidatas da sua família.</li>
+<li><strong>Rastreabilidade:</strong> toda decisão com justificativa (nem que seja curta).</li>
+<li><strong>Honestidade intelectual:</strong> "Incerta" é melhor que uma confirmação forçada.</li>
+<li><strong>Olhar biológico:</strong> a anotação faz sentido para a biologia da praga?
+  (quimiorrecepção = localizar hospedeiro; detoxificação = tolerar inseticidas;
+  metabolismo = digestão). Ver a biologia das famílias no
+  <a href="guia_onboarding_bolsistas.md">guia de onboarding</a>.</li>
+<li><strong>Dúvidas trazidas à reunião</strong> — não travar sozinha; anotar e discutir.</li>
+</ul>
+<h2 id="7-sugestao-de-divisao-as-3-familias-do-piloto">7. Sugestão de divisão (as 3 famílias do piloto)</h2>
+<ul>
+<li><strong>Catalase (5 candidatas)</strong> — família muito conservada, hits fortes: ótima para
+  "aquecer" e calibrar o olhar.</li>
+<li><strong>Alfa-amilase (5)</strong> — atenção ao domínio GH13, que é inespecífico (risco de
+  falso-positivo): bom exercício de rejeição criteriosa.</li>
+<li><strong>OBP (31)</strong> — a mais numerosa e rica: onde a curadoria da incerteza mais
+  aparece (família divergente). Boa para aprofundar.</li>
+</ul>
+<h2 id="8-depois-da-curadoria">8. Depois da curadoria</h2>
+<p>Devolver a planilha preenchida. Vamos consolidar as decisões, discutir as
+"Incertas" em conjunto e usar o resultado curado como base para o relatório e a
+divulgação (eventos/artigo). Cada rodada de curadoria também alimenta a melhoria
+do próprio protocolo.</p></article>
+<footer><div class="foot-in"><span>BIIA · Laboratório de Bioinformática e Inteligência Agrícola</span><span>IFSP · Campus Miracatu</span></div></footer>
+</body>
+</html>

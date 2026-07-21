@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guia 01 — Preparatório: terminal, YAML e o pipeline · BIIA</title>
+<meta name="color-scheme" content="light dark">
+<style>
+:root{--paper:#f5f7f3;--surface:#fff;--surface-2:#eef2ec;--ink:#1a231e;--muted:#586a60;
+--faint:#7d8c82;--line:#d8e0d6;--pine:#1f6f5c;--pine-strong:#164b3f;--pine-soft:#e4efe9;
+--ochre:#9a6614;--ochre-bg:#f6ecd8;--code-bg:#f0f3ee;
+--title-face:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+--body-face:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+--mono-face:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+--shadow:0 1px 2px rgba(20,40,30,.05),0 6px 22px -12px rgba(20,50,38,.18);}
+@media (prefers-color-scheme:dark){:root{--paper:#0f1512;--surface:#161d19;--surface-2:#1a231e;
+--ink:#e7ece7;--muted:#9ca99f;--faint:#7d8c82;--line:#2a352f;--pine:#5cc2a4;--pine-strong:#8bd6c1;
+--pine-soft:#16241f;--ochre:#d9a94a;--ochre-bg:#211a0f;--code-bg:#121915;
+--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}}
+:root[data-theme="light"]{--paper:#f5f7f3;--surface:#fff;--surface-2:#eef2ec;--ink:#1a231e;--muted:#586a60;--faint:#7d8c82;--line:#d8e0d6;--pine:#1f6f5c;--pine-strong:#164b3f;--pine-soft:#e4efe9;--ochre:#9a6614;--ochre-bg:#f6ecd8;--code-bg:#f0f3ee;}
+:root[data-theme="dark"]{--paper:#0f1512;--surface:#161d19;--surface-2:#1a231e;--ink:#e7ece7;--muted:#9ca99f;--faint:#7d8c82;--line:#2a352f;--pine:#5cc2a4;--pine-strong:#8bd6c1;--pine-soft:#16241f;--ochre:#d9a94a;--ochre-bg:#211a0f;--code-bg:#121915;}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body-face);
+font-size:1.0625rem;line-height:1.68;-webkit-font-smoothing:antialiased;}
+a{color:var(--pine);text-underline-offset:2px;}a:hover{color:var(--pine-strong);}
+:focus-visible{outline:2px solid var(--pine);outline-offset:2px;border-radius:3px;}
+.masthead{border-bottom:1px solid var(--line);background:
+radial-gradient(120% 100% at 88% -10%,var(--pine-soft),transparent 60%),var(--surface);}
+.masthead-in{max-width:46rem;margin:0 auto;padding:2.6rem 1.6rem 1.4rem;}
+.eyebrow{font-family:var(--mono-face);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;
+color:var(--pine);font-weight:600;margin:0 0 .8rem;}
+.eyebrow a{color:inherit;text-decoration:none;}
+h1.title{font-family:var(--title-face);font-weight:600;font-size:2.2rem;line-height:1.08;
+letter-spacing:-.01em;margin:0;text-wrap:balance;}
+article{max-width:46rem;margin:0 auto;padding:2rem 1.6rem 5rem;}
+article h1{font-family:var(--title-face);font-weight:600;font-size:1.85rem;margin:2.4rem 0 .8rem;letter-spacing:-.01em;}
+article h2{font-family:var(--title-face);font-weight:600;font-size:1.5rem;margin:2.2rem 0 .7rem;
+letter-spacing:-.005em;padding-bottom:.3rem;border-bottom:1px solid var(--line);}
+article h3{font-family:var(--title-face);font-weight:600;font-size:1.22rem;margin:1.7rem 0 .5rem;}
+article h4{font-family:var(--body-face);font-weight:650;font-size:1rem;margin:1.3rem 0 .4rem;
+text-transform:uppercase;letter-spacing:.04em;color:var(--muted);}
+article p{margin:.85rem 0;}
+article strong{font-weight:650;}
+article a{font-weight:500;}
+article ul,article ol{margin:.7rem 0;padding-left:1.3rem;}
+article li{margin:.4rem 0;}
+article li>ul,article li>ol{margin:.3rem 0;}
+article hr{border:none;border-top:1px solid var(--line);margin:2rem 0;}
+article img{max-width:100%;height:auto;}
+:not(pre)>code{background:var(--code-bg);border:1px solid var(--line);border-radius:5px;
+padding:.06em .38em;font-size:.86em;font-family:var(--mono-face);}
+pre{background:var(--code-bg);border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;
+overflow-x:auto;font-family:var(--mono-face);font-size:.85rem;line-height:1.6;margin:1.1rem 0;}
+pre code{white-space:pre;background:none;border:none;padding:0;font-size:1em;}
+blockquote{margin:1.3rem 0;padding:.8rem 1.15rem;border:1px solid var(--line);border-left:3px solid var(--pine);
+background:var(--surface);border-radius:0 12px 12px 0;color:var(--ink);box-shadow:var(--shadow);}
+blockquote p{margin:.3rem 0;}
+.tw,.table-wrap{overflow-x:auto;}
+table{border-collapse:collapse;width:100%;font-size:.92rem;margin:1.2rem 0;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:.55rem .8rem;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--surface-2);font-weight:650;font-size:.82rem;}
+tbody tr:hover{background:var(--surface-2);}
+footer{border-top:1px solid var(--line);background:var(--surface);}
+.foot-in{max-width:46rem;margin:0 auto;padding:1.6rem 1.6rem 2.4rem;color:var(--muted);font-size:.88rem;
+display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;justify-content:space-between;}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-in">
+    <p class="eyebrow"><a href="index.html">&#8592; Materiais BIIA</a> &nbsp;·&nbsp; Guia de estudo 01</p>
+    <h1 class="title">Preparatório: terminal, YAML e o pipeline</h1>
+  </div>
+</header>
+<article><blockquote>
+<p>Para estagiários de IC que vão <strong>executar o pipeline</strong> do projeto (fase futura).
+Escrito para quem nunca programou, mas <strong>só com o que se usa neste projeto</strong> —
+nada de teoria de programação que você não vai precisar. Depois deste material,
+siga o <a href="guia_onboarding_bolsistas.md">guia de onboarding</a> (o roteiro prático).</p>
+<p><strong>A regra deste material:</strong> você vai <strong>rodar</strong> programas prontos, <strong>editar</strong>
+arquivos de configuração e <strong>ler</strong> resultados. Você NÃO vai escrever programas.
+Então focamos exatamente nessas três coisas.</p>
+</blockquote>
+<hr>
+<h2 id="o-que-voce-realmente-vai-fazer-o-mapa">O que você realmente vai fazer (o mapa)</h2>
+<ol>
+<li><strong>Ativar</strong> o ambiente (uma vez por sessão).</li>
+<li><strong>Editar</strong> um arquivo de configuração para dizer qual família anotar.</li>
+<li><strong>Rodar</strong> os módulos do pipeline (um comando cada).</li>
+<li><strong>Ler</strong> as saídas (tabelas, relatórios, sequências).</li>
+<li><strong>Entender o erro</strong> quando algo falha.</li>
+</ol>
+<p>As cinco seções abaixo são exatamente essas cinco coisas. É só isso.</p>
+<hr>
+<h2 id="1-terminal-so-os-comandos-que-voce-vai-usar">1. Terminal — só os comandos que você vai usar</h2>
+<p>O <strong>terminal</strong> é a janela onde você digita comandos. Você não precisa dominar o
+terminal inteiro — só estes:</p>
+<table>
+<thead>
+<tr>
+<th>Comando</th>
+<th>Para que serve NESTE projeto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cd BIIA-Csordidus</code></td>
+<td>entrar na pasta do projeto (é de lá que tudo roda)</td>
+</tr>
+<tr>
+<td><code>ls</code></td>
+<td>ver o que há na pasta</td>
+</tr>
+<tr>
+<td><code>less results/05_candidates/report.md</code></td>
+<td>ler um relatório (aperte <code>q</code> para sair)</td>
+</tr>
+<tr>
+<td><code>grep -c '^&gt;' data/raw/proteome.faa</code></td>
+<td>contar quantas sequências há num FASTA</td>
+</tr>
+<tr>
+<td><code>head results/05_candidates/candidates.tsv</code></td>
+<td>espiar o começo de uma tabela</td>
+</tr>
+</tbody>
+</table>
+<p>Só isso já cobre 90% do seu dia. O resto você aprende quando precisar.</p>
+<p><strong>Exercício:</strong> com o projeto montado, entre na pasta e conte as sequências do
+proteoma: <code>grep -c '^&gt;' data/raw/proteome.faa</code>.</p>
+<blockquote>
+<p><strong>Dica de erro:</strong> "No such file or directory" = o caminho está errado (confira
+se você está na pasta certa com <code>pwd</code> e se digitou maiúsculas/minúsculas
+corretamente).</p>
+</blockquote>
+<hr>
+<h2 id="2-ativar-o-ambiente-conda">2. Ativar o ambiente (conda)</h2>
+<p>Os programas do projeto (BLAST, HMMER, Python + bibliotecas) vivem dentro de um
+<strong>ambiente</strong> isolado. Antes de trabalhar, você o ativa:</p>
+<pre><code class="language-bash">conda activate biia-csordidus
+</code></pre>
+<p>Se você esquecer disso, os comandos falham com "command not found" — é o erro
+nº 1. Ativar não muda nada nos seus arquivos; só "liga" as ferramentas certas.
+(A instalação do ambiente é feita uma vez; está no guia de onboarding.)</p>
+<hr>
+<h2 id="3-editar-a-configuracao-yaml-o-que-voce-mais-vai-mexer">3. Editar a configuração (YAML) — o que você mais vai mexer</h2>
+<p>Para anotar uma família, você a descreve num arquivo <code>.yaml</code>. <strong>YAML</strong> é só um
+jeito organizado de escrever configurações. É aqui que você trabalha de verdade.</p>
+<p>Exemplo real de uma família no <code>config/targets.yaml</code>:</p>
+<pre><code class="language-yaml">  quimiorrecepcao:                     # categoria
+    families:
+      OBP:                             # nome da família
+        description: &quot;Odorant-binding proteins&quot;
+        pfam_diagnostic: [&quot;PF01395&quot;]   # o domínio que caracteriza a família
+        length_range_aa: [110, 250]    # faixa de tamanho esperada
+</code></pre>
+<p>Para trabalhar sem atrapalhar as colegas, cada estagiário tem um config próprio,
+<code>config/config_MEU.yaml</code>, que aproveita o principal e muda só o essencial:</p>
+<pre><code class="language-yaml">extends: &quot;config.yaml&quot;
+m06_interproscan:
+  email: &quot;seu.email@aluno.ifsp.edu.br&quot;
+paths_override:
+  targets: &quot;${project_root}/config/targets_MEU.yaml&quot;
+</code></pre>
+<p><strong>As 3 regras de YAML que evitam 99% dos erros:</strong>
+1. Indentação é com <strong>espaços</strong>, nunca TAB (um espaço errado quebra o arquivo).
+2. Formato é <code>chave: valor</code>.
+3. Listas usam colchetes <code>["PF01395"]</code> ou hífens.</p>
+<p><strong>Exercício:</strong> abra <code>config/targets.yaml</code> e encontre o <strong>domínio diagnóstico</strong>
+(<code>pfam_diagnostic</code>) e a <strong>faixa de tamanho</strong> da família CATALASE.</p>
+<blockquote>
+<p>Use um editor de <strong>código</strong> (VS Code) para editar YAML — ele mostra a
+indentação e ajuda a não errar. Nunca edite no Word.</p>
+</blockquote>
+<hr>
+<h2 id="4-rodar-o-pipeline-o-padrao-dos-comandos">4. Rodar o pipeline (o padrão dos comandos)</h2>
+<p>Todo módulo se roda <strong>do mesmo jeito</strong>:</p>
+<pre><code class="language-bash">python scripts/05_filter_candidates.py --config config/config_MEU.yaml
+</code></pre>
+<p>Muda só o número/nome do script. <code>--config</code> diz qual configuração usar. Há também
+atalhos no <code>Makefile</code> (ex.: <code>make m05 CONFIG=config/config_MEU.yaml</code>).</p>
+<p>Dois "acessórios" úteis (valem em todos os módulos):
+- <code>--dry-run</code> → mostra o que <strong>seria</strong> feito, sem executar (ótimo para conferir
+  antes de rodar algo demorado).
+- <code>--force</code> → refaz uma saída que já existe (por padrão, o módulo não sobrescreve).</p>
+<p><strong>Exercício:</strong> rode um módulo em modo de teste:
+<code>python scripts/05_filter_candidates.py --config config/config_MEU.yaml --dry-run</code>.</p>
+<hr>
+<h2 id="5-ler-as-saidas">5. Ler as saídas</h2>
+<p>Cada módulo escreve numa pasta em <code>results/</code> (ex.: <code>results/05_candidates/</code>).
+Três tipos de arquivo importam:</p>
+<table>
+<thead>
+<tr>
+<th>Arquivo</th>
+<th>O que é</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>report.md</code></td>
+<td><strong>Relatório humano</strong> — leia primeiro; resume o que aconteceu.</td>
+</tr>
+<tr>
+<td><code>status.json</code></td>
+<td>Resumo para a máquina (o <code>make check</code> usa).</td>
+</tr>
+<tr>
+<td><code>candidates.tsv</code> / <code>family_counts.tsv</code></td>
+<td><strong>Tabelas</strong> de resultado (abrem no Excel/LibreOffice; colunas separadas por tabulação).</td>
+</tr>
+<tr>
+<td><code>candidates.faa</code></td>
+<td>As <strong>sequências</strong> das candidatas (FASTA).</td>
+</tr>
+</tbody>
+</table>
+<p><strong>FASTA e TSV — o que você vai ver:</strong>
+- <strong>FASTA (<code>.faa</code>):</strong> linha com <code>&gt;</code> = cabeçalho; abaixo, a sequência de aminoácidos.
+- <strong>TSV:</strong> tabela em texto; cada coluna separada por um "tab". Abra no
+  Excel/LibreOffice importando como "separado por tabulação".</p>
+<p><strong>Exercício:</strong> depois de rodar, abra <code>results/05_candidates/report.md</code> (com <code>less</code>
+ou num editor) e veja quantas candidatas cada família teve.</p>
+<hr>
+<h2 id="6-quando-da-erro-nao-entre-em-panico">6. Quando dá erro (não entre em pânico)</h2>
+<p>Os módulos avisam claramente. Cada um termina com um <strong>código</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Código</th>
+<th>Significa</th>
+<th>O que costuma ser</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>sucesso</td>
+<td>tudo certo (ou a saída já existia)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>erro de configuração</td>
+<td>algo no <code>.yaml</code> (indentação, chave errada)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>erro de entrada</td>
+<td>arquivo faltando (rodou fora de ordem?)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>erro de ferramenta</td>
+<td>esqueceu de ativar o ambiente? banco faltando?</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Como agir:</strong> leia a <strong>última linha</strong> da mensagem — costuma dizer exatamente o
+que faltou. Anote o que fez antes e <strong>traga para a reunião</strong> se não resolver.
+Erros são normais e quase sempre têm solução simples.</p>
+<hr>
+<h2 id="7-python-o-minimo-voce-roda-nao-escreve">7. Python — o mínimo (você roda, não escreve)</h2>
+<p>Neste projeto você <strong>não escreve</strong> Python — você roda scripts prontos. Então só
+precisa de duas noções:</p>
+<ol>
+<li><strong>Rodar:</strong> <code>python scripts/nome.py --config ...</code> (visto acima).</li>
+<li><strong>Ler um erro (traceback):</strong> quando um script Python falha, ele imprime várias
+   linhas terminando na causa. <strong>Leia a última linha</strong> — é o resumo do problema.</li>
+</ol>
+<p>Só isso é suficiente para a execução. (Se mais adiante você quiser <em>entender</em> o
+que um script faz por dentro, o código do projeto foi escrito para ser legível —
+mas isso é opcional e vem depois.)</p>
+<hr>
+<h2 id="roteiro-de-estudo-enxuto-e-direcionado">Roteiro de estudo (enxuto e direcionado)</h2>
+<p>Ritmo tranquilo, focado no que acima. Não precisa de curso longo.</p>
+<table>
+<thead>
+<tr>
+<th>Etapa</th>
+<th>Foco</th>
+<th>Recurso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Os 5 comandos de terminal da Seção 1</td>
+<td>pratique no seu computador</td>
+</tr>
+<tr>
+<td>2</td>
+<td>YAML: ler e editar uma família (Seção 3)</td>
+<td><code>config/targets.yaml</code> do projeto</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Rodar um módulo e ler o <code>report.md</code> (Seções 4–5)</td>
+<td>o próprio pipeline</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Ler um erro e um código de saída (Seção 6)</td>
+<td>provoque um erro de propósito</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Metas (amarradas ao projeto):</strong>
+- [ ] Entrar na pasta do projeto e contar as sequências do proteoma.
+- [ ] Ativar o ambiente <code>biia-csordidus</code>.
+- [ ] Achar o domínio diagnóstico de uma família no <code>targets.yaml</code>.
+- [ ] Rodar um módulo com <code>--dry-run</code> e depois de verdade.
+- [ ] Abrir o <code>report.md</code> e interpretar as contagens.
+- [ ] Ler uma mensagem de erro e dizer a causa provável.</p>
+<blockquote>
+<p>Fora desta lista, <strong>não precisa estudar mais nada agora</strong> — o objetivo é você
+operar o pipeline com segurança e focar no que importa: a <strong>interpretação
+biológica</strong>. O que faltar, a gente ensina no caminho.</p>
+</blockquote></article>
+<footer><div class="foot-in"><span>BIIA · Laboratório de Bioinformática e Inteligência Agrícola</span><span>IFSP · Campus Miracatu</span></div></footer>
+</body>
+</html>

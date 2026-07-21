@@ -32,6 +32,21 @@ arquivos de texto simples (YAML) em `content/`. Cada um controla uma aba.
 - Uma linha começada com `#` é **comentário** (o site ignora).
 - Datas no formato `AAAA-MM-DD` (ex.: `2026-07-27`).
 
+## Guias gerados a partir de markdown (`materials/`)
+
+Os guias 01–04 são **gerados de arquivos markdown** em `materials/` (fáceis de
+editar). No `guias.yaml`, esses guias têm um campo `fonte` (ex.:
+`fonte: preparatorio.md`). Para mudar o texto de um desses guias, edite o
+markdown correspondente em `materials/` e me avise — eu rodo:
+
+```
+python render_material.py   # materials/*.md -> guia-*.html
+python build.py             # atualiza o índice
+```
+
+O Guia 05 (Rastreabilidade) **não** tem `fonte`: é uma página feita à mão, com
+diagramas; edita-se pelo markdown-fonte no repositório do projeto.
+
 ## E o texto DENTRO de um guia de estudo?
 
 Atenção: os arquivos `content/*.yaml` controlam **o site** (abas, cards, avisos).

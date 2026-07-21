@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guia 02 — Onboarding dos estagiários · BIIA</title>
+<meta name="color-scheme" content="light dark">
+<style>
+:root{--paper:#f5f7f3;--surface:#fff;--surface-2:#eef2ec;--ink:#1a231e;--muted:#586a60;
+--faint:#7d8c82;--line:#d8e0d6;--pine:#1f6f5c;--pine-strong:#164b3f;--pine-soft:#e4efe9;
+--ochre:#9a6614;--ochre-bg:#f6ecd8;--code-bg:#f0f3ee;
+--title-face:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+--body-face:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+--mono-face:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+--shadow:0 1px 2px rgba(20,40,30,.05),0 6px 22px -12px rgba(20,50,38,.18);}
+@media (prefers-color-scheme:dark){:root{--paper:#0f1512;--surface:#161d19;--surface-2:#1a231e;
+--ink:#e7ece7;--muted:#9ca99f;--faint:#7d8c82;--line:#2a352f;--pine:#5cc2a4;--pine-strong:#8bd6c1;
+--pine-soft:#16241f;--ochre:#d9a94a;--ochre-bg:#211a0f;--code-bg:#121915;
+--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}}
+:root[data-theme="light"]{--paper:#f5f7f3;--surface:#fff;--surface-2:#eef2ec;--ink:#1a231e;--muted:#586a60;--faint:#7d8c82;--line:#d8e0d6;--pine:#1f6f5c;--pine-strong:#164b3f;--pine-soft:#e4efe9;--ochre:#9a6614;--ochre-bg:#f6ecd8;--code-bg:#f0f3ee;}
+:root[data-theme="dark"]{--paper:#0f1512;--surface:#161d19;--surface-2:#1a231e;--ink:#e7ece7;--muted:#9ca99f;--faint:#7d8c82;--line:#2a352f;--pine:#5cc2a4;--pine-strong:#8bd6c1;--pine-soft:#16241f;--ochre:#d9a94a;--ochre-bg:#211a0f;--code-bg:#121915;}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body-face);
+font-size:1.0625rem;line-height:1.68;-webkit-font-smoothing:antialiased;}
+a{color:var(--pine);text-underline-offset:2px;}a:hover{color:var(--pine-strong);}
+:focus-visible{outline:2px solid var(--pine);outline-offset:2px;border-radius:3px;}
+.masthead{border-bottom:1px solid var(--line);background:
+radial-gradient(120% 100% at 88% -10%,var(--pine-soft),transparent 60%),var(--surface);}
+.masthead-in{max-width:46rem;margin:0 auto;padding:2.6rem 1.6rem 1.4rem;}
+.eyebrow{font-family:var(--mono-face);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;
+color:var(--pine);font-weight:600;margin:0 0 .8rem;}
+.eyebrow a{color:inherit;text-decoration:none;}
+h1.title{font-family:var(--title-face);font-weight:600;font-size:2.2rem;line-height:1.08;
+letter-spacing:-.01em;margin:0;text-wrap:balance;}
+article{max-width:46rem;margin:0 auto;padding:2rem 1.6rem 5rem;}
+article h1{font-family:var(--title-face);font-weight:600;font-size:1.85rem;margin:2.4rem 0 .8rem;letter-spacing:-.01em;}
+article h2{font-family:var(--title-face);font-weight:600;font-size:1.5rem;margin:2.2rem 0 .7rem;
+letter-spacing:-.005em;padding-bottom:.3rem;border-bottom:1px solid var(--line);}
+article h3{font-family:var(--title-face);font-weight:600;font-size:1.22rem;margin:1.7rem 0 .5rem;}
+article h4{font-family:var(--body-face);font-weight:650;font-size:1rem;margin:1.3rem 0 .4rem;
+text-transform:uppercase;letter-spacing:.04em;color:var(--muted);}
+article p{margin:.85rem 0;}
+article strong{font-weight:650;}
+article a{font-weight:500;}
+article ul,article ol{margin:.7rem 0;padding-left:1.3rem;}
+article li{margin:.4rem 0;}
+article li>ul,article li>ol{margin:.3rem 0;}
+article hr{border:none;border-top:1px solid var(--line);margin:2rem 0;}
+article img{max-width:100%;height:auto;}
+:not(pre)>code{background:var(--code-bg);border:1px solid var(--line);border-radius:5px;
+padding:.06em .38em;font-size:.86em;font-family:var(--mono-face);}
+pre{background:var(--code-bg);border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;
+overflow-x:auto;font-family:var(--mono-face);font-size:.85rem;line-height:1.6;margin:1.1rem 0;}
+pre code{white-space:pre;background:none;border:none;padding:0;font-size:1em;}
+blockquote{margin:1.3rem 0;padding:.8rem 1.15rem;border:1px solid var(--line);border-left:3px solid var(--pine);
+background:var(--surface);border-radius:0 12px 12px 0;color:var(--ink);box-shadow:var(--shadow);}
+blockquote p{margin:.3rem 0;}
+.tw,.table-wrap{overflow-x:auto;}
+table{border-collapse:collapse;width:100%;font-size:.92rem;margin:1.2rem 0;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:.55rem .8rem;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--surface-2);font-weight:650;font-size:.82rem;}
+tbody tr:hover{background:var(--surface-2);}
+footer{border-top:1px solid var(--line);background:var(--surface);}
+.foot-in{max-width:46rem;margin:0 auto;padding:1.6rem 1.6rem 2.4rem;color:var(--muted);font-size:.88rem;
+display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;justify-content:space-between;}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-in">
+    <p class="eyebrow"><a href="index.html">&#8592; Materiais BIIA</a> &nbsp;·&nbsp; Guia de estudo 02</p>
+    <h1 class="title">Onboarding dos estagiários</h1>
+  </div>
+</header>
+<article><blockquote>
+<p>Guia de estudo + roteiro de trabalho para os estagiários que farão a anotação
+de famílias gênicas em <em>Cosmopolites sordidus</em> (bicudo-da-bananeira).
+Cada estagiário fica responsável por <strong>uma família/categoria</strong>.</p>
+<p>Como usar: leia a Parte A (o que você vai fazer), faça a instalação da Parte B,
+estude os módulos da Parte C <strong>fazendo os exercícios</strong>, e só então siga o
+roteiro de execução da Parte E. As respostas dos exercícios técnicos estão no
+fim (Apêndice). As questões de biologia são para <strong>discutir com a orientadora</strong>.</p>
+</blockquote>
+<hr>
+<h2 id="parte-a-o-que-voce-vai-fazer-visao-geral">PARTE A — O que você vai fazer (visão geral)</h2>
+<p>O projeto varre o proteoma inteiro do inseto procurando <strong>domínios proteicos</strong>
+(Pfam) e, a partir disso, seleciona e anota as proteínas de famílias de
+interesse (quimiorrecepção, detoxificação, metabolismo, sobrevivência).</p>
+<p>O trabalho está dividido em duas fases:</p>
+<ul>
+<li><strong>Fase BASE (já feita para você):</strong> validação, limpeza e a busca pesada de
+  domínios (módulos M01→M04). O resultado já vem <strong>pronto no pendrive</strong>. Você
+  <strong>não</strong> precisa refazer essa parte demorada.</li>
+<li><strong>Fase da SUA FAMÍLIA (sua responsabilidade):</strong> a partir do módulo <strong>M05</strong>,
+  você seleciona as candidatas da sua família, roda as evidências (InterProScan
+  e BLAST), integra tudo em uma tabela de anotação e gera as estatísticas
+  (M05 → M13). Depois <strong>cura</strong> os resultados (olhar caso a caso).</li>
+</ul>
+<blockquote>
+<p><strong>Por que isso funciona:</strong> a busca de domínios (M03) é <strong>agnóstica de família</strong>
+— ela vale para qualquer família. Por isso é feita uma vez só e reaproveitada.</p>
+</blockquote>
+<hr>
+<h2 id="parte-b-antes-de-comecar-instalacao-uma-vez-por-computador">PARTE B — Antes de começar (instalação, uma vez por computador)</h2>
+<p>O pendrive traz os <strong>arquivos</strong> do projeto, mas <strong>não</strong> traz o ambiente de
+programas (BLAST, HMMER, Python e bibliotecas). Isso você instala no seu
+computador <strong>uma única vez</strong>.</p>
+<ol>
+<li>Copie a pasta <code>BIIA-Csordidus/</code> do pendrive para o seu computador (ex.: para
+   a Área de Trabalho). <strong>Trabalhe na cópia do seu computador, nunca direto no
+   pendrive.</strong></li>
+<li>Instale o <strong>Miniforge</strong> (gerenciador <code>conda</code>).
+   - Mac (com Homebrew): <code>brew install --cask miniforge</code></li>
+<li>Crie o ambiente do projeto a partir do arquivo <code>environment.yml</code>:
+   - <strong>Mac com chip Apple (M1/M2/M3):</strong>
+     <code>bash
+     CONDA_SUBDIR=osx-64 mamba env create -f environment.yml
+     conda activate biia-csordidus
+     conda config --env --set subdir osx-64</code>
+   - <strong>Outros:</strong> <code>mamba env create -f environment.yml</code> e <code>conda activate biia-csordidus</code></li>
+<li>Toda vez que for trabalhar, ative o ambiente antes:
+   <code>bash
+   conda activate biia-csordidus</code></li>
+</ol>
+<blockquote>
+<p>⚠️ Se aparecer o erro <em>"Could not solve for environment specs: blast/hmmer
+does not exist"</em> no Mac, é porque faltou o <code>CONDA_SUBDIR=osx-64</code> do passo 3.</p>
+</blockquote>
+<hr>
+<h2 id="parte-c-mapa-das-suas-pastas">PARTE C — Mapa das suas pastas</h2>
+<p>Dentro de <code>BIIA-Csordidus/</code> (o que você recebeu):</p>
+<pre><code>BIIA-Csordidus/
+├── biia/              # código do pipeline (você LÊ, raramente edita)
+├── scripts/           # os módulos M01..M13 que você executa
+├── config/
+│   ├── config.yaml        # configuração BASE — NÃO edite
+│   ├── config_MEU.yaml    # SUA configuração (e-mail + sua família) ← VOCÊ EDITA
+│   ├── targets.yaml       # catálogo de todas as famílias (referência)
+│   └── targets_MEU.yaml   # SÓ a sua família ← VOCÊ EDITA
+├── data/
+│   ├── raw/proteome.faa           # proteoma de entrada (já incluído)
+│   ├── processed/                 # JÁ PRONTO: proteome_clean.faa, id_map.tsv
+│   └── reference/
+│       └── blast/swissprot/       # banco BLAST Swiss-Prot (já incluído)
+├── results/
+│   ├── 03_hmmer/hmmscan.domtblout        # ← MESTRE, JÁ PRONTO. NÃO APAGUE!
+│   ├── 04_hmmer_parsed/hmmer_hits.tsv    # ← JÁ PRONTO. NÃO APAGUE!
+│   └── (05.. até 13 serão criados por VOCÊ quando rodar)
+├── environment.yml
+└── Makefile
+</code></pre>
+<p><strong>Regra de ouro:</strong> nunca apague <code>data/processed/</code> nem <code>results/03_hmmer/</code> e
+<code>results/04_hmmer_parsed/</code>. São o trabalho pesado já pronto; tudo que você faz
+parte deles.</p>
+<hr>
+<h2 id="parte-d-modulos-de-estudo-com-exercicios">PARTE D — Módulos de estudo (com exercícios)</h2>
+<p>Estude na ordem. Faça os exercícios no seu computador, com o ambiente ativado.</p>
+<h3 id="modulo-1-linha-de-comando-terminal-bash">Módulo 1 — Linha de comando (terminal / Bash)</h3>
+<p><strong>Você precisa saber:</strong> navegar entre pastas, olhar arquivos sem abrir tudo,
+rodar comandos e ler mensagens de erro.</p>
+<p>Comandos-chave: <code>cd</code>, <code>ls</code>, <code>pwd</code>, <code>head</code>, <code>tail</code>, <code>less</code>, <code>wc -l</code>, <code>grep</code>, <code>cut</code>.</p>
+<p><strong>Exercícios:</strong>
+1. Abra o terminal, entre na pasta do projeto (<code>cd .../BIIA-Csordidus</code>) e
+   confirme onde está com <code>pwd</code>.
+2. Liste o conteúdo de <code>data/raw/</code> com <code>ls -la</code>.
+3. Quantas sequências há no proteoma? (Dica: cada sequência começa com <code>&gt;</code>.)
+   <code>grep -c '^&gt;' data/raw/proteome.faa</code>
+4. Mostre os 3 primeiros cabeçalhos: <code>grep '^&gt;' data/raw/proteome.faa | head -3</code>
+5. Veja as primeiras 5 linhas de <code>results/04_hmmer_parsed/hmmer_hits.tsv</code> com
+   <code>head -5</code>. Quantas colunas parecem ter?</p>
+<h3 id="modulo-2-ambiente-conda">Módulo 2 — Ambiente conda</h3>
+<p><strong>Você precisa saber:</strong> que os programas do pipeline só existem <em>dentro</em> do
+ambiente, e como ativá-lo.</p>
+<p><strong>Exercícios:</strong>
+1. Ative o ambiente: <code>conda activate biia-csordidus</code>.
+2. Confirme que as ferramentas existem:
+   <code>which blastp hmmsearch makeblastdb cd-hit</code>
+3. Veja a versão do BLAST: <code>makeblastdb -version</code>
+4. <strong>Teste do erro:</strong> abra um terminal <strong>sem</strong> ativar o ambiente e rode
+   <code>blastp -version</code>. O que acontece? (Anote a mensagem — é o erro típico de
+   "esqueci de ativar o ambiente".)</p>
+<h3 id="modulo-3-yaml-e-o-arquivo-da-sua-familia-targets">Módulo 3 — YAML e o arquivo da sua família (<code>targets</code>)</h3>
+<p><strong>Você precisa saber:</strong> editar arquivos YAML (a configuração das famílias) sem
+quebrar a indentação. Em YAML, <strong>indentação é com espaços, nunca TAB</strong>.</p>
+<p>Bloco de uma família (exemplo real de <code>targets.yaml</code>):</p>
+<pre><code class="language-yaml">categories:
+  quimiorrecepcao:
+    families:
+      OBP:
+        description: &quot;Odorant-binding proteins&quot;
+        pfam_diagnostic: [&quot;PF01395&quot;]   # domínio que caracteriza a família
+        length_range_aa: [110, 250]    # faixa de tamanho esperada
+</code></pre>
+<p><strong>Exercícios:</strong>
+1. Abra <code>config/targets_MEU.yaml</code> e identifique: qual é o <strong>domínio diagnóstico
+   (PFxxxxx)</strong> da sua família e qual a <strong>faixa de tamanho</strong>?
+2. Faça uma cópia de teste (<code>cp config/targets_MEU.yaml /tmp/teste.yaml</code>),
+   troque um espaço de indentação por um TAB e tente carregar — observe que
+   quebra. Depois desfaça. (Objetivo: sentir como YAML é sensível.)
+3. Pesquise, na base Pfam (site InterPro/Pfam), o que é o domínio diagnóstico
+   da sua família. Anote em uma frase o que ele representa biologicamente.</p>
+<h3 id="modulo-4-ler-tabelas-de-resultado-tsv">Módulo 4 — Ler tabelas de resultado (TSV)</h3>
+<p><strong>Você precisa saber:</strong> abrir e interpretar as tabelas <code>.tsv</code> que os módulos
+geram — é o coração da <strong>curadoria</strong>.</p>
+<p>Você pode abrir no <strong>Excel/LibreOffice</strong> (importando como "separado por
+tabulação") ou com <strong>Python/pandas</strong>:</p>
+<pre><code class="language-python">import pandas as pd
+df = pd.read_csv(&quot;results/05_candidates/candidates.tsv&quot;, sep=&quot;\t&quot;)
+print(df.shape)      # (linhas, colunas)
+print(df.head())
+</code></pre>
+<p><strong>Exercícios (faça depois de rodar sua fase — Parte E):</strong>
+1. Abra <code>results/05_candidates/candidates.tsv</code>. Quantas candidatas a sua família
+   teve? (compare com <code>family_counts.tsv</code>).
+2. Abra <code>results/10_integration/annotation_table.tsv</code>. Quantas proteínas ficaram
+   em <strong>nível de evidência A</strong>, quantas em <strong>B</strong> e quantas em <strong>C</strong>?
+3. Ordene por identidade (<code>pident</code>) do melhor hit BLAST. Qual candidata teve o
+   hit mais forte? E a mais fraca?</p>
+<h3 id="modulo-5-python-leitura-leve-opcional-mas-recomendado">Módulo 5 — Python (leitura leve — opcional, mas recomendado)</h3>
+<p><strong>Você precisa saber (o básico):</strong> ler uma mensagem de erro (<em>traceback</em>) e
+entender o que um script faz lendo o código. O código foi escrito para ser
+legível por estagiário.</p>
+<p><strong>Exercícios:</strong>
+1. Abra <code>biia/fasta.py</code> e leia a função <code>iter_fasta</code>. Explique, em uma frase,
+   por que ela lê "uma sequência por vez" em vez de tudo de uma vez.
+2. Provoque um erro de propósito: rode um módulo apontando para um config que
+   não existe (<code>--config config/naoexiste.yaml</code>). Leia o <em>traceback</em>: qual é a
+   última linha (a mensagem do erro)?</p>
+<hr>
+<h2 id="parte-d2-alfabetizacao-em-ferramentas-e-formatos">PARTE D2 — Alfabetização em ferramentas e formatos</h2>
+<p>Antes de curar, entenda o que cada número significa.</p>
+<h3 id="fasta">FASTA</h3>
+<p>Arquivo de sequências. Cada registro tem <strong>cabeçalho</strong> (linha com <code>&gt;</code>) e a
+<strong>sequência</strong> (aminoácidos, no nosso caso — proteínas).</p>
+<p><em>Exercício:</em> pegue um cabeçalho do <code>candidates.faa</code> e diga qual é o <strong>ID</strong> da
+proteína.</p>
+<h3 id="hmmer-pfam-dominios">HMMER / Pfam (domínios)</h3>
+<p>Um <strong>domínio</strong> é uma região funcional/estrutural conservada da proteína. O Pfam
+é um catálogo de domínios, cada um com um <strong>perfil HMM</strong>. O <code>--cut_ga</code> usa um
+limiar curado por família (mais confiável que E-value fixo). A tabela
+<code>hmmer_hits.tsv</code> lista <strong>domínios encontrados</strong>, não famílias prontas.</p>
+<p><em>Exercício:</em> em <code>results/04_hmmer_parsed/hmmer_hits.tsv</code>, ache uma linha com o
+domínio diagnóstico da sua família (o <code>PFxxxxx</code> do Módulo 3). Qual proteína o
+contém?</p>
+<h3 id="blast-blastp">BLAST (blastp)</h3>
+<p>Compara suas candidatas com proteínas já conhecidas (Swiss-Prot). Colunas que
+importam (definidas no config):
+- <code>pident</code> — <strong>identidade %</strong> com o hit
+- <code>qcov</code> (derivada de <code>length</code>/<code>qlen</code>) — <strong>cobertura</strong>: quanto da sua proteína foi alinhada
+- <code>evalue</code> — significância (quanto <strong>menor</strong>, melhor)
+- <code>bitscore</code> — pontuação (quanto <strong>maior</strong>, melhor)
+- <code>stitle</code> — descrição do hit (contém o organismo, ex.: <code>OS=...</code>)</p>
+<p>Limiares do projeto (M09): <code>pident ≥ 30%</code>, <code>qcov ≥ 50%</code>, <code>evalue ≤ 1e-5</code>.</p>
+<p><em>Exercício:</em> um hit com <code>pident = 32%</code> e <code>qcov = 55%</code> passa no filtro mínimo?
+E ele seria "forte" (nível A exige <code>pident ≥ 50%</code> e <code>qcov ≥ 70%</code>)? Justifique.</p>
+<h3 id="interproscan">InterProScan</h3>
+<p>Roda <strong>online</strong> (serviço do EBI) e agrega domínios de várias fontes + <strong>termos
+GO</strong> (função) + vias. Precisa de internet e do seu <strong>e-mail</strong> no config (é só
+identificação — <strong>não precisa criar conta</strong>).</p>
+<p><em>Exercício:</em> explique por que "só ter um termo GO em comum" é uma evidência
+<strong>fraca</strong> (dica: GOs muito genéricos aparecem em muitas proteínas).</p>
+<hr>
+<h2 id="parte-d3-biologia-molecular-revisar-com-a-orientadora">PARTE D3 — Biologia molecular (revisar com a orientadora)</h2>
+<p>Estas questões são para <strong>discutir na revisão</strong> — são onde a interpretação
+biológica decide a curadoria.</p>
+<ol>
+<li><strong>Domínio ≠ proteína ≠ família.</strong> Por que ter o domínio diagnóstico não basta
+   para afirmar que a proteína é da família? (Pense em domínio de apoio e
+   tamanho plausível.)</li>
+<li><strong>Ortólogo × parálogo.</strong> Qual a diferença? Por que famílias de praga
+   (quimiorrecepção, detoxificação) costumam estar <strong>expandidas</strong> (muitos
+   parálogos)? — isto é o que o M12 mede.</li>
+<li><strong>Conservação e os 3 regimes:</strong> por que uma <strong>OBP</strong> (curta, divergente) tende
+   a dar <strong>falso-negativo</strong>, uma <strong>catalase</strong> é fácil (controle positivo), e um
+   domínio como <strong>GH13 (amilase)</strong> tende a dar <strong>falso-positivo</strong>?</li>
+<li><strong>Inferência de função por homologia:</strong> quais os riscos de "transferir"
+   a anotação de um hit? Por que existem os <strong>níveis A/B/C</strong> e por que o nível A
+   exige <strong>concordância de InterPro</strong>, não só um BLAST forte?</li>
+<li><strong>Contexto taxonômico:</strong> por que um hit em <strong>Coleoptera</strong> vale mais? (conceito
+   de <code>is_coleoptera_hit</code>).</li>
+<li><strong>A biologia da SUA família:</strong> qual a função dela no inseto e por que é
+   relevante para o controle da praga <em>Cosmopolites sordidus</em>?</li>
+<li><strong>GO e InterPro:</strong> o que é um termo GO (função molecular, processo biológico,
+   componente celular) e uma entrada InterPro?</li>
+</ol>
+<hr>
+<h2 id="parte-e-roteiro-de-execucao-a-sua-fase-m05-m13">PARTE E — Roteiro de execução (a sua fase: M05 → M13)</h2>
+<p>Com o ambiente ativado e dentro da pasta do projeto. Use <strong>sempre</strong> o seu
+config (<code>config_MEU.yaml</code>).</p>
+<pre><code class="language-bash">conda activate biia-csordidus
+
+# M05 — seleciona as candidatas da sua família
+python scripts/05_filter_candidates.py --config config/config_MEU.yaml
+
+# M06 — InterProScan (online; precisa de internet e do seu e-mail no config)
+python scripts/06_run_interproscan.py --config config/config_MEU.yaml
+
+# M08 / M09 — BLAST contra Swiss-Prot e leitura dos resultados
+python scripts/08_run_blast.py  --config config/config_MEU.yaml
+python scripts/09_parse_blast.py --config config/config_MEU.yaml
+
+# M10 — integra evidências e atribui nível A/B/C
+python scripts/10_integrate_evidence.py --config config/config_MEU.yaml
+
+# M12 — parálogos / expansão da família (CD-HIT)
+python scripts/12_characterize_clusters.py --config config/config_MEU.yaml
+
+# M13 — estatísticas e figuras finais
+python scripts/13_statistics.py --config config/config_MEU.yaml
+</code></pre>
+<p>Depois de cada passo, <strong>olhe o <code>report.md</code></strong> gerado na pasta de resultados
+daquele módulo — ele resume o que aconteceu.</p>
+<hr>
+<h2 id="parte-f-checklist-antes-de-entregar-a-orientadora">PARTE F — Checklist antes de entregar à orientadora</h2>
+<ul>
+<li>[ ] Rodei M05 → M13 sem erros (cada <code>status.json</code> = ok).</li>
+<li>[ ] Conferi <code>results/05_candidates/family_counts.tsv</code> (nº de candidatas).</li>
+<li>[ ] Curadoria: revisei a <code>annotation_table.tsv</code>, caso a caso, olhando nível
+      de evidência, <code>pident</code>/<code>qcov</code> e a descrição do hit.</li>
+<li>[ ] Anotei as candidatas duvidosas para discutir na revisão.</li>
+<li>[ ] Guardei as figuras do M13.</li>
+<li>[ ] <strong>Não</strong> apaguei <code>data/processed/</code> nem <code>results/03_hmmer</code> / <code>04_hmmer_parsed</code>.</li>
+</ul>
+<hr>
+<h2 id="apendice-respostas-dos-exercicios-tecnicos">Apêndice — Respostas dos exercícios técnicos</h2>
+<ul>
+<li><strong>M1.3:</strong> <code>grep -c '^&gt;' data/raw/proteome.faa</code> → deve retornar 193810.</li>
+<li><strong>M2.4:</strong> sem o ambiente ativado, o sistema diz que <code>blastp</code> não foi
+  encontrado (<em>command not found</em>) — porque o programa vive dentro do env.</li>
+<li><strong>M4.1/4.2:</strong> os números saem de <code>family_counts.tsv</code> e
+  <code>evidence_level_counts.tsv</code> (colunas A/B/C).</li>
+<li><strong>Ferramentas/BLAST:</strong> <code>pident=32%</code>, <code>qcov=55%</code> → <strong>passa</strong> no filtro mínimo
+  (≥30% e ≥50%), mas <strong>não</strong> é "forte" (nível A pede ≥50% e ≥70%). Provavelmente
+  seria nível B ou C.</li>
+<li><strong>InterProScan:</strong> GOs genéricos (ex.: "binding", "catalytic activity")
+  aparecem em milhares de proteínas; concordância só faz sentido com termos/
+  domínios específicos — por isso o nível A exige concordância de <strong>InterPro</strong>.</li>
+</ul>
+<blockquote>
+<p>Dúvidas? Anote e leve para a revisão com a orientadora. É normal travar no
+começo — o objetivo desta fase é você ganhar autonomia no operacional para
+focar na <strong>interpretação biológica</strong>, que é o que realmente importa.</p>
+</blockquote></article>
+<footer><div class="foot-in"><span>BIIA · Laboratório de Bioinformática e Inteligência Agrícola</span><span>IFSP · Campus Miracatu</span></div></footer>
+</body>
+</html>

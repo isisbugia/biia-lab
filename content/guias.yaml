@@ -2,14 +2,48 @@
 # GUIAS DE ESTUDO  —  cada item vira um card numerado na aba "Guias de estudo"
 # ==========================================================================
 # Campos de cada guia:
-#   numero    -> o número que aparece junto do título (ex.: "01", "02")
+#   numero    -> número que aparece junto do título (ex.: "01", "02")
 #   titulo    -> título do guia
 #   descricao -> resumo curto (aparece no card)
-#   link      -> arquivo do guia (ex.: "guia-rastreabilidade-qc.html")
-# A ordem da lista é a ordem em que aparecem.
+#   link      -> arquivo HTML do guia (ex.: "guia-preparatorio.html")
+#   fonte     -> (opcional) markdown em materials/ que gera o HTML pelo
+#                render_material.py. Guias sem `fonte` têm HTML próprio (feito à mão).
+# A ordem da lista é a ordem em que aparecem (do básico ao avançado).
 
 guias:
   - numero: "01"
+    titulo: "Preparatório: terminal, YAML e o pipeline"
+    descricao: >
+      Do zero: o essencial de terminal (bash), YAML e como rodar o pipeline —
+      o que estudar antes de tudo.
+    link: "guia-preparatorio.html"
+    fonte: "preparatorio.md"
+
+  - numero: "02"
+    titulo: "Onboarding dos estagiários"
+    descricao: >
+      Guia de estudo + roteiro de execução, com exercícios e o mapa das pastas
+      do projeto.
+    link: "guia-onboarding.html"
+    fonte: "onboarding.md"
+
+  - numero: "03"
+    titulo: "Protocolo de curadoria"
+    descricao: >
+      Como fazer a curadoria manual das candidatas: critérios de confirmação,
+      incerteza e rejeição (níveis A/B/C).
+    link: "guia-protocolo-curadoria.html"
+    fonte: "protocolo-curadoria.md"
+
+  - numero: "04"
+    titulo: "Exemplo de curadoria"
+    descricao: >
+      Quatro casos reais curados como demonstração: confirmação fácil,
+      descoberta forte, incerteza por divergência e baixa confiança.
+    link: "guia-exemplo-curadoria.html"
+    fonte: "exemplo-curadoria.md"
+
+  - numero: "05"
     titulo: "Rastreabilidade & Controle de Qualidade"
     descricao: >
       Entenda a lógica dos códigos que utilizamos em nosso pipeline:
@@ -17,5 +51,4 @@ guias:
       delimitações e fluxo de tarefas.
     link: "guia-rastreabilidade-qc.html"
 
-  # Para adicionar o próximo guia, copie o bloco acima, troque o numero para "02"
-  # e ajuste titulo/descricao/link.
+  # Para adicionar o próximo guia, copie um bloco acima, ajuste o numero e os campos.

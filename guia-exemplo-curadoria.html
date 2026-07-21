@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guia 04 — Exemplo de curadoria · BIIA</title>
+<meta name="color-scheme" content="light dark">
+<style>
+:root{--paper:#f5f7f3;--surface:#fff;--surface-2:#eef2ec;--ink:#1a231e;--muted:#586a60;
+--faint:#7d8c82;--line:#d8e0d6;--pine:#1f6f5c;--pine-strong:#164b3f;--pine-soft:#e4efe9;
+--ochre:#9a6614;--ochre-bg:#f6ecd8;--code-bg:#f0f3ee;
+--title-face:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+--body-face:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+--mono-face:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+--shadow:0 1px 2px rgba(20,40,30,.05),0 6px 22px -12px rgba(20,50,38,.18);}
+@media (prefers-color-scheme:dark){:root{--paper:#0f1512;--surface:#161d19;--surface-2:#1a231e;
+--ink:#e7ece7;--muted:#9ca99f;--faint:#7d8c82;--line:#2a352f;--pine:#5cc2a4;--pine-strong:#8bd6c1;
+--pine-soft:#16241f;--ochre:#d9a94a;--ochre-bg:#211a0f;--code-bg:#121915;
+--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);}}
+:root[data-theme="light"]{--paper:#f5f7f3;--surface:#fff;--surface-2:#eef2ec;--ink:#1a231e;--muted:#586a60;--faint:#7d8c82;--line:#d8e0d6;--pine:#1f6f5c;--pine-strong:#164b3f;--pine-soft:#e4efe9;--ochre:#9a6614;--ochre-bg:#f6ecd8;--code-bg:#f0f3ee;}
+:root[data-theme="dark"]{--paper:#0f1512;--surface:#161d19;--surface-2:#1a231e;--ink:#e7ece7;--muted:#9ca99f;--faint:#7d8c82;--line:#2a352f;--pine:#5cc2a4;--pine-strong:#8bd6c1;--pine-soft:#16241f;--ochre:#d9a94a;--ochre-bg:#211a0f;--code-bg:#121915;}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body-face);
+font-size:1.0625rem;line-height:1.68;-webkit-font-smoothing:antialiased;}
+a{color:var(--pine);text-underline-offset:2px;}a:hover{color:var(--pine-strong);}
+:focus-visible{outline:2px solid var(--pine);outline-offset:2px;border-radius:3px;}
+.masthead{border-bottom:1px solid var(--line);background:
+radial-gradient(120% 100% at 88% -10%,var(--pine-soft),transparent 60%),var(--surface);}
+.masthead-in{max-width:46rem;margin:0 auto;padding:2.6rem 1.6rem 1.4rem;}
+.eyebrow{font-family:var(--mono-face);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;
+color:var(--pine);font-weight:600;margin:0 0 .8rem;}
+.eyebrow a{color:inherit;text-decoration:none;}
+h1.title{font-family:var(--title-face);font-weight:600;font-size:2.2rem;line-height:1.08;
+letter-spacing:-.01em;margin:0;text-wrap:balance;}
+article{max-width:46rem;margin:0 auto;padding:2rem 1.6rem 5rem;}
+article h1{font-family:var(--title-face);font-weight:600;font-size:1.85rem;margin:2.4rem 0 .8rem;letter-spacing:-.01em;}
+article h2{font-family:var(--title-face);font-weight:600;font-size:1.5rem;margin:2.2rem 0 .7rem;
+letter-spacing:-.005em;padding-bottom:.3rem;border-bottom:1px solid var(--line);}
+article h3{font-family:var(--title-face);font-weight:600;font-size:1.22rem;margin:1.7rem 0 .5rem;}
+article h4{font-family:var(--body-face);font-weight:650;font-size:1rem;margin:1.3rem 0 .4rem;
+text-transform:uppercase;letter-spacing:.04em;color:var(--muted);}
+article p{margin:.85rem 0;}
+article strong{font-weight:650;}
+article a{font-weight:500;}
+article ul,article ol{margin:.7rem 0;padding-left:1.3rem;}
+article li{margin:.4rem 0;}
+article li>ul,article li>ol{margin:.3rem 0;}
+article hr{border:none;border-top:1px solid var(--line);margin:2rem 0;}
+article img{max-width:100%;height:auto;}
+:not(pre)>code{background:var(--code-bg);border:1px solid var(--line);border-radius:5px;
+padding:.06em .38em;font-size:.86em;font-family:var(--mono-face);}
+pre{background:var(--code-bg);border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;
+overflow-x:auto;font-family:var(--mono-face);font-size:.85rem;line-height:1.6;margin:1.1rem 0;}
+pre code{white-space:pre;background:none;border:none;padding:0;font-size:1em;}
+blockquote{margin:1.3rem 0;padding:.8rem 1.15rem;border:1px solid var(--line);border-left:3px solid var(--pine);
+background:var(--surface);border-radius:0 12px 12px 0;color:var(--ink);box-shadow:var(--shadow);}
+blockquote p{margin:.3rem 0;}
+.tw,.table-wrap{overflow-x:auto;}
+table{border-collapse:collapse;width:100%;font-size:.92rem;margin:1.2rem 0;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:.55rem .8rem;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--surface-2);font-weight:650;font-size:.82rem;}
+tbody tr:hover{background:var(--surface-2);}
+footer{border-top:1px solid var(--line);background:var(--surface);}
+.foot-in{max-width:46rem;margin:0 auto;padding:1.6rem 1.6rem 2.4rem;color:var(--muted);font-size:.88rem;
+display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;justify-content:space-between;}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-in">
+    <p class="eyebrow"><a href="index.html">&#8592; Materiais BIIA</a> &nbsp;·&nbsp; Guia de estudo 04</p>
+    <h1 class="title">Exemplo de curadoria</h1>
+  </div>
+</header>
+<article><blockquote>
+<p>Acompanha o <a href="protocolo_curadoria.md">protocolo de curadoria</a> e a planilha
+<code>curation_pilot/planilha_curadoria_piloto.xlsx</code>. Aqui, quatro casos reais são
+curados como <strong>demonstração</strong> — mostrando o raciocínio e a decisão. Use como
+modelo; as decisões finais de cada candidata são suas.</p>
+</blockquote>
+<p>Os quatro casos foram escolhidos por cobrirem situações diferentes: uma
+confirmação fácil, uma descoberta forte, uma incerteza por divergência e uma
+incerteza por baixa confiança.</p>
+<hr>
+<h2 id="caso-1-csor_00176-catalase-nivel-a-confirmacao-facil">Caso 1 — CSOR_00176 · Catalase · nível A (confirmação fácil)</h2>
+<p><strong>Evidência:</strong> domínio <code>PF00199</code> (catalase); 478 aa (faixa esperada 450–550);
+melhor hit <em>catalase-like [Sitophilus oryzae]</em>, 77% identidade; <code>is_coleoptera_hit
+= True</code>; nível de evidência <strong>A</strong>.</p>
+<p><strong>Raciocínio:</strong> domínio diagnóstico presente, tamanho perfeito, alta identidade a
+uma catalase de gorgulho (parente próximo), concordância InterPro (nível A). Não
+há sinal de alerta.</p>
+<table>
+<thead>
+<tr>
+<th>DECISÃO</th>
+<th>ANOTAÇÃO FUNCIONAL</th>
+<th>JUSTIFICATIVA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Confirmada</strong></td>
+<td>Catalase</td>
+<td>Domínio PF00199, tamanho na faixa, 77% id a catalase de <em>S. oryzae</em>, nível A.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="caso-2-csor_08391-alfa-amilase-proveniencia-similaridade-descoberta-forte">Caso 2 — CSOR_08391 · Alfa-amilase · proveniência "similaridade" (descoberta forte)</h2>
+<p><strong>Evidência:</strong> <strong>sem</strong> o domínio diagnóstico PF00128, mas <strong>com</strong> o de apoio
+<code>PF02806</code> (Alpha-amylase_C); 485 aa (faixa esperada 400–550); melhor hit
+<em>alpha-amylase-like [Sitophilus oryzae]</em>, <strong>81% identidade</strong>, cobertura 99%.</p>
+<p><strong>Raciocínio:</strong> foi descoberta por similaridade (não passou pela seleção por
+domínio, porque o domínio catalítico ficou abaixo do limiar). Mas: tem o domínio
+de apoio da família, tamanho certo e <strong>81% de identidade</strong> a uma alfa-amilase de
+gorgulho. É quase certamente uma alfa-amilase real cujo PF00128 divergiu.</p>
+<table>
+<thead>
+<tr>
+<th>DECISÃO</th>
+<th>ANOTAÇÃO FUNCIONAL</th>
+<th>JUSTIFICATIVA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Confirmada</strong></td>
+<td>Alfa-amilase</td>
+<td>Sem PF00128 mas com PF02806; 485 aa; 81% id a alpha-amylase de <em>S. oryzae</em>. Domínio catalítico provavelmente sub-limiar.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="caso-3-csor_07687-obp-proveniencia-similaridade-incerteza-por-divergencia">Caso 3 — CSOR_07687 · OBP · proveniência "similaridade" (incerteza por divergência)</h2>
+<p><strong>Evidência:</strong> <strong>sem</strong> qualquer domínio Pfam; apenas 77 aa; melhor hit <em>general
+odorant-binding protein 71 [Anoplophora glabripennis]</em>, <strong>41% identidade</strong>,
+cobertura 97%.</p>
+<p><strong>Raciocínio:</strong> proteína curta, divergente, sem domínio — exatamente o perfil de
+OBP que a busca por domínio perde. A semelhança (41%, cobertura alta) a uma OBP de
+besouro é sugestiva, mas 41% é moderado e não há domínio para confirmar. <strong>Não
+force</strong>: registre como incerta e leve para discussão (pode valer conferir se tem
+o padrão de cisteínas típico das OBPs).</p>
+<table>
+<thead>
+<tr>
+<th>DECISÃO</th>
+<th>ANOTAÇÃO FUNCIONAL</th>
+<th>JUSTIFICATIVA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Incerta</strong></td>
+<td>(provável OBP — a confirmar)</td>
+<td>41% id a OBP de besouro, cobertura alta, mas sem domínio; curta. Verificar padrão de cisteínas; discutir na reunião.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="caso-4-csor_10506-alfa-amilase-proveniencia-similaridade-baixa-confianca">Caso 4 — CSOR_10506 · Alfa-amilase · proveniência "similaridade" (baixa confiança)</h2>
+<p><strong>Evidência:</strong> sem domínio; 201 aa (bem abaixo dos ~400–550 de uma amilase
+completa); melhor hit <em>alpha-amylase 4-like [Sitophilus oryzae]</em>, <strong>31%
+identidade</strong>, cobertura 92%.</p>
+<p><strong>Raciocínio:</strong> identidade baixa (31%) e tamanho pequeno demais para uma
+alfa-amilase digestiva completa. Pode ser um fragmento, uma GH13 aparentada
+(maltase/glucosidase) ou um falso positivo. Sinais de alerta suficientes para
+<strong>não confirmar</strong>; incerta é o mais honesto (foi, aliás, um dos casos que o
+DIAMOND não recuperou — os mais divergentes).</p>
+<table>
+<thead>
+<tr>
+<th>DECISÃO</th>
+<th>ANOTAÇÃO FUNCIONAL</th>
+<th>JUSTIFICATIVA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Incerta</strong></td>
+<td>(indefinida)</td>
+<td>31% id e apenas 201 aa (curto p/ amilase completa); possível fragmento ou GH13 aparentada. Não há evidência suficiente para confirmar.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="o-que-esses-exemplos-ensinam">O que esses exemplos ensinam</h2>
+<ul>
+<li><strong>Nível A + parente próximo</strong> → confirmação direta (Caso 1).</li>
+<li><strong>Descoberta sem domínio diagnóstico pode ser membro real</strong> se tiver domínio de
+  apoio, tamanho e identidade coerentes (Caso 2).</li>
+<li><strong>Identidade moderada + sem domínio</strong> → incerta, verificar características da
+  família (Caso 3).</li>
+<li><strong>Identidade baixa + tamanho atípico</strong> → incerta/rejeitar; não superestimar
+  (Caso 4).</li>
+</ul>
+<p>A curadoria não é sobre "confirmar tudo": é sobre <strong>graduar a confiança com
+honestidade</strong> e sinalizar o que precisa de um segundo olhar.</p></article>
+<footer><div class="foot-in"><span>BIIA · Laboratório de Bioinformática e Inteligência Agrícola</span><span>IFSP · Campus Miracatu</span></div></footer>
+</body>
+</html>
