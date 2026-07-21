@@ -326,11 +326,19 @@ def build() -> None:
     ) if integrantes_label else ""
 
     participe_url = site.get("participe_url", "")
+    participe_email = site.get("participe_email", "")
+    if participe_url:
+        p_href, p_target = participe_url, ' target="_blank" rel="noopener"'
+    elif participe_email:
+        p_href = f"mailto:{participe_email}?subject=Quero%20integrar%20o%20BIIA"
+        p_target = ""
+    else:
+        p_href, p_target = "", ""
     participe_button = (
-        f'<a class="ws-btn" href="{esc(participe_url)}" target="_blank" rel="noopener">'
+        f'<a class="ws-btn" href="{esc(p_href)}"{p_target}>'
         f'<span aria-hidden="true">✉</span> '
         f'{esc(site.get("participe_label", "Quero participar"))}</a>'
-    ) if participe_url else ""
+    ) if p_href else ""
 
     nav = "".join(
         f'<a class="tab" href="#{tid}" data-tab="{tid}">{esc(label)}</a>'

@@ -25,6 +25,9 @@ espaco_trabalho_label: "Espaço de trabalho"
 integrantes_label: "Integrantes"
 
 # Botão "Quero participar" (formulário para quem quer integrar o lab).
-# Cole a URL do formulário (ex.: Google Forms). Vazio ("") esconde o botão.
+# Cole a URL do Google Forms em participe_url quando tiver.
+# Enquanto participe_url estiver vazio, o botão abre um e-mail para participe_email
+# (fallback temporário). Deixe os dois vazios para esconder o botão.
 participe_url: ""
+participe_email: "isis.bugia@ifsp.edu.br"
 participe_label: "Quero participar"
