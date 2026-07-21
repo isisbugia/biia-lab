@@ -3,7 +3,7 @@
 # ==========================================================================
 # Dica: para textos longos, escreva depois de ">" e mantenha a indentação.
 
-titulo: "Laboratório BIIA"
+titulo: "Laboratório de Bioinformática e Inteligência Agrícola — BIIA"
 subtitulo: "Materiais abertos do laboratório"
 
 descricao: >
@@ -11,5 +11,5 @@ descricao: >
   trabalho com Cosmopolites sordidus, a broca-do-rizoma da bananeira. Guias,
   protocolos e recursos, feitos para aprender.
 
-rodape_esquerda: "Laboratório BIIA · materiais abertos"
-rodape_direita: "IFSP · Cosmopolites sordidus"
+rodape_esquerda: "BIIA · Laboratório de Bioinformática e Inteligência Agrícola"
+rodape_direita: "IFSP · Campus Miracatu"

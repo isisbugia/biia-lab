@@ -25,7 +25,7 @@ TABS = [
     ("videoaulas", "Vídeoaulas e Tutoriais"),
     ("recursos", "Recursos educativos"),
     ("avisos", "Quadro de avisos"),
-    ("eventos", "Eventos importantes"),
+    ("eventos", "Eventos"),
 ]
 
 
@@ -172,8 +172,8 @@ a{color:var(--pine);text-underline-offset:2px;}a:hover{color:var(--pine-strong);
 header.hero{border-bottom:1px solid var(--line);
 background:radial-gradient(130% 120% at 85% -20%,var(--pine-soft),transparent 55%),var(--surface);}
 .hero-in{max-width:62rem;margin:0 auto;padding:3.6rem 1.5rem 1.6rem;}
-.brand{font-family:var(--mono-face);font-size:.82rem;letter-spacing:.2em;text-transform:uppercase;
-color:var(--pine);font-weight:600;margin:0 0 1rem;}
+.brand{font-family:var(--mono-face);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;
+color:var(--pine);font-weight:600;margin:0 0 1rem;line-height:1.5;max-width:44ch;}
 h1{font-family:var(--title-face);font-weight:600;font-size:clamp(2.1rem,4.6vw,3.1rem);line-height:1.05;
 letter-spacing:-.015em;margin:0 0 .6rem;text-wrap:balance;max-width:18ch;}
 .tag{font-size:1.13rem;color:var(--muted);max-width:56ch;margin:0;}
