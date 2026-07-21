@@ -38,6 +38,12 @@ def esc(x) -> str:
     return html.escape(str(x).strip()) if x is not None else ""
 
 
+def fmt_date(iso) -> str:
+    """AAAA-MM-DD -> DD/MM/AAAA (para exibir na lista)."""
+    p = str(iso or "").strip().split("-")
+    return f"{p[2]}/{p[1]}/{p[0]}" if len(p) == 3 else esc(iso)
+
+
 def _link_attrs(link: str) -> str:
     if link and (link.startswith("http://") or link.startswith("https://")):
         return f' href="{esc(link)}" target="_blank" rel="noopener"'
@@ -102,15 +108,20 @@ def panel_eventos(data) -> str:
     if not itens:
         return empty("Nenhum evento agendado ainda.")
     rows = []
-    for e in itens:
+    for i, e in enumerate(itens):
         link = e.get("link", "")
         more = (f'<a class="go"{_link_attrs(link)}>Mais</a>' if link else "")
+        iso = esc(e.get("data"))
         rows.append(
-            f'<article class="note event"><span class="date">{esc(e.get("data"))}</span>'
+            f'<article class="note event" data-date="{iso}" id="ev-{i}">'
+            f'<span class="date">{esc(fmt_date(e.get("data")))}</span>'
             f'<div><h3>{esc(e.get("titulo"))}</h3>'
             f'<p>{esc(e.get("descricao"))}</p>{more}</div></article>'
         )
-    return f'<div class="stack">{"".join(rows)}</div>'
+    return ('<div class="cal-wrap">'
+            '<div class="cal" id="cal" aria-label="Calendário de eventos"></div>'
+            f'<div class="stack cal-list" id="cal-list">{"".join(rows)}</div>'
+            '</div>')
 
 
 def build() -> None:
@@ -146,6 +157,7 @@ def build() -> None:
         foot_l=esc(site.get("rodape_esquerda", "")),
         foot_r=esc(site.get("rodape_direita", "")),
         css=CSS,
+        caljs=CAL_JS,
     )
     (ROOT / "index.html").write_text(out, encoding="utf-8")
     print("index.html gerado com", len(TABS), "abas.")
@@ -224,6 +236,29 @@ padding-top:.15rem;font-variant-numeric:tabular-nums;}
 .note .go::after{content:" \\2192";}
 .empty{color:var(--faint);font-style:italic;border:1px dashed var(--line);border-radius:12px;
 padding:1.6rem;text-align:center;background:var(--surface);}
+.cal-wrap{display:grid;grid-template-columns:17rem minmax(0,1fr);gap:1.4rem;align-items:start;}
+@media (max-width:640px){.cal-wrap{grid-template-columns:1fr;}}
+.cal{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem;box-shadow:var(--shadow);}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;}
+.cal-title{font-family:var(--title-face);font-weight:600;font-size:1.05rem;text-transform:capitalize;}
+.cal-nav{background:var(--surface-2);border:1px solid var(--line);border-radius:8px;color:var(--ink);
+width:1.9rem;height:1.9rem;cursor:pointer;font-size:1rem;line-height:1;}
+.cal-nav:hover{border-color:var(--pine);color:var(--pine-strong);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.15rem;text-align:center;}
+.cal-wd{font-family:var(--mono-face);font-size:.62rem;text-transform:uppercase;letter-spacing:.03em;
+color:var(--faint);padding:.2rem 0 .35rem;}
+.cal-cell{aspect-ratio:1;border:none;background:none;color:var(--muted);font-size:.82rem;border-radius:8px;
+display:flex;align-items:center;justify-content:center;position:relative;font-variant-numeric:tabular-nums;padding:0;}
+.cal-cell.blank{visibility:hidden;}
+.cal-cell.today{color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);}
+.cal-cell.has-ev{color:var(--pine-strong);font-weight:650;background:var(--pine-soft);cursor:pointer;}
+.cal-cell.has-ev::after{content:"";position:absolute;bottom:.26rem;width:.28rem;height:.28rem;
+border-radius:50%;background:var(--pine);}
+.cal-cell.has-ev:hover{outline:1px solid var(--pine);}
+.cal-cell[disabled]{cursor:default;}
+.cal-list .event.flash{animation:evflash 1.6s ease;}
+@keyframes evflash{0%,25%{background:var(--pine-soft);border-left-color:var(--pine-strong);}100%{background:var(--surface);}}
+@media (prefers-reduced-motion:reduce){.cal-list .event.flash{animation:none;}}
 footer{margin-top:3rem;border-top:1px solid var(--line);background:var(--surface);}
 .foot-in{max-width:62rem;margin:0 auto;padding:1.6rem 1.5rem 2.4rem;color:var(--muted);font-size:.88rem;
 display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;justify-content:space-between;}
@@ -266,9 +301,59 @@ TEMPLATE = """<!doctype html>
   window.addEventListener('hashchange',fromHash);
   fromHash();
 }})();
+{caljs}
 </script>
 </body>
 </html>
+"""
+
+CAL_JS = """
+(function(){
+  var cal=document.getElementById('cal'); if(!cal) return;
+  var evs=[].slice.call(document.querySelectorAll('#cal-list .event[data-date]'));
+  var dates={};
+  evs.forEach(function(el){ var d=el.getAttribute('data-date'); if(d){ (dates[d]=dates[d]||[]).push(el); } });
+  var MONTHS=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  var WD=['dom','seg','ter','qua','qui','sex','sáb'];
+  function parse(s){ var p=s.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
+  function iso(yy,mm,dd){ return yy+'-'+String(mm+1).padStart(2,'0')+'-'+String(dd).padStart(2,'0'); }
+  var today=new Date(); today.setHours(0,0,0,0);
+  var tkey=iso(today.getFullYear(),today.getMonth(),today.getDate());
+  var keys=Object.keys(dates).sort();
+  var start=today;
+  var up=keys.filter(function(k){ return parse(k)>=today; });
+  if(up.length) start=parse(up[0]); else if(keys.length) start=parse(keys[keys.length-1]);
+  var y=start.getFullYear(), m=start.getMonth();
+  function render(){
+    var offset=new Date(y,m,1).getDay(), days=new Date(y,m+1,0).getDate();
+    var h='<div class="cal-head"><button class="cal-nav" data-nav="-1" aria-label="Mês anterior">\\u2039</button>'
+        +'<span class="cal-title">'+MONTHS[m]+' de '+y+'</span>'
+        +'<button class="cal-nav" data-nav="1" aria-label="Próximo mês">\\u203A</button></div><div class="cal-grid">';
+    WD.forEach(function(w){ h+='<span class="cal-wd">'+w+'</span>'; });
+    var i;
+    for(i=0;i<offset;i++) h+='<span class="cal-cell blank"></span>';
+    for(var d=1;d<=days;d++){
+      var k=iso(y,m,d), cls='cal-cell';
+      if(dates[k]) cls+=' has-ev';
+      if(k===tkey) cls+=' today';
+      h+='<button class="'+cls+'" data-day="'+k+'"'+(dates[k]?'':' disabled')+'>'+d+'</button>';
+    }
+    cal.innerHTML=h+'</div>';
+  }
+  cal.addEventListener('click',function(e){
+    var nav=e.target.closest('[data-nav]');
+    if(nav){ m+=+nav.getAttribute('data-nav'); if(m<0){m=11;y--;} if(m>11){m=0;y++;} render(); return; }
+    var day=e.target.closest('[data-day]');
+    if(day && !day.disabled){
+      var els=dates[day.getAttribute('data-day')];
+      if(els && els[0]){
+        els[0].scrollIntoView({behavior:'smooth',block:'center'});
+        els.forEach(function(el){ el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); });
+      }
+    }
+  });
+  render();
+})();
 """
 
 

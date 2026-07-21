@@ -79,6 +79,29 @@ padding-top:.15rem;font-variant-numeric:tabular-nums;}
 .note .go::after{content:" \2192";}
 .empty{color:var(--faint);font-style:italic;border:1px dashed var(--line);border-radius:12px;
 padding:1.6rem;text-align:center;background:var(--surface);}
+.cal-wrap{display:grid;grid-template-columns:17rem minmax(0,1fr);gap:1.4rem;align-items:start;}
+@media (max-width:640px){.cal-wrap{grid-template-columns:1fr;}}
+.cal{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem;box-shadow:var(--shadow);}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;}
+.cal-title{font-family:var(--title-face);font-weight:600;font-size:1.05rem;text-transform:capitalize;}
+.cal-nav{background:var(--surface-2);border:1px solid var(--line);border-radius:8px;color:var(--ink);
+width:1.9rem;height:1.9rem;cursor:pointer;font-size:1rem;line-height:1;}
+.cal-nav:hover{border-color:var(--pine);color:var(--pine-strong);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.15rem;text-align:center;}
+.cal-wd{font-family:var(--mono-face);font-size:.62rem;text-transform:uppercase;letter-spacing:.03em;
+color:var(--faint);padding:.2rem 0 .35rem;}
+.cal-cell{aspect-ratio:1;border:none;background:none;color:var(--muted);font-size:.82rem;border-radius:8px;
+display:flex;align-items:center;justify-content:center;position:relative;font-variant-numeric:tabular-nums;padding:0;}
+.cal-cell.blank{visibility:hidden;}
+.cal-cell.today{color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);}
+.cal-cell.has-ev{color:var(--pine-strong);font-weight:650;background:var(--pine-soft);cursor:pointer;}
+.cal-cell.has-ev::after{content:"";position:absolute;bottom:.26rem;width:.28rem;height:.28rem;
+border-radius:50%;background:var(--pine);}
+.cal-cell.has-ev:hover{outline:1px solid var(--pine);}
+.cal-cell[disabled]{cursor:default;}
+.cal-list .event.flash{animation:evflash 1.6s ease;}
+@keyframes evflash{0%,25%{background:var(--pine-soft);border-left-color:var(--pine-strong);}100%{background:var(--surface);}}
+@media (prefers-reduced-motion:reduce){.cal-list .event.flash{animation:none;}}
 footer{margin-top:3rem;border-top:1px solid var(--line);background:var(--surface);}
 .foot-in{max-width:62rem;margin:0 auto;padding:1.6rem 1.5rem 2.4rem;color:var(--muted);font-size:.88rem;
 display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;justify-content:space-between;}
@@ -94,7 +117,7 @@ display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;justify-content:space-between;}
   </div>
 </header>
 <nav class="tabs" aria-label="Seções"><div class="tabs-in"><a class="tab" href="#guias" data-tab="guias">Guias de estudo</a><a class="tab" href="#ferramentas" data-tab="ferramentas">Ferramentas de Bioinfo</a><a class="tab" href="#videoaulas" data-tab="videoaulas">Vídeoaulas e Tutoriais</a><a class="tab" href="#recursos" data-tab="recursos">Recursos educativos</a><a class="tab" href="#avisos" data-tab="avisos">Quadro de avisos</a><a class="tab" href="#eventos" data-tab="eventos">Eventos</a></div></nav>
-<main class="wrap"><section class="panel" id="guias" data-panel="guias"><h2 class="panel-title">Guias de estudo</h2><div class="grid"><a class="card guia" href="guia-preparatorio.html"><span class="gnum">01</span><div class="gbody"><span class="kind">Guia de estudo</span><h3>Preparatório: terminal, YAML e o pipeline</h3><p>Do zero: o essencial de terminal (bash), YAML e como rodar o pipeline — o que estudar antes de tudo.</p><span class="go">Estudar</span></div></a><a class="card guia" href="guia-onboarding.html"><span class="gnum">02</span><div class="gbody"><span class="kind">Guia de estudo</span><h3>Onboarding dos estagiários</h3><p>Guia de estudo + roteiro de execução, com exercícios e o mapa das pastas do projeto.</p><span class="go">Estudar</span></div></a><a class="card guia" href="guia-protocolo-curadoria.html"><span class="gnum">03</span><div class="gbody"><span class="kind">Guia de estudo</span><h3>Protocolo de curadoria</h3><p>Como fazer a curadoria manual das candidatas: critérios de confirmação, incerteza e rejeição (níveis A/B/C).</p><span class="go">Estudar</span></div></a><a class="card guia" href="guia-exemplo-curadoria.html"><span class="gnum">04</span><div class="gbody"><span class="kind">Guia de estudo</span><h3>Exemplo de curadoria</h3><p>Quatro casos reais curados como demonstração: confirmação fácil, descoberta forte, incerteza por divergência e baixa confiança.</p><span class="go">Estudar</span></div></a><a class="card guia" href="guia-rastreabilidade-qc.html"><span class="gnum">05</span><div class="gbody"><span class="kind">Guia de estudo</span><h3>Rastreabilidade &amp; Controle de Qualidade</h3><p>Entenda a lógica dos códigos que utilizamos em nosso pipeline: parâmetros, escolhas de valores, bancos de referência, delimitações e fluxo de tarefas.</p><span class="go">Estudar</span></div></a></div></section><section class="panel" id="ferramentas" data-panel="ferramentas"><h2 class="panel-title">Ferramentas de Bioinfo</h2><p class="empty">Ferramentas serão listadas aqui em breve.</p></section><section class="panel" id="videoaulas" data-panel="videoaulas"><h2 class="panel-title">Vídeoaulas e Tutoriais</h2><p class="empty">Vídeoaulas e tutoriais em breve.</p></section><section class="panel" id="recursos" data-panel="recursos"><h2 class="panel-title">Recursos educativos</h2><p class="empty">Recursos educativos em breve.</p></section><section class="panel" id="avisos" data-panel="avisos"><h2 class="panel-title">Quadro de avisos</h2><div class="stack"><article class="note"><span class="date">2026-07-21</span><div><h3>Site no ar</h3><p>Publicamos o primeiro material do laboratório: o Guia de estudo 01 (Rastreabilidade &amp; Controle de Qualidade). Novos materiais chegam em breve.</p></div></article></div></section><section class="panel" id="eventos" data-panel="eventos"><h2 class="panel-title">Eventos</h2><p class="empty">Nenhum evento agendado ainda.</p></section></main>
+<main class="wrap"><section class="panel" id="guias" data-panel="guias"><h2 class="panel-title">Guias de estudo</h2><div class="grid"><a class="card guia" href="guia-preparatorio.html"><span class="gnum">01</span><div class="gbody"><span class="kind">Guia de estudo</span><h3>Preparatório: terminal, YAML e o pipeline</h3><p>Do zero: o essencial de terminal (bash), YAML e como rodar o pipeline — o que estudar antes de tudo.</p><span class="go">Estudar</span></div></a><a class="card guia" href="guia-onboarding.html"><span class="gnum">02</span><div class="gbody"><span class="kind">Guia de estudo</span><h3>Onboarding dos estagiários</h3><p>Guia de estudo + roteiro de execução, com exercícios e o mapa das pastas do projeto.</p><span class="go">Estudar</span></div></a><a class="card guia" href="guia-protocolo-curadoria.html"><span class="gnum">03</span><div class="gbody"><span class="kind">Guia de estudo</span><h3>Protocolo de curadoria</h3><p>Como fazer a curadoria manual das candidatas: critérios de confirmação, incerteza e rejeição (níveis A/B/C).</p><span class="go">Estudar</span></div></a><a class="card guia" href="guia-exemplo-curadoria.html"><span class="gnum">04</span><div class="gbody"><span class="kind">Guia de estudo</span><h3>Exemplo de curadoria</h3><p>Quatro casos reais curados como demonstração: confirmação fácil, descoberta forte, incerteza por divergência e baixa confiança.</p><span class="go">Estudar</span></div></a><a class="card guia" href="guia-rastreabilidade-qc.html"><span class="gnum">05</span><div class="gbody"><span class="kind">Guia de estudo</span><h3>Rastreabilidade &amp; Controle de Qualidade</h3><p>Entenda a lógica dos códigos que utilizamos em nosso pipeline: parâmetros, escolhas de valores, bancos de referência, delimitações e fluxo de tarefas.</p><span class="go">Estudar</span></div></a></div></section><section class="panel" id="ferramentas" data-panel="ferramentas"><h2 class="panel-title">Ferramentas de Bioinfo</h2><p class="empty">Ferramentas serão listadas aqui em breve.</p></section><section class="panel" id="videoaulas" data-panel="videoaulas"><h2 class="panel-title">Vídeoaulas e Tutoriais</h2><p class="empty">Vídeoaulas e tutoriais em breve.</p></section><section class="panel" id="recursos" data-panel="recursos"><h2 class="panel-title">Recursos educativos</h2><p class="empty">Recursos educativos em breve.</p></section><section class="panel" id="avisos" data-panel="avisos"><h2 class="panel-title">Quadro de avisos</h2><div class="stack"><article class="note"><span class="date">2026-07-21</span><div><h3>Site no ar</h3><p>Publicamos o primeiro material do laboratório: o Guia de estudo 01 (Rastreabilidade &amp; Controle de Qualidade). Novos materiais chegam em breve.</p></div></article></div></section><section class="panel" id="eventos" data-panel="eventos"><h2 class="panel-title">Eventos</h2><div class="cal-wrap"><div class="cal" id="cal" aria-label="Calendário de eventos"></div><div class="stack cal-list" id="cal-list"><article class="note event" data-date="2026-07-27" id="ev-0"><span class="date">27/07/2026</span><div><h3>Prazo — resumo expandido (17º CONICT)</h3><p>Submissão do resumo expandido (avaliação cega, até 6 páginas).</p></div></article><article class="note event" data-date="2026-08-15" id="ev-1"><span class="date">15/08/2026</span><div><h3>Reunião do laboratório</h3><p>Encontro de alinhamento dos projetos e dos estagiários. (Evento de exemplo — edite ou remova em content/eventos.yaml.)</p></div></article></div></div></section></main>
 <footer><div class="foot-in"><span>BIIA · Laboratório de Bioinformática e Inteligência Agrícola</span><span>IFSP · Campus Miracatu</span></div></footer>
 <script>
 (function(){
@@ -111,6 +134,54 @@ display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;justify-content:space-between;}
   window.addEventListener('hashchange',fromHash);
   fromHash();
 })();
+
+(function(){
+  var cal=document.getElementById('cal'); if(!cal) return;
+  var evs=[].slice.call(document.querySelectorAll('#cal-list .event[data-date]'));
+  var dates={};
+  evs.forEach(function(el){ var d=el.getAttribute('data-date'); if(d){ (dates[d]=dates[d]||[]).push(el); } });
+  var MONTHS=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  var WD=['dom','seg','ter','qua','qui','sex','sáb'];
+  function parse(s){ var p=s.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
+  function iso(yy,mm,dd){ return yy+'-'+String(mm+1).padStart(2,'0')+'-'+String(dd).padStart(2,'0'); }
+  var today=new Date(); today.setHours(0,0,0,0);
+  var tkey=iso(today.getFullYear(),today.getMonth(),today.getDate());
+  var keys=Object.keys(dates).sort();
+  var start=today;
+  var up=keys.filter(function(k){ return parse(k)>=today; });
+  if(up.length) start=parse(up[0]); else if(keys.length) start=parse(keys[keys.length-1]);
+  var y=start.getFullYear(), m=start.getMonth();
+  function render(){
+    var offset=new Date(y,m,1).getDay(), days=new Date(y,m+1,0).getDate();
+    var h='<div class="cal-head"><button class="cal-nav" data-nav="-1" aria-label="Mês anterior">\u2039</button>'
+        +'<span class="cal-title">'+MONTHS[m]+' de '+y+'</span>'
+        +'<button class="cal-nav" data-nav="1" aria-label="Próximo mês">\u203A</button></div><div class="cal-grid">';
+    WD.forEach(function(w){ h+='<span class="cal-wd">'+w+'</span>'; });
+    var i;
+    for(i=0;i<offset;i++) h+='<span class="cal-cell blank"></span>';
+    for(var d=1;d<=days;d++){
+      var k=iso(y,m,d), cls='cal-cell';
+      if(dates[k]) cls+=' has-ev';
+      if(k===tkey) cls+=' today';
+      h+='<button class="'+cls+'" data-day="'+k+'"'+(dates[k]?'':' disabled')+'>'+d+'</button>';
+    }
+    cal.innerHTML=h+'</div>';
+  }
+  cal.addEventListener('click',function(e){
+    var nav=e.target.closest('[data-nav]');
+    if(nav){ m+=+nav.getAttribute('data-nav'); if(m<0){m=11;y--;} if(m>11){m=0;y++;} render(); return; }
+    var day=e.target.closest('[data-day]');
+    if(day && !day.disabled){
+      var els=dates[day.getAttribute('data-day')];
+      if(els && els[0]){
+        els[0].scrollIntoView({behavior:'smooth',block:'center'});
+        els.forEach(function(el){ el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); });
+      }
+    }
+  });
+  render();
+})();
+
 </script>
 </body>
 </html>
