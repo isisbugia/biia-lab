@@ -228,9 +228,14 @@ def panel_eventos(data) -> str:
         link = e.get("link", "")
         more = (f'<a class="go"{_link_attrs(link)}>Mais</a>' if link else "")
         iso = esc(e.get("data"))
+        fim = e.get("data_fim")
+        fim_attr = f' data-date-fim="{esc(fim)}"' if fim else ""
+        disp = fmt_date(e.get("data")) + (f" a {fmt_date(fim)}" if fim else "")
+        tag = esc(e.get("tag"))
+        tag_html = f'<br><span class="badge">{tag}</span>' if tag else ""
         rows.append(
-            f'<article class="note event" data-date="{iso}" id="ev-{i}">'
-            f'<span class="date">{esc(fmt_date(e.get("data")))}</span>'
+            f'<article class="note event" data-date="{iso}"{fim_attr} id="ev-{i}">'
+            f'<span class="date">{esc(disp)}{tag_html}</span>'
             f'<div><h3>{esc(e.get("titulo"))}</h3>'
             f'<p>{esc(e.get("descricao"))}</p>{more}</div></article>'
         )
@@ -463,12 +468,19 @@ CAL_JS = """
 (function(){
   var cal=document.getElementById('cal'); if(!cal) return;
   var evs=[].slice.call(document.querySelectorAll('#cal-list .event[data-date]'));
-  var dates={};
-  evs.forEach(function(el){ var d=el.getAttribute('data-date'); if(d){ (dates[d]=dates[d]||[]).push(el); } });
   var MONTHS=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
   var WD=['dom','seg','ter','qua','qui','sex','sáb'];
   function parse(s){ var p=s.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
   function iso(yy,mm,dd){ return yy+'-'+String(mm+1).padStart(2,'0')+'-'+String(dd).padStart(2,'0'); }
+  var dates={};
+  evs.forEach(function(el){
+    var s=el.getAttribute('data-date'); if(!s) return;
+    var de=parse(el.getAttribute('data-date-fim')||s);
+    for(var t=parse(s); t<=de; t.setDate(t.getDate()+1)){
+      var k=iso(t.getFullYear(),t.getMonth(),t.getDate());
+      (dates[k]=dates[k]||[]).push(el);
+    }
+  });
   var today=new Date(); today.setHours(0,0,0,0);
   var tkey=iso(today.getFullYear(),today.getMonth(),today.getDate());
   var keys=Object.keys(dates).sort();

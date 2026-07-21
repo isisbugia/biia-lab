@@ -1,20 +1,73 @@
 # ==========================================================================
 # EVENTOS  —  itens da aba "Eventos" (aparecem no calendário + na lista)
 # ==========================================================================
-# Cada evento: data (AAAA-MM-DD), titulo, descricao e (opcional) link.
+# Cada evento:
+#   data      -> início (AAAA-MM-DD)
+#   data_fim  -> (opcional) fim, para eventos de vários dias
+#   tag       -> (opcional) etiqueta: "Online", "Presencial", "Prazo"...
+#   titulo, descricao, link (opcional)
 # Os dias com evento ficam marcados no calendário; clicar no dia leva ao evento.
-# Para adicionar, copie um bloco e edite. Para remover, apague o bloco (ou comente com #).
 
 eventos:
   - data: "2026-07-27"
+    tag: "Prazo"
     titulo: "Prazo — resumo expandido (17º CONICT)"
     descricao: >
       Submissão do resumo expandido (avaliação cega, até 6 páginas).
     link: ""
 
-  - data: "2026-08-15"
-    titulo: "Reunião do laboratório"
+  - data: "2026-08-03"
+    data_fim: "2026-08-06"
+    tag: "Presencial"
+    titulo: "XXXIV Congresso Brasileiro da Ciência das Plantas Daninhas"
     descricao: >
-      Encontro de alinhamento dos projetos e dos estagiários. (Evento de exemplo —
-      edite ou remova em content/eventos.yaml.)
+      Foz do Iguaçu, PR (Rafain Palace Hotel & Convention). Aborda genômica
+      agrícola, biotecnologia no campo e mapeamento de alvos biológicos.
+      Inscrições até o fim de julho.
+    link: ""
+
+  - data: "2026-08-15"
+    data_fim: "2026-08-16"
+    tag: "Presencial"
+    titulo: "HackNatal 2026 — IX SNNB (bioinformática)"
+    descricao: >
+      Natal, RN. Hackathon de bioinformática com o grupo nf-core — imersão para
+      aprender a estruturar pipelines reais. Integrado ao IX Simpósio
+      Norte-Nordeste de Bioinformática (SNNB).
+    link: ""
+
+  - data: "2026-08-19"
+    tag: "Online"
+    titulo: "Palestra: Transformando dados em oportunidades de pesquisa através da bioinformática"
+    descricao: >
+      Online, 17h45–19h30. Porta de entrada acessível para os estudantes
+      entenderem como a mineração de dados biológicos guia novos projetos —
+      fácil organizar uma transmissão conjunta no laboratório.
+    link: ""
+
+  - data: "2026-10-19"
+    data_fim: "2026-10-23"
+    tag: "Presencial"
+    titulo: "Semana Nacional de C&T / Semana Acadêmica da Biotecnologia"
+    descricao: >
+      Campus Miracatu — IFSP.
+    link: ""
+
+  - data: "2026-10-27"
+    data_fim: "2026-10-29"
+    tag: "Presencial"
+    titulo: "FECIVALE 2026 — Feira de Ciências"
+    descricao: >
+      No próprio campus. (A inscrição de projetos para afiliação a outras feiras
+      e mostras foi até 30/07.)
+    link: ""
+
+  - data: "2026-11-10"
+    data_fim: "2026-11-13"
+    tag: "Presencial"
+    titulo: "IX Congresso Brasileiro de Recursos Genéticos"
+    descricao: >
+      Florianópolis, SC. Engenharia genética, biologia molecular de culturas
+      agrícolas e conservação genômica — ideal para apresentar resultados
+      preliminares no fim do ano.
     link: ""
