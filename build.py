@@ -90,6 +90,35 @@ def panel_cards(data, key, empty_msg) -> str:
     return f'<div class="grid">{"".join(cards)}</div>'
 
 
+def panel_recursos(data) -> str:
+    itens = (data or {}).get("recursos") or []
+    if not itens:
+        return empty("Recursos educativos em breve.")
+    groups, order = {}, []
+    for it in itens:
+        cat = it.get("categoria", "Outros")
+        if cat not in groups:
+            groups[cat] = []; order.append(cat)
+        groups[cat].append(it)
+    out = []
+    for cat in order:
+        cards = []
+        for it in groups[cat]:
+            link = it.get("link", "")
+            fonte = esc(it.get("fonte"))
+            fonte_html = f'<span class="kind">{fonte}</span>' if fonte else ""
+            go = '<span class="go">Abrir</span>' if link else ""
+            tag = "a" if link else "div"
+            cards.append(
+                f'<{tag} class="card"{_link_attrs(link)}>{fonte_html}'
+                f'<h3>{esc(it.get("nome"))}</h3>'
+                f'<p>{esc(it.get("descricao"))}</p>{go}</{tag}>'
+            )
+        out.append(f'<h3 class="fgroup">{esc(cat)}</h3>'
+                   f'<div class="grid">{"".join(cards)}</div>')
+    return "".join(out)
+
+
 def panel_ferramentas(data) -> str:
     itens = (data or {}).get("ferramentas") or []
     if not itens:
@@ -217,8 +246,7 @@ def build() -> None:
         "guias": panel_guias(load("guias")),
         "ferramentas": panel_ferramentas(load("ferramentas")),
         "videoaulas": panel_videoaulas(load("videoaulas")),
-        "recursos": panel_cards(load("recursos"), "itens",
-                                "Recursos educativos em breve."),
+        "recursos": panel_recursos(load("recursos")),
         "avisos": panel_avisos(load("avisos")),
         "eventos": panel_eventos(load("eventos")),
     }

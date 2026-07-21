@@ -1,11 +1,90 @@
 # ==========================================================================
-# RECURSOS EDUCATIVOS  —  cards da aba "Recursos educativos"
+# RECURSOS EDUCATIVOS  —  cards da aba "Recursos educativos" (agrupados por tema)
 # ==========================================================================
-# Materiais de apoio: artigos, livros, cursos, bases de dados, etc.
-# Cada item: titulo, descricao e (opcional) link.
-# Vazia = aba mostra "em breve". Tire o "#" para adicionar.
+# Cada item: nome, categoria, fonte (crédito), descricao, link.
+# Vazia = aba mostra "em breve".
 
-itens:
-  # - titulo: "Genoma de referência de C. sordidus (PeerJ, 2023)"
-  #   descricao: "Artigo do genoma que anotamos."
-  #   link: "https://doi.org/10.7717/peerj.16276"
+recursos:
+  # ---- Ferramentas interativas de ensino ----
+  - nome: "Alinhamento de sequências"
+    categoria: "Ferramentas interativas de ensino"
+    fonte: "TeachEnG · Illinois"
+    descricao: >
+      Visualize, passo a passo, como duas sequências são alinhadas.
+    link: "https://teacheng.illinois.edu/SequenceAlignment/"
+
+  - nome: "Programação dinâmica: Needleman–Wunsch"
+    categoria: "Ferramentas interativas de ensino"
+    fonte: "TeachEnG · Illinois"
+    descricao: >
+      Preencha a matriz de alinhamento global e acompanhe o caminho ótimo.
+    link: "https://teacheng.illinois.edu/SequenceAlignmentDP/"
+
+  - nome: "Dot plot (matriz de pontos)"
+    categoria: "Ferramentas interativas de ensino"
+    fonte: "TeachEnG · Illinois"
+    descricao: >
+      Compare duas sequências visualmente e identifique regiões similares.
+    link: "https://teacheng.illinois.edu/DotPlot/"
+
+  - nome: "Árvores filogenéticas"
+    categoria: "Ferramentas interativas de ensino"
+    fonte: "TeachEnG · Illinois"
+    descricao: >
+      Construa árvores por parcimônia, UPGMA e neighbor-joining, interativamente.
+    link: "https://teacheng.illinois.edu/PhylogeneticTree/"
+
+  # ---- Sequenciamento ----
+  - nome: "SequenceNG — técnicas de NGS"
+    categoria: "Sequenciamento"
+    fonte: "KnowEnG · Illinois"
+    descricao: >
+      Recurso interativo sobre as principais técnicas de sequenciamento de nova
+      geração (NGS).
+    link: "https://education.knoweng.org/sequenceng/"
+
+  - nome: "Jogo do sequenciamento de DNA"
+    categoria: "Sequenciamento"
+    fonte: "DNALC · Cold Spring Harbor"
+    descricao: >
+      Animação interativa que mostra, como um jogo, como o DNA é sequenciado.
+    link: "https://dnalc.cshl.edu/view/15891-DNA-sequencing-game-interactive-2D-animation.html"
+
+  # ---- Fundamentos de genética e biologia molecular ----
+  - nome: "Learn.Genetics — Fundamentos"
+    categoria: "Fundamentos de genética e biologia molecular"
+    fonte: "University of Utah"
+    descricao: >
+      Módulos interativos: dogma central, anatomia do gene, tipos de proteína,
+      cariótipo e muito mais.
+    link: "https://learn.genetics.utah.edu/content/basics/"
+
+  - nome: "Animações de biologia molecular"
+    categoria: "Fundamentos de genética e biologia molecular"
+    fonte: "DNALC · Cold Spring Harbor"
+    descricao: >
+      Animações de PCR, eletroforese em gel, DNA barcoding, produção de insulina
+      e outros temas.
+    link: "https://dnalc.cshl.edu/resources/animations/"
+
+  # ---- Jogos e simulações ----
+  - nome: "Phage Invaders"
+    categoria: "Jogos e simulações"
+    fonte: "Innovative Genomics Institute"
+    descricao: >
+      Jogo sobre CRISPR e a defesa das bactérias contra vírus (fagos).
+    link: "https://innovativegenomics.org/education/games-activities/phage-invaders/"
+
+  - nome: "Jogo de montagem de genoma"
+    categoria: "Jogos e simulações"
+    fonte: "Aberystwyth University"
+    descricao: >
+      Jogo sobre a montagem de genomas a partir de leituras de sequenciamento.
+    link: "https://genome-game.dcs.aber.ac.uk/"
+
+  - nome: "Genética de populações"
+    categoria: "Jogos e simulações"
+    fonte: "Virtual Biology Lab"
+    descricao: >
+      Simulações interativas de evolução e genética de populações.
+    link: "https://virtualbiologylab.org/population-genetics/"
