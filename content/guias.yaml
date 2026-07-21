@@ -12,9 +12,9 @@ guias:
   - numero: "01"
     titulo: "Rastreabilidade & Controle de Qualidade"
     descricao: >
-      A lógica dos códigos que ligam cada proteína ao genoma e sinalizam falsos
-      positivos: parâmetros, escolhas de valores, bancos de referência,
-      delimitações e fluxo — com diagramas e autoavaliação.
+      Entenda a lógica dos códigos que utilizamos em nosso pipeline:
+      parâmetros, escolhas de valores, bancos de referência,
+      delimitações e fluxo de tarefas.
     link: "guia-rastreabilidade-qc.html"
 
   # Para adicionar o próximo guia, copie o bloco acima, troque o numero para "02"
