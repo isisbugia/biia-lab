@@ -1,0 +1,15 @@
+# ==========================================================================
+# TEXTOS GERAIS DO SITE  —  edite os valores (o texto depois dos ":")
+# ==========================================================================
+# Dica: para textos longos, escreva depois de ">" e mantenha a indentação.
+
+titulo: "Laboratório BIIA"
+subtitulo: "Materiais abertos do laboratório"
+
+descricao: >
+  Bioinformática, anotação funcional por domínios e genômica — a partir do nosso
+  trabalho com Cosmopolites sordidus, a broca-do-rizoma da bananeira. Guias,
+  protocolos e recursos, feitos para aprender.
+
+rodape_esquerda: "Laboratório BIIA · materiais abertos"
+rodape_direita: "IFSP · Cosmopolites sordidus"

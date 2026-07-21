@@ -1,0 +1,12 @@
+# ==========================================================================
+# EVENTOS IMPORTANTES  —  itens da aba "Eventos importantes"
+# ==========================================================================
+# Cada evento: data (AAAA-MM-DD), titulo, descricao e (opcional) link.
+# Os mais próximos primeiro. Vazia = aba mostra "em breve".
+# Tire o "#" para adicionar.
+
+eventos:
+  # - data: "2026-07-27"
+  #   titulo: "Prazo — resumo expandido (17º CONICT)"
+  #   descricao: "Submissão do resumo expandido (avaliação cega, até 6 páginas)."
+  #   link: ""

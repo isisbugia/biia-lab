@@ -1,0 +1,16 @@
+# ==========================================================================
+# QUADRO DE AVISOS  —  itens da aba "Quadro de avisos"
+# ==========================================================================
+# Cada aviso: data (AAAA-MM-DD), titulo e texto. Os mais recentes primeiro.
+# Vazia = aba mostra "em breve". Tire o "#" para adicionar.
+
+avisos:
+  - data: "2026-07-21"
+    titulo: "Site no ar"
+    texto: >
+      Publicamos o primeiro material do laboratório: o Guia de estudo 01
+      (Rastreabilidade & Controle de Qualidade). Novos materiais chegam em breve.
+
+  # - data: "2026-08-01"
+  #   titulo: "Título do aviso"
+  #   texto: "Texto do aviso."

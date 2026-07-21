@@ -6,19 +6,30 @@ anotação funcional e genômica), a partir do trabalho com *Cosmopolites sordid
 
 🌐 **Site:** https://isisbugia.github.io/biia-lab/
 
-## Conteúdo
+## Como funciona
 
-- **Guia de estudo — Rastreabilidade & Controle de Qualidade**
-  ([guia-rastreabilidade-qc.html](guia-rastreabilidade-qc.html)): a lógica dos
-  códigos que ligam cada proteína ao genoma e sinalizam falsos positivos —
-  parâmetros, escolhas de valores, bancos de referência, delimitações e fluxo.
+O conteúdo mora em arquivos de texto simples em [`content/`](content/) (um por
+aba); o gerador [`build.py`](build.py) monta o `index.html`. Para editar textos,
+veja **[COMO_EDITAR.md](COMO_EDITAR.md)** — você mexe só no conteúdo, não no HTML.
 
-Cada material é um arquivo HTML **autossuficiente** (abre offline em qualquer
-navegador, sem conta) — dá para estudar pelo site ou baixar o arquivo.
+Abas: Guias de estudo · Ferramentas de Bioinfo · Vídeoaulas e Tutoriais ·
+Recursos educativos · Quadro de avisos · Eventos importantes.
 
-## Como isto se relaciona ao projeto
+Regenerar o site após editar o conteúdo:
 
-Este repositório é **público** e contém apenas material de divulgação. O
-desenvolvimento do pipeline vive num repositório **privado** separado
-(`BIIA-Csordidus`); a fonte editável dos guias é mantida lá (em `docs/`) e
-publicada aqui como versão visual.
+```
+python build.py        # precisa de pyyaml
+```
+
+## Conteúdo atual
+
+- **Guia de estudo 01 — Rastreabilidade & Controle de Qualidade**
+  ([guia-rastreabilidade-qc.html](guia-rastreabilidade-qc.html)).
+
+Cada guia é um HTML **autossuficiente** (abre offline, sem conta).
+
+## Relação com o projeto
+
+Este repositório é **público** (só material de divulgação). O desenvolvimento do
+pipeline vive num repositório **privado** separado (`BIIA-Csordidus`); a fonte
+editável dos guias é mantida lá (em `docs/`) e publicada aqui como versão visual.

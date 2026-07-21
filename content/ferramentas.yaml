@@ -1,0 +1,14 @@
+# ==========================================================================
+# FERRAMENTAS DE BIOINFO  —  cards da aba "Ferramentas de Bioinfo"
+# ==========================================================================
+# Cada item: titulo, descricao e (opcional) link.
+# Enquanto a lista estiver vazia, a aba mostra um aviso "em breve".
+# Para adicionar, tire o "#" das linhas de exemplo e edite.
+
+itens:
+  # - titulo: "BLAST+"
+  #   descricao: "Busca por similaridade de sequências (proteína e nucleotídeo)."
+  #   link: "https://blast.ncbi.nlm.nih.gov/"
+  # - titulo: "InterProScan"
+  #   descricao: "Anotação de domínios e assinaturas funcionais."
+  #   link: "https://www.ebi.ac.uk/interpro/"

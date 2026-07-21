@@ -1,0 +1,10 @@
+# ==========================================================================
+# VÍDEOAULAS E TUTORIAIS  —  cards da aba "Vídeoaulas e Tutoriais"
+# ==========================================================================
+# Cada item: titulo, descricao e (opcional) link (ex.: YouTube).
+# Vazia = aba mostra "em breve". Tire o "#" para adicionar.
+
+itens:
+  # - titulo: "Introdução ao pipeline BIIA"
+  #   descricao: "Visão geral em vídeo dos módulos M01–M13."
+  #   link: "https://youtube.com/..."

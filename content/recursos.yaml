@@ -1,0 +1,11 @@
+# ==========================================================================
+# RECURSOS EDUCATIVOS  —  cards da aba "Recursos educativos"
+# ==========================================================================
+# Materiais de apoio: artigos, livros, cursos, bases de dados, etc.
+# Cada item: titulo, descricao e (opcional) link.
+# Vazia = aba mostra "em breve". Tire o "#" para adicionar.
+
+itens:
+  # - titulo: "Genoma de referência de C. sordidus (PeerJ, 2023)"
+  #   descricao: "Artigo do genoma que anotamos."
+  #   link: "https://doi.org/10.7717/peerj.16276"
