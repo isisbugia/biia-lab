@@ -1,8 +1,8 @@
 # BIIA — Materiais abertos do laboratório
 
-Site público de materiais de estudo do laboratório **BIIA** (bioinformática,
-anotação funcional e genômica), a partir do trabalho com *Cosmopolites sordidus*
-(broca-do-rizoma da bananeira).
+Site público de materiais de estudo do **Laboratório de Bioinformática e
+Inteligência Agrícola (BIIA)** — IFSP, Campus Miracatu — a partir do trabalho com
+*Cosmopolites sordidus* (broca-do-rizoma da bananeira).
 
 🌐 **Site:** https://isisbugia.github.io/biia-lab/
 
