@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guia de estudo — Rastreabilidade & Controle de Qualidade (BIIA-Csordidus)</title>
+<meta name="description" content="Guia de estudo da lógica dos códigos de rastreabilidade e controle de qualidade do pipeline BIIA-Csordidus: parâmetros, escolhas de valores, bancos de referência, delimitações e fluxo.">
+<meta name="color-scheme" content="light dark">
+<!-- Arquivo AUTOSSUFICIENTE: todo o CSS/JS está embutido. Abre em qualquer
+     navegador, offline, sem conta. Distribua livremente (ex.: pendrive).
+     Fonte editável: docs/guia_estudo_rastreabilidade_qc.md -->
+<style>
+  html,body{margin:0;padding:0;}
+</style>
+</head>
+<body>
+<style>
+  :root{
+    --paper:#f5f7f3; --surface:#ffffff; --surface-2:#eef2ec;
+    --ink:#1a231e; --muted:#586a60; --faint:#7d8c82; --line:#d8e0d6;
+    --pine:#1f6f5c; --pine-strong:#164b3f; --pine-soft:#e4efe9;
+    --ochre:#9a6614; --ochre-bg:#f6ecd8; --ochre-line:#e4cf9f;
+    --code-bg:#f0f3ee;
+    --title-face:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --body-face:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono-face:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --s1:.8125rem; --s0:1.0625rem; --h3:1.3rem; --h2:1.7rem; --h1:2.55rem;
+    --maxprose:44rem;
+    --shadow:0 1px 2px rgba(20,40,30,.05),0 6px 22px -12px rgba(20,50,38,.18);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#0f1512; --surface:#161d19; --surface-2:#1a231e;
+      --ink:#e7ece7; --muted:#9ca99f; --faint:#7d8c82; --line:#2a352f;
+      --pine:#5cc2a4; --pine-strong:#8bd6c1; --pine-soft:#16241f;
+      --ochre:#d9a94a; --ochre-bg:#211a0f; --ochre-line:#493a1e;
+      --code-bg:#121915;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f5f7f3; --surface:#ffffff; --surface-2:#eef2ec;
+    --ink:#1a231e; --muted:#586a60; --faint:#7d8c82; --line:#d8e0d6;
+    --pine:#1f6f5c; --pine-strong:#164b3f; --pine-soft:#e4efe9;
+    --ochre:#9a6614; --ochre-bg:#f6ecd8; --ochre-line:#e4cf9f; --code-bg:#f0f3ee;
+    --shadow:0 1px 2px rgba(20,40,30,.05),0 6px 22px -12px rgba(20,50,38,.18);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0f1512; --surface:#161d19; --surface-2:#1a231e;
+    --ink:#e7ece7; --muted:#9ca99f; --faint:#7d8c82; --line:#2a352f;
+    --pine:#5cc2a4; --pine-strong:#8bd6c1; --pine-soft:#16241f;
+    --ochre:#d9a94a; --ochre-bg:#211a0f; --ochre-line:#493a1e; --code-bg:#121915;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -16px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--body-face);font-size:var(--s0);line-height:1.68;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  a{color:var(--pine);text-underline-offset:2px;text-decoration-thickness:1px;}
+  a:hover{color:var(--pine-strong);}
+  :focus-visible{outline:2px solid var(--pine);outline-offset:2px;border-radius:3px;}
+  code,kbd,samp{font-family:var(--mono-face);}
+
+  /* ---------- header ---------- */
+  .masthead{border-bottom:1px solid var(--line);background:
+    radial-gradient(120% 100% at 88% -10%,var(--pine-soft),transparent 60%),var(--surface);}
+  .masthead-in{max-width:78rem;margin:0 auto;padding:3.2rem 1.6rem 1.2rem;}
+  .eyebrow{font-family:var(--mono-face);font-size:var(--s1);letter-spacing:.14em;
+    text-transform:uppercase;color:var(--pine);margin:0 0 .9rem;font-weight:600;}
+  h1.title{font-family:var(--title-face);font-weight:600;line-height:1.05;
+    font-size:var(--h1);margin:0 0 .5rem;letter-spacing:-.01em;text-wrap:balance;max-width:20ch;}
+  .lede{font-size:1.18rem;color:var(--muted);max-width:52ch;margin:.2rem 0 1.4rem;}
+  .chips{display:flex;flex-wrap:wrap;gap:.5rem;}
+  .chip{font-family:var(--mono-face);font-size:var(--s1);color:var(--muted);
+    background:var(--surface-2);border:1px solid var(--line);border-radius:999px;
+    padding:.24rem .7rem;}
+  .ribbon{font-family:var(--mono-face);font-size:.82rem;letter-spacing:.32em;
+    color:var(--faint);opacity:.55;overflow:hidden;white-space:nowrap;
+    padding:.7rem 0 0;user-select:none;border-top:1px solid var(--line);margin-top:1.4rem;}
+
+  /* ---------- shell ---------- */
+  .shell{max-width:78rem;margin:0 auto;padding:0 1.6rem;
+    display:grid;grid-template-columns:15rem minmax(0,1fr);gap:3rem;align-items:start;}
+  nav.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;
+    padding:2.4rem .4rem 2rem;}
+  .toc h2{font-family:var(--mono-face);font-size:var(--s1);text-transform:uppercase;
+    letter-spacing:.12em;color:var(--faint);margin:0 0 .8rem;font-weight:600;}
+  .toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.1rem;}
+  .toc a{display:flex;gap:.6rem;align-items:baseline;text-decoration:none;color:var(--muted);
+    font-size:.94rem;padding:.32rem .55rem;border-radius:7px;border-left:2px solid transparent;
+    transition:background .15s,color .15s;}
+  .toc a:hover{background:var(--surface-2);color:var(--ink);}
+  .toc a .k{font-family:var(--mono-face);font-size:.78rem;color:var(--pine);min-width:1.1rem;}
+  .toc a.active{background:var(--pine-soft);color:var(--ink);border-left-color:var(--pine);font-weight:600;}
+  .toc a.active .k{color:var(--pine-strong);}
+
+  main{padding:2.4rem 0 5rem;min-width:0;max-width:var(--maxprose);}
+  section{scroll-margin-top:1.5rem;padding:1.2rem 0 1.6rem;}
+  section+section{border-top:1px solid var(--line);}
+  .part-tag{font-family:var(--mono-face);font-size:var(--s1);letter-spacing:.1em;
+    text-transform:uppercase;color:var(--pine);font-weight:600;display:block;margin:.4rem 0 .3rem;}
+  h2.sec{font-family:var(--title-face);font-weight:600;font-size:var(--h2);
+    line-height:1.12;margin:.1rem 0 1rem;letter-spacing:-.01em;text-wrap:balance;}
+  h3{font-family:var(--title-face);font-weight:600;font-size:var(--h3);
+    margin:2rem 0 .6rem;letter-spacing:-.005em;}
+  p{margin:.85rem 0;}
+  strong{font-weight:650;color:var(--ink);}
+  main ul,main ol.list{margin:.7rem 0;padding-left:1.15rem;}
+  main li{margin:.42rem 0;}
+  .muted{color:var(--muted);}
+
+  /* inline code */
+  p code,li code,td code,.callout code{background:var(--code-bg);border:1px solid var(--line);
+    border-radius:5px;padding:.06em .38em;font-size:.86em;color:var(--ink);
+    white-space:nowrap;}
+
+  /* code / pre blocks */
+  pre{background:var(--code-bg);border:1px solid var(--line);border-radius:12px;
+    padding:1rem 1.1rem;overflow-x:auto;font-family:var(--mono-face);font-size:.85rem;
+    line-height:1.6;margin:1.1rem 0;}
+  pre code{white-space:pre;}
+  .pre-label{font-family:var(--mono-face);font-size:.72rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--faint);margin:1.1rem 0 -.6rem;}
+
+  /* tables */
+  .tablewrap{overflow-x:auto;margin:1.2rem 0;border:1px solid var(--line);border-radius:12px;}
+  table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:32rem;}
+  th,td{text-align:left;padding:.62rem .8rem;border-bottom:1px solid var(--line);
+    vertical-align:top;}
+  thead th{background:var(--surface-2);font-family:var(--body-face);font-weight:650;
+    font-size:.82rem;letter-spacing:.02em;color:var(--ink);position:sticky;top:0;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:var(--surface-2);}
+  td code{white-space:normal;}
+  .num{font-variant-numeric:tabular-nums;}
+
+  /* callouts */
+  .callout{border:1px solid var(--line);border-left:3px solid var(--pine);
+    background:var(--surface);border-radius:0 12px 12px 0;padding:1rem 1.15rem;margin:1.3rem 0;
+    box-shadow:var(--shadow);}
+  .callout .lab{font-family:var(--mono-face);font-size:.72rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--pine);font-weight:600;margin:0 0 .35rem;}
+  .callout p{margin:.3rem 0;}
+  .callout.warn{border-left-color:var(--ochre);background:var(--ochre-bg);}
+  .callout.warn .lab{color:var(--ochre);}
+
+  /* figures / flow diagrams */
+  figure{margin:1.6rem 0;}
+  figcaption{font-size:var(--s1);color:var(--muted);margin-top:.7rem;text-align:center;
+    font-style:italic;}
+  .flow{border:1px solid var(--line);background:
+    linear-gradient(var(--surface),var(--surface));border-radius:14px;padding:1.4rem 1.1rem;
+    display:flex;flex-direction:column;align-items:center;gap:.55rem;overflow-x:auto;
+    box-shadow:var(--shadow);}
+  .row{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;width:100%;}
+  .node{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;
+    padding:.55rem .8rem;font-size:.86rem;text-align:center;min-width:8.5rem;line-height:1.35;}
+  .node b{display:block;font-family:var(--mono-face);font-size:.82rem;color:var(--ink);}
+  .node small{color:var(--muted);font-size:.76rem;}
+  .node.src{border-top:3px solid var(--pine);}
+  .node.hot{border:1px solid var(--pine);background:var(--pine-soft);}
+  .node.hot b{color:var(--pine-strong);}
+  .node.kit{border-style:dashed;}
+  .arrow{color:var(--faint);font-size:1.1rem;line-height:1;}
+  .edge-note{font-family:var(--mono-face);font-size:.72rem;color:var(--pine);}
+  .tag-mine{display:inline-block;font-family:var(--mono-face);font-size:.68rem;
+    color:var(--pine-strong);background:var(--pine-soft);border:1px solid var(--pine);
+    border-radius:999px;padding:.05rem .45rem;margin-left:.35rem;vertical-align:middle;}
+
+  /* the threshold "gap" viz */
+  .gap{display:grid;grid-template-columns:auto 1fr auto;gap:.4rem 1rem;align-items:center;
+    font-size:.9rem;margin:1rem 0;}
+  .gap .lab2{color:var(--muted);}
+  .gap .bar{position:relative;height:.5rem;background:var(--surface-2);
+    border:1px solid var(--line);border-radius:999px;}
+  .gap .art{position:absolute;left:6%;top:50%;transform:translate(-50%,-50%);}
+  .gap .norm{position:absolute;left:70%;top:50%;transform:translate(-50%,-50%);}
+  .gap .cut{position:absolute;top:50%;transform:translate(-50%,-50%);width:2px;height:1.1rem;
+    background:var(--pine);border-radius:2px;}
+  .dot{width:.72rem;height:.72rem;border-radius:50%;display:inline-block;}
+  .dot.a{background:var(--ochre);} .dot.n{background:var(--pine);}
+  .val{font-variant-numeric:tabular-nums;font-family:var(--mono-face);font-size:.8rem;}
+
+  /* details / self-check */
+  details{border:1px solid var(--line);border-radius:10px;background:var(--surface);
+    margin:.6rem 0;padding:0 1rem;}
+  details[open]{background:var(--surface);}
+  summary{cursor:pointer;padding:.8rem .2rem;font-weight:600;list-style:none;
+    display:flex;gap:.7rem;align-items:baseline;}
+  summary::-webkit-details-marker{display:none;}
+  summary .qn{font-family:var(--mono-face);color:var(--pine);font-size:.85rem;}
+  summary::after{content:"+";margin-left:auto;color:var(--faint);font-family:var(--mono-face);}
+  details[open] summary::after{content:"–";}
+  details .ans{padding:0 0 .9rem 1.9rem;color:var(--muted);font-size:.95rem;}
+
+  hr.soft{border:none;border-top:1px solid var(--line);margin:1.6rem 0;}
+  footer{border-top:1px solid var(--line);background:var(--surface);}
+  .footer-in{max-width:78rem;margin:0 auto;padding:1.8rem 1.6rem 2.6rem;
+    color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;
+    align-items:center;justify-content:space-between;}
+  .footer-in code{font-size:.85em;}
+
+  .tocbtn{display:none;}
+
+  @media (max-width:900px){
+    .shell{grid-template-columns:1fr;gap:0;}
+    nav.toc{position:fixed;inset:0 auto 0 0;z-index:40;width:16rem;background:var(--surface);
+      border-right:1px solid var(--line);transform:translateX(-102%);transition:transform .2s;
+      max-height:100vh;padding-top:1.4rem;box-shadow:var(--shadow);}
+    nav.toc.open{transform:translateX(0);}
+    main{max-width:none;padding-top:1.4rem;}
+    .tocbtn{display:inline-flex;position:fixed;left:1rem;bottom:1rem;z-index:41;
+      align-items:center;gap:.45rem;background:var(--pine);color:#fff;border:none;
+      font-family:var(--mono-face);font-size:.82rem;padding:.65rem .95rem;border-radius:999px;
+      box-shadow:var(--shadow);cursor:pointer;}
+    :root[data-theme="dark"] .tocbtn,:root:not([data-theme="light"]) .tocbtn{color:#08110d;}
+    .scrim{display:none;position:fixed;inset:0;background:rgba(10,20,15,.4);z-index:39;}
+    .scrim.open{display:block;}
+  }
+  @media (max-width:520px){
+    .masthead-in{padding-top:2.2rem;}
+    :root{--h1:2rem;--h2:1.45rem;}
+  }
+</style>
+
+<header class="masthead">
+  <div class="masthead-in">
+    <p class="eyebrow">BIIA · Cosmopolites sordidus · guia de estudo</p>
+    <h1 class="title">Rastreabilidade &amp; Controle de Qualidade</h1>
+    <p class="lede">A lógica por trás dos códigos — parâmetros, escolhas de valores,
+      bancos de referência e o fluxo — para estudar com calma, em detalhe.</p>
+    <div class="chips">
+      <span class="chip">biia/idmap.py</span>
+      <span class="chip">biia/complexity.py</span>
+      <span class="chip">M05 · M07 · M10</span>
+      <span class="chip">make enrich-kit</span>
+    </div>
+    <div class="ribbon" aria-hidden="true">MGNTVQYST·QHSTA·QHSTA·QHSTA·QHSTA·QHSTA·QHSTA·QHSTA·QHSTA·QHSTA·QHSTA·QHSTA·QHSTA·QHSTA·QHSTA·QHSTA·QHSTA·QHSTA·QHSTA·LHSRVEYST</div>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="toc" id="toc" aria-label="Índice">
+    <h2>Índice</h2>
+    <ol>
+      <li><a href="#mapa"><span class="k">0</span> Mapa dos arquivos</a></li>
+      <li><a href="#parte-a"><span class="k">A</span> Rastreabilidade de IDs</a></li>
+      <li><a href="#parte-b"><span class="k">B</span> Flag LOW_COMPLEXITY</a></li>
+      <li><a href="#parte-c"><span class="k">C</span> Encaixe no pipeline</a></li>
+      <li><a href="#parte-d"><span class="k">D</span> Bancos &amp; delimitações</a></li>
+      <li><a href="#parte-e"><span class="k">E</span> Referência de parâmetros</a></li>
+      <li><a href="#parte-f"><span class="k">F</span> Mão na massa</a></li>
+      <li><a href="#parte-g"><span class="k">G</span> Autoavaliação</a></li>
+      <li><a href="#parte-h"><span class="k">H</span> Para ir além</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <section id="mapa">
+      <span class="part-tag">Parte 0</span>
+      <h2 class="sec">Mapa dos arquivos</h2>
+      <p>Duas peças que construímos <em>por cima</em> do pipeline existente: uma de
+        <strong>rastreabilidade</strong> (de onde veio cada proteína) e uma de
+        <strong>controle de qualidade</strong> (o que é suspeito). Este guia é o
+        “porquê” delas — não a documentação do pipeline inteiro.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Arquivo</th><th>Papel</th></tr></thead>
+          <tbody>
+            <tr><td><code>biia/idmap.py</code></td><td><strong>Rastreabilidade</strong>: liga cada candidata ao ID do proteoma, à posição no genoma e ao contig no GenBank.</td></tr>
+            <tr><td><code>biia/complexity.py</code></td><td><strong>Controle de qualidade</strong>: detecta sequências de baixa complexidade (falsos positivos).</td></tr>
+            <tr><td><code>05_filter_candidates.py</code> (M05)</td><td>Seleção por domínio; aplica rastreabilidade + flag <code>LOW_COMPLEXITY</code>.</td></tr>
+            <tr><td><code>07_similarity_discovery.py</code> (M07)</td><td>Descoberta por similaridade; idem.</td></tr>
+            <tr><td><code>10_integrate_evidence.py</code> (M10)</td><td>Integra evidências; aplica rastreabilidade.</td></tr>
+            <tr><td><code>enrich_curation_ids.py</code> · <code>make enrich-kit</code></td><td>Mantém o <strong>kit da bolsista</strong> (FASTA por família) com as mesmas anotações.</td></tr>
+            <tr><td><code>config/*.yaml</code></td><td>Onde moram os <strong>parâmetros</strong> e os <strong>caminhos</strong>.</td></tr>
+            <tr><td><code>tests/test_*.py</code></td><td>Fixam o comportamento — leia-os: são exemplos executáveis.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <p class="lab">Princípio de design</p>
+        <p>A <em>lógica</em> mora num módulo <code>biia/</code> (testável, fonte única);
+          os <em>scripts</em> M05/M07/M10 só a <strong>aplicam</strong>. Assim o pipeline
+          e o kit de curadoria nunca divergem.</p>
+      </div>
+    </section>
+
+    <section id="parte-a">
+      <span class="part-tag">Parte A</span>
+      <h2 class="sec">Rastreabilidade de identificadores</h2>
+      <h3>A.1 · O problema</h3>
+      <p>Uma candidata recebe um ID amigável do projeto (<code>CSOR_04408</code>). Mas
+        para <strong>publicar, conferir ou voltar ao genoma</strong> você precisa saber
+        de qual <strong>modelo gênico</strong> ela veio (<code>g2919.t1</code>),
+        <strong>onde</strong> ela está no genoma (contig, início–fim, fita) e qual o
+        <strong>identificador oficial</strong> desse contig no GenBank.</p>
+      <div class="callout warn">
+        <p class="lab">A dúvida que motivou tudo</p>
+        <p>BLASTar a proteína <strong>contra o genoma</strong> não dá 100% de identidade
+          porque os <strong>íntrons</strong> quebram o alinhamento. A conferência correta
+          é <code>blastp</code> contra o <strong>proteoma</strong> — aí dá 100%.</p>
+      </div>
+
+      <h3>A.2 · As três camadas</h3>
+      <div class="pre-label">Header de uma candidata</div>
+      <pre><code>CSOR_04408   orig=g2919.t1   loc=ptg000301l:14913-17233(+)   genbank=JARFXV010000299.1
+(ID projeto)  (modelo gênico)  (posição no genoma)              (contig no GenBank)</code></pre>
+      <figure>
+        <div class="flow">
+          <div class="row">
+            <div class="node src"><b>id_map.tsv</b><small>M02 · CSOR ↔ g###</small><br><span class="edge-note">original_id</span></div>
+            <div class="node src"><b>augustus.hints.gtf</b><small>Braker2 · coordenadas</small><br><span class="edge-note">genomic_location</span></div>
+            <div class="node src"><b>contig_map.tsv</b><small>NCBI Datasets</small><br><span class="edge-note">genbank_accession</span></div>
+          </div>
+          <div class="arrow">↓</div>
+          <div class="node hot"><b>tabela de rastreabilidade</b><small>build_trace_table()</small></div>
+          <div class="arrow">↓</div>
+          <div class="row">
+            <div class="node">tabelas<br><small>candidates · discovered · annotation</small></div>
+            <div class="node">headers dos FASTA<br><small>orig= loc= genbank=</small></div>
+          </div>
+        </div>
+        <figcaption>Cada camada vem de uma fonte diferente; a tabela junta e o pipeline propaga.</figcaption>
+      </figure>
+
+      <h3>A.3 · As funções-chave</h3>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Função</th><th>O que faz</th><th>Detalhe importante</th></tr></thead>
+          <tbody>
+            <tr><td><code>parse_gff_coords</code></td><td>GTF → <code>g###.t# → 'contig:ini-fim(fita)'</code></td><td><strong>agrega por transcrito</strong>: menor <code>start</code>, maior <code>end</code> (junta os éxons num intervalo).</td></tr>
+            <tr><td><code>load_contig_map</code></td><td><code>ptg#### → JARFXV…</code></td><td>vem do <em>sequence report</em> do NCBI.</td></tr>
+            <tr><td><code>genbank_of</code></td><td>contig do <code>loc</code> → accession</td><td>fora do GenBank → <code>so_dryad</code>.</td></tr>
+            <tr><td><code>build_trace_table</code></td><td>monta <code>protein_id</code> + colunas disponíveis</td><td><strong>degradação graciosa</strong>: sem GTF, só <code>original_id</code>.</td></tr>
+            <tr><td><code>merge_trace</code></td><td>insere as colunas após <code>protein_id</code></td><td><strong>idempotente</strong>: remove e reinsere (não duplica).</td></tr>
+            <tr><td><code>header_suffixes</code></td><td><code>protein_id → "orig=.. loc=.. genbank=.."</code></td><td>só os campos preenchidos.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>A.4 · Onde entra no fluxo</h3>
+      <figure>
+        <div class="flow">
+          <div class="node"><b>M02</b><small>prepara proteoma → id_map.tsv</small></div>
+          <div class="arrow">↓</div>
+          <div class="row">
+            <div class="node hot"><b>M05</b><small>candidatas por domínio</small></div>
+            <div class="node hot"><b>M07</b><small>descoberta por similaridade</small></div>
+            <div class="node hot"><b>M10</b><small>integra evidências</small></div>
+          </div>
+          <div class="arrow">↓</div>
+          <div class="row">
+            <div class="node">candidates.tsv/.faa</div>
+            <div class="node">discovered_candidates.tsv</div>
+            <div class="node">annotation_table.tsv</div>
+          </div>
+          <div class="arrow">↓</div>
+          <div class="node kit"><b>make enrich-kit</b><small>kit da bolsista (mesmas funções)</small></div>
+        </div>
+        <figcaption>As mesmas funções servem ao pipeline e ao kit — por isso nunca divergem.</figcaption>
+      </figure>
+
+      <h3>A.5 · Parâmetros e escolhas (o “porquê”)</h3>
+      <ul>
+        <li><strong>Por que <code>CSOR_</code> como ID principal e não <code>g###</code>?</strong>
+          Ferramentas (BLAST, HMMER, cd-hit) leem <strong>só o primeiro token</strong>
+          do header. <code>CSOR_</code> é o namespace estável; <code>g###</code> vira
+          campo rotulado (<code>orig=</code>). Nunca junte os dois num token
+          (<code>CSOR_04408|g2919.t1</code>) — o <code>|</code> é tratado de formas
+          diferentes por cada ferramenta.</li>
+        <li><strong>Por que tabela <em>e</em> header?</strong> A tabela é a
+          <strong>fonte da verdade</strong> (robusta, dá para <em>join</em>); o header é
+          <strong>conveniência</strong> para quem olha a sequência. Redundância proposital.</li>
+        <li><strong>Por que GTF e mapa são opcionais no config?</strong> Para o pipeline
+          <strong>não quebrar</strong> sem a anotação. Sem eles, sai só
+          <code>original_id</code> — a “degradação graciosa”.</li>
+        <li><strong>Por que <code>so_dryad</code>?</strong> Honestidade: ~0,9% dos genes
+          ficam em contigs não depositados no GenBank. Marcar é melhor que inventar um
+          accession. (Nenhuma candidata do piloto cai nesse caso.)</li>
+      </ul>
+    </section>
+
+    <section id="parte-b">
+      <span class="part-tag">Parte B</span>
+      <h2 class="sec">Flag <code>LOW_COMPLEXITY</code></h2>
+      <h3>B.1 · O problema</h3>
+      <p>A descoberta por similaridade (M07) classifica pela palavra-chave do
+        <strong>melhor hit</strong>. Isso é frágil para <strong>baixa complexidade</strong>
+        — repetições em tandem como <code>QHSTAQHSTA…</code> Elas grudam <strong>por
+        acaso</strong> em proteínas sem relação (amilase, extensina, fator de transcrição)
+        e pegam a família pelo hit errado. Dois falsos positivos reais no piloto:
+        <code>CSOR_10506</code> e <code>CSOR_16554</code>.</p>
+
+      <h3>B.2 · A métrica</h3>
+      <p>Duas medidas simples da <strong>composição</strong> da sequência:</p>
+      <ol class="list">
+        <li><strong>Entropia de Shannon</strong> (bits): o quão variada é a composição.
+          Máximo com 20 aminoácidos = <code>log2(20) ≈ 4,32</code>. Proteína normal
+          ~4,0–4,2; um repeat despenca. <code>H = -Σ pᵢ·log2(pᵢ)</code>.</li>
+        <li><strong>Fração dos 5 aa mais comuns</strong>: quanto é dominado por poucos
+          aminoácidos. Normal ~40–55%; repeat ~90%.</li>
+      </ol>
+      <p>É baixa complexidade se <strong>entropia &lt; limiar OU top-5 &gt; limiar</strong>
+        (qualquer um basta).</p>
+
+      <h3>B.3 · Os limiares — e por que esses valores</h3>
+      <p>Não foram inventados: vieram da <strong>distribuição real</strong> das 56
+        candidatas. As duas artefatas ficaram <strong>isoladas no fundo</strong>, com um
+        vão enorme para a candidata normal seguinte. Escolhemos valores no meio do vão,
+        com margem dos dois lados.</p>
+      <figure>
+        <div class="flow" style="align-items:stretch;gap:1.1rem;">
+          <div class="gap">
+            <span class="lab2">entropia</span>
+            <div class="bar">
+              <span class="cut" style="left:47%;" title="corte 3,2"></span>
+              <span class="dot a art" title="artefato 2,87"></span>
+              <span class="dot n norm" title="normal 3,86"></span>
+            </div>
+            <span class="val">corte 3,2</span>
+            <span></span>
+            <span class="muted" style="font-size:.78rem;">
+              <span class="dot a" style="vertical-align:middle;"></span> artefato <b class="val">2,87</b>
+              &nbsp;·&nbsp; <span class="dot n" style="vertical-align:middle;"></span> normal mais próxima <b class="val">3,86</b></span>
+            <span></span>
+          </div>
+          <div class="gap">
+            <span class="lab2">top-5 aa</span>
+            <div class="bar">
+              <span class="cut" style="left:62%;" title="corte 0,70"></span>
+              <span class="dot n norm" style="left:55%;" title="normal 55%"></span>
+              <span class="dot a art" style="left:90%;" title="artefato 90%"></span>
+            </div>
+            <span class="val">corte 0,70</span>
+            <span></span>
+            <span class="muted" style="font-size:.78rem;">
+              <span class="dot n" style="vertical-align:middle;"></span> normal <b class="val">55%</b>
+              &nbsp;·&nbsp; <span class="dot a" style="vertical-align:middle;"></span> artefato <b class="val">90%</b></span>
+            <span></span>
+          </div>
+        </div>
+        <figcaption>O corte cai no vão entre os dois grupos — margem folgada dos dois lados.</figcaption>
+      </figure>
+      <div class="callout">
+        <p class="lab">Lição sobre parâmetros</p>
+        <p>Prefira limiares que você consegue <strong>justificar com a distribuição real
+          dos seus dados</strong>, não com um número “de fábrica”.</p>
+      </div>
+
+      <h3>B.4 · Uma escolha importante</h3>
+      <ul>
+        <li><strong>Sinaliza, não reprova.</strong> A flag entra na coluna
+          <code>flags</code>, no mesmo padrão de <code>LENGTH_ATYPICAL</code>: chama a
+          atenção do curador, mas <strong>não descarta sozinha</strong>. A decisão
+          continua humana.</li>
+        <li><strong>Por que <code>sequences</code> é opcional?</strong> Retro-compatibilidade:
+          sem esse argumento, o comportamento é o antigo (nenhuma flag), mantendo os
+          testes antigos válidos.</li>
+      </ul>
+    </section>
+
+    <section id="parte-c">
+      <span class="part-tag">Parte C</span>
+      <h2 class="sec">Como isso se encaixa no pipeline</h2>
+      <figure>
+        <div class="flow" style="align-items:stretch;">
+          <div class="node">M01 valida → <b>M02</b> prepara (id_map.tsv)</div>
+          <div class="arrow">↓</div>
+          <div class="node">M03 hmmscan → M04 parse</div>
+          <div class="arrow">↓</div>
+          <div class="row">
+            <div class="node hot"><b>M05</b> candidatas por domínio <span class="tag-mine">nosso</span><small>rastreabilidade + LOW_COMPLEXITY</small></div>
+            <div class="node hot"><b>M07</b> descoberta por similaridade <span class="tag-mine">nosso</span><small>+ reaproveita BLAST bruto</small></div>
+          </div>
+          <div class="arrow">↓</div>
+          <div class="row">
+            <div class="node">M06 InterProScan</div>
+            <div class="node">M08 → M09 BLAST</div>
+          </div>
+          <div class="arrow">↓</div>
+          <div class="node hot"><b>M10</b> integra evidências <span class="tag-mine">nosso</span></div>
+          <div class="arrow">↓</div>
+          <div class="node">M12 clusters → M13 estatísticas</div>
+        </div>
+        <figcaption>M05 e M07 são independentes — M07 usa o proteoma inteiro. Por isso os
+          artefatos de baixa complexidade apareceram no M07, não no M05.</figcaption>
+      </figure>
+    </section>
+
+    <section id="parte-d">
+      <span class="part-tag">Parte D</span>
+      <h2 class="sec">Bancos de referência e delimitações</h2>
+      <p>Os limiares numéricos só fazem sentido junto das <strong>fontes de dados</strong>
+        e das <strong>delimitações</strong> (o que conta e o que não conta).</p>
+
+      <h3>D.1 · Bancos — o que é cada um e por que ele</h3>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Banco</th><th>Usado em</th><th>Por que essa escolha</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Pfam-A</strong> <code>--cut_ga</code></td><td>M03/M05</td><td>Usamos os <em>gathering thresholds</em> — cortes <strong>curados pelos autores de cada família</strong>, não um e-value único arbitrário. Cada família tem sensibilidade calibrada por especialistas.</td></tr>
+            <tr><td><strong>Swiss-Prot</strong></td><td>M08/M09</td><td>Proteínas <strong>revisadas manualmente</strong> (baixo ruído). Sem <code>taxid_map</code> aqui → <code>is_coleoptera_hit</code> cai no <em>fallback</em> por nome (previsto).</td></tr>
+            <tr><td><strong>Coleoptera</strong> (5 besouros)</td><td>M07/M09</td><td>Escolha <strong>filogenética</strong>: o principal é <em>Sitophilus oryzae</em> — como <em>Cosmopolites</em>, é um <strong>gorgulho (Curculionidae)</strong>, o parente mais próximo com genoma bom. + <em>Dendroctonus</em>, <em>Tribolium</em>, <em>Anoplophora</em>, <em>Leptinotarsa</em>.</td></tr>
+            <tr><td><strong>Genoma</strong> (pre-binning)</td><td>fonte do <code>loc=</code></td><td>Pre-binning (16.483 genes), <strong>não</strong> post-binning (24.494): a post- tem <strong>~14% de genes com contaminação bacteriana</strong>. A pre- é mais limpa (a depositada).</td></tr>
+            <tr><td><strong>Mapa de contigs</strong></td><td>fonte do <code>genbank=</code></td><td>Método <strong>exato sem alinhamento</strong>: o NCBI preservou os nomes dos contigs. (Plano B seria hash MD5 ou <code>minimap2</code>.)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>D.2 · Uma decisão que vale estudar: BLAST vs DIAMOND</h3>
+      <p>No M07 testamos os dois. O <strong>DIAMOND</strong> <code>--ultra-sensitive</code>
+        foi ~16× mais rápido, <strong>mas</strong> recuperou 13 de 15 descobertas —
+        <strong>perdeu as 2 de menor identidade (~31%)</strong>, justamente os homólogos
+        mais divergentes (o alvo da etapa). Por isso mantivemos o <strong>blastp</strong>
+        como referência. A escolha da ferramenta é um parâmetro como outro: o critério foi
+        “não perder o que a etapa existe para achar”.</p>
+
+      <h3>D.3 · Delimitações</h3>
+      <ul>
+        <li><strong>Fronteira de palavra</strong> na classificação por keyword: “amylase”
+          casa <code>alpha-amylase-like</code>, mas <strong>não</strong>
+          <code>polyglutamylase</code> (tubulina). Sem isso, falsos positivos por
+          <em>substring</em> — foi um bug real, corrigido.</li>
+        <li><strong>Faixas de tamanho</strong> por família (<code>length_range_aa</code>):
+          fora da faixa → <code>LENGTH_ATYPICAL</code> (sinaliza, não descarta).</li>
+        <li><strong>Domínio diagnóstico vs. de apoio</strong>: só o diagnóstico torna
+          candidata por domínio; apoio sozinho não basta.</li>
+        <li><strong>Limiares da descoberta</strong> (<code>min_pident</code> 30%,
+          <code>min_qcov</code> 50%, <code>max_evalue</code> 1e-10): deixados
+          <strong>sensíveis de propósito</strong> (achar divergentes); o ruído é
+          controlado pela flag + curadoria, não por um corte que perderia alvos reais.</li>
+      </ul>
+    </section>
+
+    <section id="parte-e">
+      <span class="part-tag">Parte E</span>
+      <h2 class="sec">Referência de parâmetros</h2>
+      <p>Os que importam para os dois módulos — e os do M07 que <strong>deixaram</strong> os
+        falsos positivos passarem, para entender a cadeia.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Parâmetro</th><th>Onde</th><th>Valor</th><th>Por que esse valor</th></tr></thead>
+          <tbody>
+            <tr><td><code>low_complexity_min_entropy</code></td><td>config m05/m07</td><td class="num"><strong>3,2</strong></td><td>no vão entre 2,87 (artefato) e 3,86 (normal).</td></tr>
+            <tr><td><code>low_complexity_max_aa_fraction</code></td><td>config m05/m07</td><td class="num"><strong>0,70</strong></td><td>no vão entre 55% (normal) e 90% (artefato).</td></tr>
+            <tr><td><code>top_k</code></td><td>complexity.py</td><td class="num">5</td><td>capta o repeat sem penalizar proteína normal.</td></tr>
+            <tr><td><code>annotation_gtf</code> / <code>contig_map</code></td><td>paths.yaml</td><td>caminho</td><td><strong>opcionais</strong> (degradação graciosa).</td></tr>
+            <tr><td><code>min_pident</code></td><td>config m07</td><td class="num">30,0</td><td>artefatos tinham 30,6% — passaram raspando; endurecer excluiria homólogos divergentes reais → preferimos a flag.</td></tr>
+            <tr><td><code>min_qcov</code></td><td>config m07</td><td class="num">50,0</td><td>artefatos tinham 91,5%.</td></tr>
+            <tr><td><code>max_evalue</code></td><td>config m07</td><td class="num">1e-10</td><td>mais estrito que o M09; ainda assim passaram (7.8e-17).</td></tr>
+            <tr><td><code>min_diagnostic_domains</code></td><td>config m05</td><td class="num">1</td><td>1 domínio diagnóstico basta para ser candidata.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <p class="lab">Insight para levar</p>
+        <p>Endurecer o M07 (ex.: <code>min_pident</code> 30 → 40) “resolveria” os dois
+          artefatos, <strong>mas ao custo de perder amilases/OBPs reais divergentes</strong>
+          — o alvo da descoberta. A flag <code>LOW_COMPLEXITY</code> mantém a sensibilidade
+          e <strong>sinaliza</strong> o suspeito. Trade-offs assim são o coração do desenho
+          de parâmetros.</p>
+      </div>
+    </section>
+
+    <section id="parte-f">
+      <span class="part-tag">Parte F</span>
+      <h2 class="sec">Como você mesma verifica</h2>
+      <p>Tudo dentro do ambiente conda (<code>mamba run -n biia-csordidus …</code>):</p>
+      <div class="pre-label">1 · testes = exemplos executáveis do comportamento</div>
+      <pre><code>python -m pytest tests/test_idmap.py tests/test_complexity.py -v</code></pre>
+      <div class="pre-label">2 · medir a complexidade de qualquer sequência</div>
+      <pre><code>from biia.complexity import shannon_entropy, top_aa_fraction, is_low_complexity
+print(shannon_entropy(seq), top_aa_fraction(seq), is_low_complexity(seq))</code></pre>
+      <div class="pre-label">3 · experimentar um limiar (e reverter)</div>
+      <pre><code># mude low_complexity_min_entropy p/ 4.5 no config, rode:
+python scripts/05_filter_candidates.py --config config/config_pilot.yaml --force
+# veja candidatas normais serem marcadas → depois volte p/ 3.2</code></pre>
+      <div class="pre-label">4 · conferir uma candidata do jeito certo</div>
+      <pre><code>blastp da sequência contra o PROTEOMA (data/raw/proteome.faa) → 100%
+contra o GENOMA → alinhamento quebrado por íntrons</code></pre>
+    </section>
+
+    <section id="parte-g">
+      <span class="part-tag">Parte G</span>
+      <h2 class="sec">Perguntas para fixar</h2>
+      <p class="muted">Tente responder antes de abrir. Se travar, é o ponto exato para
+        revisitar o código com o guia ao lado.</p>
+      <details><summary><span class="qn">Q1</span> Por que uma proteína predita não dá 100% contra o genoma? Qual a conferência correta?</summary>
+        <div class="ans">Os íntrons quebram o alinhamento proteína→DNA (o modelo gênico já removeu os íntrons). Conferência correta: <code>blastp</code> contra o proteoma → 100%.</div></details>
+      <details><summary><span class="qn">Q2</span> Qual a fonte da verdade do vínculo <code>CSOR_ ↔ g###</code>? E por que ainda pôr o <code>g###</code> no header?</summary>
+        <div class="ans">A fonte da verdade é <code>id_map.tsv</code> (tabela). O header carrega <code>orig=</code> por conveniência de quem olha a sequência — redundância proposital.</div></details>
+      <details><summary><span class="qn">Q3</span> O que significa <code>genbank=so_dryad</code>? É um erro?</summary>
+        <div class="ans">Não. É um contig que existe só na montagem Dryad e não foi depositado no GenBank (~0,9% dos genes). Marcar é mais honesto que inventar accession.</div></details>
+      <details><summary><span class="qn">Q4</span> Entropia 4,0 e top-5 = 45%: baixa complexidade? E entropia 2,9?</summary>
+        <div class="ans">Regra: entropia &lt; 3,2 <strong>OU</strong> top-5 &gt; 0,70. A primeira não é (4,0 e 45% passam). A segunda é (2,9 &lt; 3,2).</div></details>
+      <details><summary><span class="qn">Q5</span> Por que os artefatos apareceram no M07 e não no M05?</summary>
+        <div class="ans">M07 varre o proteoma inteiro por similaridade (sem exigir domínio diagnóstico); M05 exige o domínio. As sequências de baixa complexidade não têm PF00128, então só entram pela descoberta.</div></details>
+      <details><summary><span class="qn">Q6</span> Por que a flag sinaliza em vez de descartar?</summary>
+        <div class="ans">Mesmo padrão de <code>LENGTH_ATYPICAL</code>: a decisão é humana. O código chama a atenção; a curadoria decide.</div></details>
+      <details><summary><span class="qn">Q7</span> Por que não simplesmente subir <code>min_pident</code> para 40%?</summary>
+        <div class="ans">Perderia amilases/OBPs reais divergentes (~31% de identidade) — o alvo da descoberta. A flag preserva a sensibilidade.</div></details>
+      <details><summary><span class="qn">Q8</span> O que “idempotente” quer dizer em <code>merge_trace</code>, e por que importa no M10?</summary>
+        <div class="ans">Aplicar duas vezes dá o mesmo resultado. O M10 lê uma tabela que já passou pelo M05 (com as colunas de rastreabilidade); <code>merge_trace</code> remove e reinsere, sem duplicar.</div></details>
+    </section>
+
+    <section id="parte-h">
+      <span class="part-tag">Parte H</span>
+      <h2 class="sec">Para ir além</h2>
+      <ul>
+        <li><strong>Ordem de leitura dos arquivos:</strong> <code>biia/complexity.py</code>
+          (curto, autocontido) → <code>biia/idmap.py</code> →
+          <code>scripts/05_filter_candidates.py</code> (as duas peças sendo aplicadas) →
+          <code>scripts/07_similarity_discovery.py</code>.</li>
+        <li><strong>O porquê histórico</strong> de cada decisão está em
+          <code>docs/registro_decisoes_e_uso_de_ia.md</code> (Fases A–D e a flag).</li>
+        <li><strong>O uso na bancada</strong> está em
+          <code>docs/protocolo_curadoria.md</code> (campos do header; seção 4b sobre
+          <code>LOW_COMPLEXITY</code>).</li>
+      </ul>
+    </section>
+  </main>
+</div>
+
+<button class="tocbtn" id="tocbtn" aria-label="Abrir índice">☰ índice</button>
+<div class="scrim" id="scrim"></div>
+
+<footer>
+  <div class="footer-in">
+    <span>Guia de estudo · pipeline <strong>BIIA-Csordidus</strong> · <em>Cosmopolites sordidus</em></span>
+    <span><code>docs/guia_estudo_rastreabilidade_qc.md</code></span>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var links = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+    var map = {};
+    links.forEach(function(a){ var id=a.getAttribute('href').slice(1); map[id]=a; });
+    var sections = Array.prototype.slice.call(document.querySelectorAll('main section'));
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(l){ l.classList.remove('active'); });
+          var a = map[e.target.id]; if(a) a.classList.add('active');
+        }
+      });
+    }, {rootMargin:'-15% 0px -70% 0px', threshold:0});
+    sections.forEach(function(s){ obs.observe(s); });
+
+    // mobile drawer
+    var toc=document.getElementById('toc'), btn=document.getElementById('tocbtn'),
+        scrim=document.getElementById('scrim');
+    function toggle(open){ toc.classList.toggle('open',open); scrim.classList.toggle('open',open); }
+    btn.addEventListener('click', function(){ toggle(!toc.classList.contains('open')); });
+    scrim.addEventListener('click', function(){ toggle(false); });
+    toc.addEventListener('click', function(e){ if(e.target.closest('a')) toggle(false); });
+  })();
+</script>
+
+</body>
+</html>

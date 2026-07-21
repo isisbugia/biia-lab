@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BIIA — Materiais do laboratório</title>
+<meta name="description" content="Materiais abertos do laboratório BIIA: bioinformática, anotação funcional e genômica de Cosmopolites sordidus. Guias de estudo, protocolos e recursos.">
+<meta name="color-scheme" content="light dark">
+<style>
+  :root{
+    --paper:#f5f7f3; --surface:#ffffff; --surface-2:#eef2ec;
+    --ink:#1a231e; --muted:#586a60; --faint:#7d8c82; --line:#d8e0d6;
+    --pine:#1f6f5c; --pine-strong:#164b3f; --pine-soft:#e4efe9;
+    --ochre:#9a6614;
+    --title-face:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --body-face:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono-face:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --shadow:0 1px 2px rgba(20,40,30,.05),0 10px 30px -14px rgba(20,50,38,.22);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#0f1512; --surface:#161d19; --surface-2:#1a231e;
+      --ink:#e7ece7; --muted:#9ca99f; --faint:#7d8c82; --line:#2a352f;
+      --pine:#5cc2a4; --pine-strong:#8bd6c1; --pine-soft:#16241f; --ochre:#d9a94a;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 14px 34px -18px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="light"]{--paper:#f5f7f3;--surface:#ffffff;--surface-2:#eef2ec;--ink:#1a231e;--muted:#586a60;--faint:#7d8c82;--line:#d8e0d6;--pine:#1f6f5c;--pine-strong:#164b3f;--pine-soft:#e4efe9;--ochre:#9a6614;}
+  :root[data-theme="dark"]{--paper:#0f1512;--surface:#161d19;--surface-2:#1a231e;--ink:#e7ece7;--muted:#9ca99f;--faint:#7d8c82;--line:#2a352f;--pine:#5cc2a4;--pine-strong:#8bd6c1;--pine-soft:#16241f;--ochre:#d9a94a;}
+
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body-face);
+    font-size:1.0625rem;line-height:1.65;-webkit-font-smoothing:antialiased;}
+  a{color:var(--pine);text-underline-offset:2px;}
+  a:hover{color:var(--pine-strong);}
+  :focus-visible{outline:2px solid var(--pine);outline-offset:3px;border-radius:4px;}
+  .wrap{max-width:60rem;margin:0 auto;padding:0 1.5rem;}
+
+  header.hero{border-bottom:1px solid var(--line);
+    background:radial-gradient(130% 120% at 85% -20%,var(--pine-soft),transparent 55%),var(--surface);}
+  .hero-in{max-width:60rem;margin:0 auto;padding:4rem 1.5rem 2.2rem;}
+  .brand{font-family:var(--mono-face);font-size:.82rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--pine);font-weight:600;margin:0 0 1.1rem;}
+  h1{font-family:var(--title-face);font-weight:600;font-size:clamp(2.2rem,5vw,3.4rem);
+    line-height:1.04;letter-spacing:-.015em;margin:0 0 .7rem;text-wrap:balance;max-width:16ch;}
+  .tag{font-size:1.2rem;color:var(--muted);max-width:54ch;margin:0 0 1.4rem;}
+  .tag em{color:var(--ink);font-style:italic;}
+  .ribbon{font-family:var(--mono-face);font-size:.8rem;letter-spacing:.34em;color:var(--faint);
+    opacity:.5;white-space:nowrap;overflow:hidden;border-top:1px solid var(--line);
+    padding-top:.8rem;margin-top:1.6rem;user-select:none;}
+
+  main{padding:2.8rem 0 1rem;}
+  .sec-lab{font-family:var(--mono-face);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--faint);font-weight:600;margin:0 0 1.1rem;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,20rem),1fr));gap:1.1rem;}
+  .card{display:flex;flex-direction:column;gap:.5rem;text-decoration:none;color:inherit;
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.3rem 1.3rem 1.4rem;
+    box-shadow:var(--shadow);transition:transform .16s,border-color .16s;}
+  .card:hover{transform:translateY(-3px);border-color:var(--pine);}
+  @media (prefers-reduced-motion:reduce){.card:hover{transform:none;}}
+  .card .kind{font-family:var(--mono-face);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--pine);font-weight:600;}
+  .card h3{font-family:var(--title-face);font-weight:600;font-size:1.28rem;margin:.1rem 0 .1rem;line-height:1.2;}
+  .card p{margin:0;color:var(--muted);font-size:.95rem;}
+  .card .go{margin-top:.5rem;font-family:var(--mono-face);font-size:.82rem;color:var(--pine);font-weight:600;}
+  .card .go::after{content:" →";}
+  .card.soon{opacity:.62;box-shadow:none;border-style:dashed;cursor:default;}
+  .card.soon:hover{transform:none;border-color:var(--line);}
+  .card.soon .kind{color:var(--faint);}
+
+  .about{margin:2.8rem 0 0;padding:1.6rem 0 0;border-top:1px solid var(--line);color:var(--muted);
+    font-size:.98rem;max-width:60ch;}
+  .about strong{color:var(--ink);}
+
+  footer{margin-top:3rem;border-top:1px solid var(--line);background:var(--surface);}
+  .foot-in{max-width:60rem;margin:0 auto;padding:1.6rem 1.5rem 2.4rem;color:var(--muted);
+    font-size:.88rem;display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;justify-content:space-between;}
+</style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-in">
+      <p class="brand">Laboratório BIIA</p>
+      <h1>Materiais abertos do laboratório</h1>
+      <p class="tag">Bioinformática, anotação funcional por domínios e genômica —
+        a partir do nosso trabalho com <em>Cosmopolites sordidus</em>, a broca-do-rizoma
+        da bananeira. Guias, protocolos e recursos, feitos para aprender.</p>
+      <div class="ribbon" aria-hidden="true">ATG·CAT·ALASE···OBP···α-AMILASE···MGNTVQYST·QHSTA·QHSTA·QHSTA·QHSTA·QHSTA·LHSRVEYST···PF00199···PF01395···PF00128</div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <p class="sec-lab">Materiais disponíveis</p>
+    <div class="grid">
+      <a class="card" href="guia-rastreabilidade-qc.html">
+        <span class="kind">Guia de estudo</span>
+        <h3>Rastreabilidade &amp; Controle de Qualidade</h3>
+        <p>A lógica dos códigos que ligam cada proteína ao genoma e sinalizam falsos
+          positivos: parâmetros, escolhas de valores, bancos de referência e o fluxo —
+          com diagramas e autoavaliação.</p>
+        <span class="go">Estudar</span>
+      </a>
+      <div class="card soon">
+        <span class="kind">Em breve</span>
+        <h3>Mais materiais a caminho</h3>
+        <p>Protocolos, tutoriais de bioinformática e recursos do laboratório serão
+          publicados aqui conforme forem prontos.</p>
+      </div>
+    </div>
+
+    <p class="about">
+      <strong>Sobre o BIIA.</strong> Um laboratório em formação dedicado à
+      bioinformática aplicada — com foco em anotação funcional de proteomas e uso
+      responsável e transparente de ferramentas computacionais (incluindo IA como
+      apoio à execução, com o desenho científico a cargo da equipe). Estes materiais
+      são a semente de uma biblioteca aberta de estudo.
+    </p>
+  </main>
+
+  <footer>
+    <div class="foot-in">
+      <span>Laboratório <strong>BIIA</strong> · materiais abertos</span>
+      <span>IFSP · <em>Cosmopolites sordidus</em></span>
+    </div>
+  </footer>
+</body>
+</html>
