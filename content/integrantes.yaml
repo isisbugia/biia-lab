@@ -1,0 +1,33 @@
+# ==========================================================================
+# INTEGRANTES DO BIIA  —  página aberta pelo botão "Integrantes"
+# ==========================================================================
+# ⚠️ PRIVACIDADE: o site é PÚBLICO. Publicar nome/foto de uma pessoa exige o
+#    CONSENTIMENTO dela (LGPD). Publique só quem autorizar. Não coloque e-mail
+#    ou telefone pessoal — use apenas links acadêmicos (Lattes, ORCID...).
+#
+# Cada integrante:
+#   nome    -> nome da pessoa
+#   papel   -> grupo em que aparece: "Coordenação", "Estágio de IC" ou "Colaboração"
+#   funcao  -> cargo/atividade (ex.: "Coordenação do laboratório")
+#   area    -> foco (ex.: "Bioinformática · anotação funcional")
+#   foto    -> (opcional) imagem em img/ (ex.: "img/fulano.jpg")
+#   lattes / orcid / github / linkedin -> (opcionais) links
+#
+# Enquanto a lista estiver vazia, a página mostra "em breve".
+# Para adicionar, tire o "#" das linhas de exemplo e preencha.
+
+integrantes:
+  # - nome: "Nome Sobrenome"
+  #   papel: "Coordenação"
+  #   funcao: "Coordenação do laboratório"
+  #   area: "Bioinformática · anotação funcional"
+  #   foto: ""
+  #   lattes: ""
+  #   orcid: ""
+  #   github: ""
+
+  # - nome: "Nome da Estagiária"
+  #   papel: "Estágio de IC"
+  #   funcao: "Estagiária de Iniciação Científica"
+  #   area: "Curadoria de famílias gênicas"
+  #   lattes: ""

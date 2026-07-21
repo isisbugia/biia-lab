@@ -245,6 +245,62 @@ def panel_eventos(data) -> str:
             '</div>')
 
 
+_MEMBER_ORDER = ["Coordenação", "Estágio de IC", "Colaboração"]
+
+
+def _member_card(m) -> str:
+    nome = esc(m.get("nome"))
+    foto = m.get("foto")
+    if foto:
+        av = f'<div class="avatar"><img src="{esc(foto)}" alt="{nome}" loading="lazy"></div>'
+    else:
+        parts = str(m.get("nome", "")).split()
+        initials = "".join(w[0] for w in parts[:2]).upper() or "•"
+        av = f'<div class="avatar mono">{esc(initials)}</div>'
+    links = []
+    for lab, key in (("Lattes", "lattes"), ("ORCID", "orcid"),
+                     ("GitHub", "github"), ("LinkedIn", "linkedin")):
+        u = m.get(key)
+        if u:
+            links.append(f'<a class="badge" href="{esc(u)}" target="_blank" rel="noopener">{lab}</a>')
+    links_html = f'<div class="mlinks">{"".join(links)}</div>' if links else ""
+    func = esc(m.get("funcao"))
+    area = esc(m.get("area"))
+    return (
+        f'<div class="card member">{av}<div class="minfo">'
+        f'<h3>{nome}</h3>'
+        + (f'<span class="mfunc">{func}</span>' if func else "")
+        + (f'<p>{area}</p>' if area else "")
+        + links_html + "</div></div>"
+    )
+
+
+def build_integrantes(site) -> None:
+    itens = (load("integrantes") or {}).get("integrantes") or []
+    if itens:
+        groups, order = {}, []
+        for m in itens:
+            p = m.get("papel", "Integrantes")
+            if p not in groups:
+                groups[p] = []; order.append(p)
+        ordered = [p for p in _MEMBER_ORDER if p in groups] + \
+                  [p for p in order if p not in _MEMBER_ORDER]
+        body = "".join(
+            f'<h3 class="fgroup">{esc(p)}</h3>'
+            f'<div class="grid">{"".join(_member_card(m) for m in groups[p])}</div>'
+            for p in ordered
+        )
+    else:
+        body = empty("A equipe do BIIA será apresentada aqui em breve.")
+    out = INTEGRANTES_TEMPLATE.format(
+        css=CSS, body=body,
+        foot_l=esc(site.get("rodape_esquerda", "")),
+        foot_r=esc(site.get("rodape_direita", "")),
+    )
+    (ROOT / "integrantes.html").write_text(out, encoding="utf-8")
+    print(f"integrantes.html gerado ({len(itens)} integrante(s)).")
+
+
 def build() -> None:
     site = load("site")
     panels = {
@@ -262,6 +318,12 @@ def build() -> None:
         f'<span aria-hidden="true">\U0001F4C1</span> '
         f'{esc(site.get("espaco_trabalho_label", "Espaço de trabalho"))}</a>'
     ) if ws_url else ""
+
+    integrantes_label = site.get("integrantes_label", "")
+    integrantes_button = (
+        f'<a class="ws-btn ghost" href="integrantes.html">'
+        f'<span aria-hidden="true">\U0001F465</span> {esc(integrantes_label)}</a>'
+    ) if integrantes_label else ""
 
     nav = "".join(
         f'<a class="tab" href="#{tid}" data-tab="{tid}">{esc(label)}</a>'
@@ -284,9 +346,11 @@ def build() -> None:
         css=CSS,
         caljs=CAL_JS,
         ws_button=ws_button,
+        integrantes_button=integrantes_button,
     )
     (ROOT / "index.html").write_text(out, encoding="utf-8")
     print("index.html gerado com", len(TABS), "abas.")
+    build_integrantes(site)
 
 
 CSS = """
@@ -386,7 +450,34 @@ border-radius:50%;background:var(--pine);}
 @keyframes evflash{0%,25%{background:var(--pine-soft);border-left-color:var(--pine-strong);}100%{background:var(--surface);}}
 @media (prefers-reduced-motion:reduce){.cal-list .event.flash{animation:none;}}
 .hero-actions:empty{display:none;}
-.hero-actions{margin:1.3rem 0 0;}
+.hero-actions{margin:1.3rem 0 0;display:flex;flex-wrap:wrap;gap:.7rem;}
+.ws-btn.ghost{background:transparent;color:var(--pine-strong);border:1px solid var(--line);box-shadow:none;}
+.ws-btn.ghost:hover{background:var(--surface-2);color:var(--pine-strong);border-color:var(--pine);}
+@media (prefers-color-scheme:dark){.ws-btn.ghost,.ws-btn.ghost:hover{color:var(--pine-strong);}}
+:root[data-theme="light"] .ws-btn.ghost,:root[data-theme="light"] .ws-btn.ghost:hover{color:var(--pine-strong);}
+:root[data-theme="dark"] .ws-btn.ghost,:root[data-theme="dark"] .ws-btn.ghost:hover{color:var(--pine-strong);}
+.page-head{border-bottom:1px solid var(--line);
+background:radial-gradient(130% 120% at 85% -20%,var(--pine-soft),transparent 55%),var(--surface);}
+.page-head-in{max-width:62rem;margin:0 auto;padding:2.8rem 1.5rem 1.6rem;}
+.page-eyebrow{font-family:var(--mono-face);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;
+color:var(--pine);font-weight:600;margin:0 0 .8rem;}
+.page-eyebrow a{color:inherit;text-decoration:none;}
+.page-title{font-family:var(--title-face);font-weight:600;font-size:clamp(2rem,4.6vw,2.8rem);
+line-height:1.05;letter-spacing:-.015em;margin:0 0 .4rem;}
+.page-sub{color:var(--muted);font-size:1.1rem;margin:0;max-width:52ch;}
+.member{flex-direction:row;gap:1rem;align-items:flex-start;}
+.avatar{width:3.4rem;height:3.4rem;border-radius:50%;flex:none;overflow:hidden;display:flex;
+align-items:center;justify-content:center;background:var(--pine-soft);border:1px solid var(--line);}
+.avatar img{width:100%;height:100%;object-fit:cover;}
+.avatar.mono{font-family:var(--mono-face);font-weight:600;color:var(--pine-strong);font-size:1.1rem;}
+.minfo{display:flex;flex-direction:column;gap:.2rem;min-width:0;}
+.minfo h3{margin:0;}
+.mfunc{font-family:var(--mono-face);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;
+color:var(--pine);font-weight:600;}
+.minfo p{margin:.1rem 0 .2rem;color:var(--muted);font-size:.92rem;}
+.mlinks{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.2rem;}
+.mlinks .badge{text-decoration:none;color:var(--muted);}
+.mlinks .badge:hover{border-color:var(--pine);color:var(--pine-strong);}
 .ws-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--pine);color:#fff;
 text-decoration:none;font-weight:600;font-size:.95rem;padding:.6rem 1.15rem;border-radius:999px;
 box-shadow:var(--shadow);transition:transform .15s,background .15s;}
@@ -436,7 +527,7 @@ TEMPLATE = """<!doctype html>
     <p class="brand">{title}</p>
     <h1>{subtitle}</h1>
     <p class="tag">{descricao}</p>
-    <div class="hero-actions">{ws_button}</div>
+    <div class="hero-actions">{ws_button}{integrantes_button}</div>
     <div class="ribbon" aria-hidden="true">ATG·CATALASE···OBP···&#945;-AMILASE···MGNTVQYST·QHSTA·QHSTA·QHSTA·QHSTA·QHSTA·LHSRVEYST···PF00199···PF01395···PF00128</div>
   </div>
 </header>
@@ -518,6 +609,28 @@ CAL_JS = """
   });
   render();
 })();
+"""
+
+
+INTEGRANTES_TEMPLATE = """<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Integrantes — BIIA</title>
+<meta name="color-scheme" content="light dark">
+<style>{css}</style>
+</head>
+<body>
+<header class="page-head"><div class="page-head-in">
+  <p class="page-eyebrow"><a href="index.html">&#8592; Materiais BIIA</a></p>
+  <h1 class="page-title">Integrantes do BIIA</h1>
+  <p class="page-sub">O Laboratório de Bioinformática e Inteligência Agrícola em pessoas.</p>
+</div></header>
+<main class="wrap" style="padding:2.4rem 1.5rem 4rem;">{body}</main>
+<footer><div class="foot-in"><span>{foot_l}</span><span>{foot_r}</span></div></footer>
+</body>
+</html>
 """
 
 

@@ -13,7 +13,8 @@ arquivos de texto simples (YAML) em `content/`. Cada um controla uma aba.
 | `videoaulas.yaml` | Aba **Vídeoaulas e Tutoriais**. |
 | `recursos.yaml` | Aba **Recursos educativos**. |
 | `avisos.yaml` | Aba **Quadro de avisos**. |
-| `eventos.yaml` | Aba **Eventos importantes**. |
+| `eventos.yaml` | Aba **Eventos**. |
+| `integrantes.yaml` | Página **Integrantes** (botão no topo). ⚠️ Site público: publicar nome/foto exige **consentimento** de cada pessoa (use só links acadêmicos, sem e-mail/telefone). |
 
 ## Como editar
 
