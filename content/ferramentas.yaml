@@ -1,14 +1,124 @@
 # ==========================================================================
-# FERRAMENTAS DE BIOINFO  —  cards da aba "Ferramentas de Bioinfo"
+# FERRAMENTAS DE BIOINFO  —  tabela da aba "Ferramentas de Bioinfo"
 # ==========================================================================
-# Cada item: titulo, descricao e (opcional) link.
-# Enquanto a lista estiver vazia, a aba mostra um aviso "em breve".
-# Para adicionar, tire o "#" das linhas de exemplo e edite.
+# A tabela é agrupada por `categoria`. Cada item:
+#   nome, link, categoria, tipo (Web Server / Software Local), descricao, exemplo.
+# Vazia = aba mostra "em breve".
 
-itens:
-  # - titulo: "BLAST+"
-  #   descricao: "Busca por similaridade de sequências (proteína e nucleotídeo)."
-  #   link: "https://blast.ncbi.nlm.nih.gov/"
-  # - titulo: "InterProScan"
-  #   descricao: "Anotação de domínios e assinaturas funcionais."
-  #   link: "https://www.ebi.ac.uk/interpro/"
+ferramentas:
+  # ---- Anotação Funcional ----
+  - nome: "NCBI"
+    link: "https://www.ncbi.nlm.nih.gov/"
+    categoria: "Anotação Funcional"
+    tipo: "Web Server"
+    descricao: >
+      Portal com os principais bancos de dados biológicos (GenBank, Protein,
+      Gene, PubMed) e ferramentas de busca como o BLAST.
+    exemplo: >
+      buscar sequências homólogas de uma proteína candidata (BLAST) ou recuperar
+      o registro de um gene/proteína.
+
+  - nome: "UniProt"
+    link: "https://www.uniprot.org/"
+    categoria: "Anotação Funcional"
+    tipo: "Web Server"
+    descricao: >
+      Banco de referência de sequências de proteínas com anotação funcional
+      curada manualmente (Swiss-Prot) e automática (TrEMBL).
+    exemplo: >
+      consultar função, domínios, termos GO e artigos de uma proteína pelo seu
+      ID ou nome.
+
+  - nome: "InterProScan"
+    link: "https://www.ebi.ac.uk/interpro/"
+    categoria: "Anotação Funcional"
+    tipo: "Software Local"
+    descricao: >
+      Identifica domínios, famílias e assinaturas funcionais em proteínas
+      integrando vários bancos (Pfam, PANTHER, PROSITE, SMART...).
+    exemplo: >
+      anotar os domínios de todas as proteínas candidatas e atribuir termos GO.
+
+  - nome: "eggNOG-mapper"
+    link: "http://eggnog-mapper.embl.de/"
+    categoria: "Anotação Funcional"
+    tipo: "Web Server"
+    descricao: >
+      Anotação funcional rápida por ortologia, usando os grupos ortólogos e as
+      filogenias do banco eggNOG.
+    exemplo: >
+      anotar função, categoria (COG) e vias KEGG de um conjunto de genes preditos.
+
+  - nome: "KEGG"
+    link: "https://www.genome.jp/kegg/"
+    categoria: "Anotação Funcional"
+    tipo: "Web Server"
+    descricao: >
+      Base de vias metabólicas e de sinalização, ortologia (KO) e mapas
+      funcionais.
+    exemplo: >
+      mapear as enzimas de uma via metabólica ou descobrir a qual via uma
+      proteína pertence.
+
+  # ---- Modelagem e Docking ----
+  - nome: "AlphaFold"
+    link: "https://alphafold.ebi.ac.uk/"
+    categoria: "Modelagem e Docking"
+    tipo: "Web Server"
+    descricao: >
+      Banco de estruturas 3D de proteínas preditas por IA, com medida de
+      confiança por resíduo (pLDDT).
+    exemplo: >
+      obter a estrutura 3D prevista de uma proteína candidata para análise
+      estrutural ou docking.
+
+  - nome: "SWISS-MODEL"
+    link: "https://swissmodel.expasy.org/"
+    categoria: "Modelagem e Docking"
+    tipo: "Web Server"
+    descricao: >
+      Modelagem de estrutura de proteínas por homologia, usando moldes de
+      estrutura já conhecida.
+    exemplo: >
+      gerar um modelo 3D de uma proteína a partir de um molde homólogo do PDB.
+
+  - nome: "HDOCK"
+    link: "http://hdock.phys.hust.edu.cn/"
+    categoria: "Modelagem e Docking"
+    tipo: "Web Server"
+    descricao: >
+      Servidor de docking macromolecular (proteína–proteína e proteína–DNA/RNA)
+      por estratégia híbrida (template + livre); aceita sequência ou estrutura.
+    exemplo: >
+      prever como duas proteínas (ou uma proteína e um RNA) formam um complexo.
+
+  - nome: "Webina"
+    link: "https://durrantlab.pitt.edu/webina/"
+    categoria: "Modelagem e Docking"
+    tipo: "Web Server"
+    descricao: >
+      Roda o AutoDock Vina inteiramente no navegador (docking de pequenas
+      moléculas/ligantes) — seus arquivos não são enviados a servidor remoto.
+    exemplo: >
+      fazer o docking de um ligante numa proteína-alvo direto no navegador.
+
+  # ---- RNA/Aptâmeros ----
+  - nome: "RNAcomposer"
+    link: "http://rnacomposer.cs.put.poznan.pl/"
+    categoria: "RNA / Aptâmeros"
+    tipo: "Web Server"
+    descricao: >
+      Prediz a estrutura 3D de RNA (até ~500 nucleotídeos) por montagem
+      automática de fragmentos, a partir da estrutura secundária.
+    exemplo: >
+      gerar o modelo 3D de um aptâmero de RNA a partir de sua estrutura secundária.
+
+  - nome: "ViennaRNA"
+    link: "https://www.tbi.univie.ac.at/RNA/"
+    categoria: "RNA / Aptâmeros"
+    tipo: "Software Local"
+    descricao: >
+      Pacote para predição e análise de estrutura secundária de RNA (RNAfold,
+      energia mínima de dobramento, etc.).
+    exemplo: >
+      prever a estrutura secundária e a energia livre de uma sequência de RNA/aptâmero.

@@ -90,6 +90,39 @@ def panel_cards(data, key, empty_msg) -> str:
     return f'<div class="grid">{"".join(cards)}</div>'
 
 
+def panel_ferramentas(data) -> str:
+    itens = (data or {}).get("ferramentas") or []
+    if not itens:
+        return empty("Ferramentas serão listadas aqui em breve.")
+    groups, order = {}, []
+    for it in itens:
+        cat = it.get("categoria", "Outras")
+        if cat not in groups:
+            groups[cat] = []; order.append(cat)
+        groups[cat].append(it)
+    out = []
+    for cat in order:
+        rows = []
+        for it in groups[cat]:
+            nome = esc(it.get("nome"))
+            link = it.get("link", "")
+            nome_html = f'<a{_link_attrs(link)}>{nome}</a>' if link else nome
+            ex = esc(it.get("exemplo"))
+            ex_html = f'<br><span class="ex">Ex.: {ex}</span>' if ex else ""
+            rows.append(
+                f'<tr><td class="fw"><strong>{nome_html}</strong></td>'
+                f'<td><span class="badge">{esc(it.get("tipo"))}</span></td>'
+                f'<td>{esc(it.get("descricao"))}{ex_html}</td></tr>'
+            )
+        out.append(
+            f'<h3 class="fgroup">{esc(cat)}</h3>'
+            '<div class="tablewrap"><table><thead><tr>'
+            '<th>Ferramenta</th><th>Tipo</th><th>Descrição e utilizações</th>'
+            f'</tr></thead><tbody>{"".join(rows)}</tbody></table></div>'
+        )
+    return "".join(out)
+
+
 def yt_embed(url: str):
     """URL do YouTube (vídeo ou playlist) -> URL de embed, ou None."""
     try:
@@ -182,8 +215,7 @@ def build() -> None:
     site = load("site")
     panels = {
         "guias": panel_guias(load("guias")),
-        "ferramentas": panel_cards(load("ferramentas"), "itens",
-                                   "Ferramentas serão listadas aqui em breve."),
+        "ferramentas": panel_ferramentas(load("ferramentas")),
         "videoaulas": panel_videoaulas(load("videoaulas")),
         "recursos": panel_cards(load("recursos"), "itens",
                                 "Recursos educativos em breve."),
@@ -337,6 +369,19 @@ box-shadow:var(--shadow);transition:transform .15s,background .15s;}
 .media-cap{padding:1rem 1.3rem 1.3rem;}
 .media-cap h3{font-family:var(--title-face);font-weight:600;font-size:1.2rem;margin:0 0 .25rem;}
 .media-cap p{margin:0 0 .5rem;color:var(--muted);font-size:.95rem;}
+.fgroup{font-family:var(--title-face);font-weight:600;font-size:1.25rem;margin:1.8rem 0 .7rem;}
+.fgroup:first-child{margin-top:0;}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:.4rem 0 1.4rem;}
+.tablewrap table{border-collapse:collapse;width:100%;font-size:.93rem;min-width:34rem;}
+.tablewrap th,.tablewrap td{text-align:left;padding:.6rem .85rem;border-bottom:1px solid var(--line);vertical-align:top;}
+.tablewrap thead th{background:var(--surface-2);font-weight:650;font-size:.8rem;letter-spacing:.02em;}
+.tablewrap tbody tr:last-child td{border-bottom:none;}
+.tablewrap tbody tr:hover{background:var(--surface-2);}
+.tablewrap td.fw{white-space:nowrap;}
+.badge{display:inline-block;font-family:var(--mono-face);font-size:.68rem;letter-spacing:.03em;
+color:var(--muted);background:var(--surface-2);border:1px solid var(--line);border-radius:999px;
+padding:.12rem .5rem;white-space:nowrap;}
+.ex{color:var(--faint);font-size:.86em;font-style:italic;}
 footer{margin-top:3rem;border-top:1px solid var(--line);background:var(--surface);}
 .foot-in{max-width:62rem;margin:0 auto;padding:1.6rem 1.5rem 2.4rem;color:var(--muted);font-size:.88rem;
 display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;justify-content:space-between;}
