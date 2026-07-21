@@ -262,10 +262,7 @@
     <section id="mapa">
       <span class="part-tag">Parte 0</span>
       <h2 class="sec">Mapa dos arquivos</h2>
-      <p>Duas peças que construímos <em>por cima</em> do pipeline existente: uma de
-        <strong>rastreabilidade</strong> (de onde veio cada proteína) e uma de
-        <strong>controle de qualidade</strong> (o que é suspeito). Este guia é o
-        “porquê” delas — não a documentação do pipeline inteiro.</p>
+      <p>Aqui você vai entender como conseguimos garantir a <strong>rastreabilidade</strong> (de onde veio cada proteína e qual o seu ID nos diferentes repositórios/contextos) e o <strong>controle de qualidade</strong>. Lembre-se que este é um guia curto e não a documentação do pipeline inteiro.</p>
       <div class="tablewrap">
         <table>
           <thead><tr><th>Arquivo</th><th>Papel</th></tr></thead>
@@ -283,9 +280,7 @@
       </div>
       <div class="callout">
         <p class="lab">Princípio de design</p>
-        <p>A <em>lógica</em> mora num módulo <code>biia/</code> (testável, fonte única);
-          os <em>scripts</em> M05/M07/M10 só a <strong>aplicam</strong>. Assim o pipeline
-          e o kit de curadoria nunca divergem.</p>
+        <p>A <em>lógica</em> é implementada no módulo <code>biia/</code> (fonte única e testável); os <em>scripts</em> M05/M07/M10 apenas a <strong>invocam</strong>. Isso evita divergências entre o pipeline e as demais etapas da curadoria.</p>
       </div>
     </section>
 
@@ -293,11 +288,7 @@
       <span class="part-tag">Parte A</span>
       <h2 class="sec">Rastreabilidade de identificadores</h2>
       <h3>A.1 · O problema</h3>
-      <p>Uma candidata recebe um ID amigável do projeto (<code>CSOR_04408</code>). Mas
-        para <strong>publicar, conferir ou voltar ao genoma</strong> você precisa saber
-        de qual <strong>modelo gênico</strong> ela veio (<code>g2919.t1</code>),
-        <strong>onde</strong> ela está no genoma (contig, início–fim, fita) e qual o
-        <strong>identificador oficial</strong> desse contig no GenBank.</p>
+      <p>Uma sequência candidata de proteína recebe um ID do nosso projeto (<code>CSOR_04408</code>). Mas para <strong>publicar, conferir ou comparar com as sequências que estão depositadas no genoma</strong> você precisa saber de qual <strong>modelo gênico</strong> ela veio (<code>g2919.t1</code>), <strong>onde</strong> ela está no genoma (contig, início–fim, fita) e qual o <strong>identificador oficial</strong> desse contig no GenBank.</p>
       <div class="callout warn">
         <p class="lab">A dúvida que motivou tudo</p>
         <p>BLASTar a proteína <strong>contra o genoma</strong> não dá 100% de identidade
@@ -388,12 +379,7 @@
       <span class="part-tag">Parte B</span>
       <h2 class="sec">Flag <code>LOW_COMPLEXITY</code></h2>
       <h3>B.1 · O problema</h3>
-      <p>A descoberta por similaridade (M07) classifica pela palavra-chave do
-        <strong>melhor hit</strong>. Isso é frágil para <strong>baixa complexidade</strong>
-        — repetições em tandem como <code>QHSTAQHSTA…</code> Elas grudam <strong>por
-        acaso</strong> em proteínas sem relação (amilase, extensina, fator de transcrição)
-        e pegam a família pelo hit errado. Dois falsos positivos reais no piloto:
-        <code>CSOR_10506</code> e <code>CSOR_16554</code>.</p>
+      <p>A descoberta por similaridade (M07) classifica as sequências com base na anotação do <strong>melhor hit</strong>. Essa estratégia pode falhar em proteínas que possuem regiões de <strong>baixa complexidade</strong>, como repetições em tandem — ex.: <code>QHSTAQHSTA…</code> — podem gerar alinhamentos enganosos com proteínas que não pertencem à mesma família, como amilases, extensinas e fatores de transcrição. Quando isso acontece, o melhor hit não representa a verdadeira relação evolutiva da sequência e a classificação pode ficar incorreta. Em nossos testes piloto, esse comportamento gerou dois falsos positivos reais: <code>CSOR_10506</code> e <code>CSOR_16554</code>.</p>
 
       <h3>B.2 · A métrica</h3>
       <p>Duas medidas simples da <strong>composição</strong> da sequência:</p>
@@ -603,8 +589,6 @@ contra o GENOMA → alinhamento quebrado por íntrons</code></pre>
         <div class="ans">Mesmo padrão de <code>LENGTH_ATYPICAL</code>: a decisão é humana. O código chama a atenção; a curadoria decide.</div></details>
       <details><summary><span class="qn">Q7</span> Por que não simplesmente subir <code>min_pident</code> para 40%?</summary>
         <div class="ans">Perderia amilases/OBPs reais divergentes (~31% de identidade) — o alvo da descoberta. A flag preserva a sensibilidade.</div></details>
-      <details><summary><span class="qn">Q8</span> O que “idempotente” quer dizer em <code>merge_trace</code>, e por que importa no M10?</summary>
-        <div class="ans">Aplicar duas vezes dá o mesmo resultado. O M10 lê uma tabela que já passou pelo M05 (com as colunas de rastreabilidade); <code>merge_trace</code> remove e reinsere, sem duplicar.</div></details>
     </section>
 
     <section id="parte-h">
